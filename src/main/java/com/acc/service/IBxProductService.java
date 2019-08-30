@@ -2,6 +2,7 @@ package com.acc.service;
 
 import com.acc.exception.SelectException;
 import com.acc.model.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -57,4 +58,6 @@ public interface IBxProductService {
     void deleteProductDetailImgByProId(String productId) throws Exception;
 
     void deleteProductDetailVideoById(String id) throws Exception;
+
+    List<BxProductImg> getProductDetailImgByProId(@Param("productId") String productId) throws SelectException;
 }

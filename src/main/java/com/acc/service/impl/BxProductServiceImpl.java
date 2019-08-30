@@ -6,6 +6,7 @@ import com.acc.dao.BxProductMapper;
 import com.acc.exception.SelectException;
 import com.acc.model.*;
 import com.acc.service.IBxProductService;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,4 +141,8 @@ public class BxProductServiceImpl implements IBxProductService {
         bxProductMapper.deleteProVideoById(id);
     }
 
+    @Override
+    public List<BxProductImg> getProductDetailImgByProId(@Param("productId") String productId) throws SelectException{
+        return bxProductMapper.getProductDetailImgByProId(productId);
+    }
 }

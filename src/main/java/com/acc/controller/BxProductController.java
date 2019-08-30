@@ -406,7 +406,6 @@ public class BxProductController {
         Map<String, Object> map = new HashMap<String, Object>();
         String result;
         int status = 0;
-        boolean boo = false;
         try {
             BxProduct bxProduct = bxProductService.getProductById(bxProductImg.getProductId());
             if(bxProduct!=null){
@@ -420,17 +419,37 @@ public class BxProductController {
                             System.out.println("fileSavePath============================"+fileSavePath);
                             System.out.println("bxProductImg.getProductId()"+bxProductImg.getProductId());
                             if("0".equals(bxProductImg.getIsFirst())){
-                                //删除该产品的整个详情文件夹
-                                boo = true;
                                 bxProductService.deleteProductDetailImgByProId(""+bxProductImg.getProductId());
                             }
-                            Map<String,Object> mapImg = PictureChange.imageUpload(file,fileSavePath,boo,true);
+                            Map<String,Object> mapImg = PictureChange.imageUpload(file,fileSavePath,false,true);
                             int re = Integer.valueOf((String)mapImg.get("code")).intValue();
                             if(re == 0){
                                 List<String> imgNameList = (List<String>)mapImg.get("list");
                                 if(imgNameList!=null && imgNameList.size()>0){
                                     bxProductImg.setImageUrl(imgNameList.get(0));
                                     bxProductService.insertProductImg(bxProductImg);
+                                }
+                                if("0".equals(bxProductImg.getIsLast())){
+                                    //如果是最后一次上传图片  获取产品整个图片  进行匹配删除
+                                    List<BxProductImg> bxProductImgList = bxProductService.getProductDetailImgByProId(bxProductImg.getProductId()+"");
+                                    File fileTemp = new File(fileSavePath);
+                                    boolean falg = fileTemp.exists();
+                                    if (falg) {
+                                        String[] png = fileTemp.list();
+                                        boolean boo;
+                                        for (int i = 0; i < png.length; i++) {
+                                            boo = true;
+                                            for(BxProductImg bxProductImgg:bxProductImgList){
+                                                if(bxProductImgg.getImageUrl().equals(png[i])){
+                                                    boo = false;
+                                                    break;
+                                                }
+                                            }
+                                            if(boo){
+                                                new File(path + png[i]).delete();
+                                            }
+                                        }
+                                    }
                                 }
                                 result = "添加成功";
                             }else{

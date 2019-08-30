@@ -35,6 +35,8 @@ public class BxProductImg implements java.io.Serializable, Cloneable{
 
     private String isFirst;
 
+    private String isLast;
+
     public int getProductId() {
         return productId;
     }
@@ -81,6 +83,14 @@ public class BxProductImg implements java.io.Serializable, Cloneable{
 
     public void setIsFirst(String isFirst) {
         this.isFirst = isFirst;
+    }
+
+    public String getIsLast() {
+        return isLast;
+    }
+
+    public void setIsLast(String isLast) {
+        this.isLast = isLast;
     }
 }
 

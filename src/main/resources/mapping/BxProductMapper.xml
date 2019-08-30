@@ -39,6 +39,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select ID,PRODUCT_ID,IMAGE_URL,IMAGE_ORDER,STATUS from BX_PRODUCT_IMG WHERE id=#{id}
     </select>
 
+    <select id="getProductDetailImgByProId" resultMap="bxProductImg">
+        select ID,PRODUCT_ID,IMAGE_URL,IMAGE_ORDER,STATUS from BX_PRODUCT_IMG WHERE PRODUCT_ID=#{productId}
+    </select>
+
     <select id="getProductDetailVideoById" resultMap="bxProductVideo">
         select ID,PRODUCT_ID,VIDEO_URL,STATUS from BX_PRODUCT_VIDEO WHERE id=#{id}
     </select>
@@ -111,6 +115,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <update id="updateProByProId" >
         UPDATE BX_PRODUCT SET
             PRODUCT_NAME = #{productName},
+            PRODUCT_DESC = #{productDesc},
             <if test="productOrder != null and productOrder != 0">PRODUCT_ORDER=#{productOrder},</if>
             PRODUCT_IMG=#{productImg}
         WHERE ID = #{id}

@@ -43,5 +43,7 @@ public interface BxProductMapper {
 
     BxProductImg getProductDetailImgById(String id) throws SelectException;
 
+    List<BxProductImg> getProductDetailImgByProId(@Param("productId") String productId) throws SelectException;
+
     BxProductVideo getProductDetailVideoById(String id) throws SelectException;
 }

@@ -49,7 +49,8 @@ public class PictureChange {
             if (true == fileTemp.isDirectory()) {
                 String[] png = fileTemp.list();
                 for (int i = 0; i < png.length; i++) {
-                    File file = new File(path +"\\"+ png[i]);
+                    System.out.println("png[i]=========="+png[i]);
+                    File file = new File(path + png[i]);
                     if (true == file.isFile()) {
                         file.delete();
                     }
@@ -162,7 +163,9 @@ public class PictureChange {
         if (file!=null && file.length>0) {
             MultipartFile multipartFile;
             List<String> list = new ArrayList<String>();
+            System.out.println("deleteBoo============================"+deleteBoo);
             if(deleteBoo)
+                System.out.println("fileSavePath============================"+fileSavePath);
                 deleteFile(fileSavePath);
             long time;
             for (int i = 0; i < file.length; i++) {
