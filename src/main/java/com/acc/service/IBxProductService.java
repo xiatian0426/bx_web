@@ -54,7 +54,7 @@ public interface IBxProductService {
 
     BxProductVideo getProductDetailVideoById(String id) throws SelectException;
 
-    void deleteProductDetailImgById(String id) throws Exception;
+    void deleteProductDetailImgByProId(String productId) throws Exception;
 
     void deleteProductDetailVideoById(String id) throws Exception;
 }
