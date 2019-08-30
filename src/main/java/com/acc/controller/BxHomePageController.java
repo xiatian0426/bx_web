@@ -307,7 +307,6 @@ public class BxHomePageController {
         Map<String, Object> map = new HashMap<String, Object>();
         String result;
         int status = 0;
-        boolean boo = false;
         try {
             BxMember bxMember = bxHomePageService.getMemberById(bxHonor.getMemberId());
             if(bxMember!=null){
@@ -318,10 +317,9 @@ public class BxHomePageController {
                         if(bxHonor.getIsFirst()!=null){
                             if("0".equals(bxHonor.getIsFirst())){
                                 //删除该代理商的整个荣誉文件夹
-                                boo = true;
                                 bxHonorService.deleteByMemId(bxHonor.getMemberId());
                             }
-                            Map<String,Object> mapImg = PictureChange.imageUpload(file,fileSavePath,boo,true);
+                            Map<String,Object> mapImg = PictureChange.imageUpload(file,fileSavePath,false,true);
                             int re = Integer.valueOf((String)mapImg.get("code")).intValue();
                             if(re==0){
                                 List<String> list = (List<String>)mapImg.get("list");
@@ -332,6 +330,28 @@ public class BxHomePageController {
                                     bxHonorService.insert(bxHonor);
                                     _logger.info("===================================================================保存bxHonor结束");
                                 }
+                                if("0".equals(bxHonor.getIsLast())){
+                                    List<BxHonor> bxHonorList = bxHonorService.getHonorList(bxHonor.getMemberId()+"");
+                                    File fileTemp = new File(fileSavePath);
+                                    boolean falg = fileTemp.exists();
+                                    if (falg) {
+                                        String[] png = fileTemp.list();
+                                        boolean boo;
+                                        for (int i = 0; i < png.length; i++) {
+                                            boo = true;
+                                            for(BxHonor bxHonorr:bxHonorList){
+                                                if(bxHonorr.getImageUrl().equals(png[i])){
+                                                    boo = false;
+                                                    break;
+                                                }
+                                            }
+                                            if(boo){
+                                                new File(path + png[i]).delete();
+                                            }
+                                        }
+                                    }
+                                }
+
                                 result = "添加/更新成功!";
                             }else if(re==-1){
                                 status = 3;
