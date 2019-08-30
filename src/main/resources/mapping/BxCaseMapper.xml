@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxCaseMapper">
+
+	<resultMap id="bxCase" type="com.acc.model.BxCase">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="age" column="AGE" jdbcType="INTEGER"/>
+        <result property="productName" column="PRODUCT_NAME" jdbcType="VARCHAR"/>
+        <result property="tbContext" column="TB_CONTEXT" jdbcType="VARCHAR"/>
+        <result property="lpContext" column="LP_CONTEXT" jdbcType="VARCHAR"/>
+        <result property="cxContext" column="CX_CONTEXT" jdbcType="VARCHAR"/>
+        <result property="cost" column="cost" jdbcType="DECIMAL"/>
+        <result property="timeLimit" column="TIME_LIMIT" jdbcType="VARCHAR"/>
+        <result property="relaProductId" column="RELA_PRODUCT_ID" jdbcType="INTEGER"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+	</resultMap>
+
+
+	<select id="getCaseDetail" resultMap="bxCase">
+         SELECT c.RELA_PRODUCT_ID,c.NAME,c.AGE,c.STATUS,c.MEMBER_ID,c.PRODUCT_NAME,c.ID,c.COST,
+         c.TIME_LIMIT,c.TB_CONTEXT,c.LP_CONTEXT,c.CX_CONTEXT
+         FROM BX_CASE c,BX_MEMBER m
+         WHERE c.MEMBER_ID=m.id
+				 AND c.STATUS = 0
+         AND c.RELA_PRODUCT_ID=#{productId}
+    </select>
+
+    <delete id="deleteCaseByProId">
+        <![CDATA[
+        DELETE FROM BX_CASE WHERE RELA_PRODUCT_ID=#{productId}
+    ]]>
+    </delete>
+
+    <update id="updateCaseByProId" >
+        UPDATE BX_CASE SET
+            PRODUCT_NAME=#{productName},
+            NAME=#{name},
+            AGE=#{age},
+            COST=#{cost},
+            TIME_LIMIT=#{timeLimit},
+            TB_CONTEXT=#{tbContext},
+            LP_CONTEXT=#{lpContext},
+            CX_CONTEXT=#{cxContext}
+        WHERE ID = #{id}
+    </update>
+
+    <insert id="insertCaseByProId" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_CASE (
+        PRODUCT_NAME,
+        NAME,
+        AGE,
+        STATUS,
+        COST,
+        MEMBER_ID,
+        RELA_PRODUCT_ID,
+        TIME_LIMIT,
+        TB_CONTEXT,
+        LP_CONTEXT,
+        CX_CONTEXT,
+        CREATE_DATE,
+        CREATE_ID
+        ) VALUES (
+        #{productName} ,
+        #{name},
+        #{age},
+        0 ,
+        #{cost},
+        #{memberId},
+        #{relaProductId},
+        #{timeLimit},
+        #{tbContext},
+        #{lpContext},
+        #{cxContext},
+        now() ,
+        #{createId}
+        )
+    </insert>
+
+</mapper>

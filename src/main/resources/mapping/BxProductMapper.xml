@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxProductMapper">
+
+	<resultMap id="bxProduct" type="com.acc.model.BxProduct">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="productName" column="PRODUCT_NAME" jdbcType="VARCHAR"/>
+        <result property="productImg" column="PRODUCT_IMG" jdbcType="VARCHAR"/>
+        <result property="productVideo" column="PRODUCT_VIDEO" jdbcType="VARCHAR"/>
+        <result property="imageUrl" column="IMAGE_URL" jdbcType="VARCHAR"/>
+        <result property="productOrder" column="PRODUCT_ORDER" jdbcType="INTEGER"/>
+        <result property="imageOrder" column="IMAGE_ORDER" jdbcType="INTEGER"/>
+        <result property="productDesc" column="PRODUCT_DESC" jdbcType="VARCHAR"/>
+	</resultMap>
+    <resultMap id="bxProductImg" type="com.acc.model.BxProductImg">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="productId" column="PRODUCT_ID" jdbcType="INTEGER"/>
+        <result property="imageUrl" column="IMAGE_URL" jdbcType="VARCHAR"/>
+        <result property="imageOrder" column="IMAGE_ORDER" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="bxProductVideo" type="com.acc.model.BxProductVideo">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="productId" column="PRODUCT_ID" jdbcType="INTEGER"/>
+        <result property="videoUrl" column="VIDEO_URL" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getProductById" resultMap="bxProduct">
+        select p.id,p.PRODUCT_NAME,p.PRODUCT_IMG,p.PRODUCT_ORDER from BX_PRODUCT p WHERE id=#{id}
+    </select>
+
+    <select id="getProductDetailImgById" resultMap="bxProductImg">
+        select ID,PRODUCT_ID,IMAGE_URL,IMAGE_ORDER,STATUS from BX_PRODUCT_IMG WHERE id=#{id}
+    </select>
+
+    <select id="getProductDetailVideoById" resultMap="bxProductVideo">
+        select ID,PRODUCT_ID,VIDEO_URL,STATUS from BX_PRODUCT_VIDEO WHERE id=#{id}
+    </select>
+
+    <select id="getCountById" resultType="java.lang.Integer">
+        select count(1) from BX_COMMENT c
+        where c.RESPONDENT_ID=#{id}
+        and c.`STATUS`=0
+    </select>
+
+    <select id="getProductByPerm" resultMap="bxProduct">
+        select p.id,p.PRODUCT_NAME,p.PRODUCT_IMG,p.PRODUCT_ORDER from BX_PRODUCT p
+        where p.MEMBER_ID=#{memberId}
+				and p.STATUS=0
+        order by p.PRODUCT_ORDER
+    </select>
+
+	<select id="getDetailByProductId" resultMap="bxProduct">
+        select m.*,vv.VIDEO_URL PRODUCT_VIDEO from
+    	    (select p.id,p.PRODUCT_NAME,p.PRODUCT_DESC,i.IMAGE_URL,i.IMAGE_ORDER
+            from BX_PRODUCT p,BX_PRODUCT_IMG i,BX_MEMBER me
+            where p.id=i.PRODUCT_ID
+			and p.MEMBER_ID=me.id
+            and p.`STATUS`=0
+            and i.`STATUS`=0
+            and p.id=#{productId}) m
+		left JOIN BX_PRODUCT_VIDEO vv
+		on m.id=vv.product_id
+        order by m.image_order
+    </select>
+
+    <delete id="deleteProImgById">
+        <![CDATA[
+        DELETE FROM BX_PRODUCT_IMG WHERE id=#{id}
+    ]]>
+    </delete>
+
+    <delete id="deleteProVideoById">
+        <![CDATA[
+        DELETE FROM BX_PRODUCT_VIDEO WHERE id=#{id}
+    ]]>
+    </delete>
+
+    <delete id="deleteProImgByProId">
+        <![CDATA[
+        DELETE FROM BX_PRODUCT_IMG WHERE PRODUCT_ID=#{productId}
+    ]]>
+    </delete>
+
+    <delete id="deleteProVideoByProId">
+        <![CDATA[
+        DELETE FROM BX_PRODUCT_VIDEO WHERE PRODUCT_ID=#{productId}
+    ]]>
+    </delete>
+
+    <delete id="deleteProByProId">
+        <![CDATA[
+        DELETE FROM BX_PRODUCT WHERE id=#{productId}
+        ]]>
+    </delete>
+    <select id="getProDetail" resultMap="bxProduct">
+        select p.id,p.PRODUCT_NAME,p.PRODUCT_IMG,p.PRODUCT_ORDER,p.PRODUCT_DESC,v.VIDEO_URL PRODUCT_VIDEO,i.IMAGE_URL,i.IMAGE_ORDER
+        from BX_PRODUCT p,BX_PRODUCT_VIDEO v,BX_PRODUCT_IMG i
+        where p.id=v.PRODUCT_ID
+				AND p.id = i.PRODUCT_ID
+				AND p.id=#{productId}
+				ORDER BY i.IMAGE_ORDER
+    </select>
+
+    <update id="updateProByProId" >
+        UPDATE BX_PRODUCT SET
+            PRODUCT_NAME = #{productName},
+            <if test="productOrder != null and productOrder != 0">PRODUCT_ORDER=#{productOrder},</if>
+            PRODUCT_IMG=#{productImg}
+        WHERE ID = #{id}
+    </update>
+
+    <insert id="insertProduct" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_PRODUCT (
+            PRODUCT_NAME,
+            PRODUCT_IMG,
+            PRODUCT_ORDER,
+            STATUS,
+            CREATE_DATE,
+            CREATE_ID,
+            MEMBER_ID,
+            PRODUCT_DESC
+        ) VALUES (
+            #{productName} ,
+            #{productImg},
+            #{productOrder},
+            0 ,
+            now() ,
+            #{createId},
+            #{memberId},
+            #{productDesc}
+        )
+    </insert>
+
+    <update id="updateProVideoByProId" >
+        UPDATE BX_PRODUCT_VIDEO SET
+        VIDEO_URL = #{productVideo}
+        WHERE PRODUCT_ID = #{id}
+    </update>
+
+    <insert id="insertProductVideo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_PRODUCT_VIDEO (
+        PRODUCT_ID,
+        VIDEO_URL,
+        STATUS
+        ) VALUES (
+        #{productId} ,
+        #{videoUrl},
+        0
+        )
+    </insert>
+
+    <update id="updateProImgByProId" >
+        UPDATE BX_PRODUCT_IMG SET
+        <if test="imageOrder != null and imageOrder != 0">IMAGE_ORDER=#{imageOrder},</if>
+        IMAGE_URL = #{imageUrl}
+        WHERE PRODUCT_ID = #{productId}
+    </update>
+
+    <insert id="insertProductImg" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_PRODUCT_IMG (
+        PRODUCT_ID,
+        IMAGE_URL,
+        <if test="imageOrder != null and imageOrder != 0">IMAGE_ORDER,</if>
+        STATUS
+        ) VALUES (
+        #{productId} ,
+        #{imageUrl},
+        <if test="imageOrder != null and imageOrder != 0">#{imageOrder},</if>
+        0
+        )
+    </insert>
+</mapper>

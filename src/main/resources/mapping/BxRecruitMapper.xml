@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxRecruitMapper">
+
+	<resultMap id="bxRecruit" type="com.acc.model.BxRecruit">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="imageUrl" column="IMAGE_URL" jdbcType="VARCHAR"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+        <result property="createDate" column="CREATE_DATE" jdbcType="VARCHAR"/>
+        <result property="createrId" column="CREATER_ID" jdbcType="INTEGER"/>
+        <result property="recruitOrder" column="RECRUIT_ORDER" jdbcType="INTEGER"/>
+	</resultMap>
+
+    <select id="getRecruitById" resultMap="bxRecruit">
+        SELECT c.ID,c.IMAGE_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.Recruit_ORDER
+        FROM BX_RECRUIT c
+        WHERE c.id=#{id}
+    </select>
+
+    <select id="getRecruitCount" resultType="java.lang.Integer">
+        SELECT count(1)
+         FROM BX_RECRUIT c
+         WHERE c.MEMBER_ID=#{memberId}
+         AND c.STATUS=0
+         ORDER BY c.RECRUIT_ORDER
+    </select>
+
+	<select id="getRecruitList" resultMap="bxRecruit">
+         SELECT c.ID,c.IMAGE_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.Recruit_ORDER
+         FROM BX_RECRUIT c
+         WHERE c.MEMBER_ID=#{memberId}
+         AND c.STATUS=0
+         ORDER BY c.RECRUIT_ORDER
+    </select>
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM BX_RECRUIT WHERE id=#{id}
+    ]]>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_RECRUIT (
+        IMAGE_URL,
+        MEMBER_ID,
+        STATUS,
+        CREATE_DATE,
+        CREATER_ID,
+        RECRUIT_ORDER
+        ) VALUES (
+        #{imageUrl} ,
+        #{memberId},
+        0 ,
+        now() ,
+        #{createrId} ,
+        #{recruitOrder}
+        )
+    </insert>
+</mapper>

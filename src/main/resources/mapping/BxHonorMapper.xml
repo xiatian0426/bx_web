@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxHonorMapper">
+
+	<resultMap id="bxHonor" type="com.acc.model.BxHonor">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="imageUrl" column="IMAGE_URL" jdbcType="VARCHAR"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+        <result property="createDate" column="CREATE_DATE" jdbcType="VARCHAR"/>
+        <result property="createrId" column="CREATER_ID" jdbcType="INTEGER"/>
+        <result property="honorOrder" column="HONOR_ORDER" jdbcType="INTEGER"/>
+	</resultMap>
+
+    <select id="getHonorById" resultMap="bxHonor">
+        SELECT c.ID,c.IMAGE_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.HONOR_ORDER
+        FROM BX_HONOR c
+        WHERE c.ID = #{id}
+    </select>
+
+    <select id="getHonorCount" resultType="java.lang.Integer">
+         SELECT count(1)
+              FROM BX_HONOR c
+         WHERE c.MEMBER_ID=#{memberId}
+         ORDER BY c.HONOR_ORDER
+    </select>
+
+	<select id="getHonorList" resultMap="bxHonor">
+         SELECT c.ID,c.IMAGE_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.HONOR_ORDER
+              FROM BX_HONOR c
+         WHERE c.MEMBER_ID=#{memberId}
+         ORDER BY c.HONOR_ORDER
+    </select>
+    <delete id="deleteByMemId">
+        <![CDATA[
+        DELETE FROM BX_HONOR WHERE MEMBER_ID=#{memberId}
+    ]]>
+    </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+        INSERT INTO BX_HONOR (
+        	IMAGE_URL,
+            MEMBER_ID,
+            STATUS,
+            CREATE_DATE,
+            CREATER_ID,
+            HONOR_ORDER
+        ) VALUES (
+        	#{imageUrl} ,
+        	#{memberId} ,
+        	0 ,
+        	now() ,
+        	#{createrId} ,
+        	#{honorOrder}
+        )
+    ]]>
+    </insert>
+    <update id="updateById">
+        <![CDATA[
+        UPDATE BX_HONOR
+        SET IMAGE_URL=#{imageUrl},HONOR_ORDER=#{honorOrder}
+        WHERE id=#{id}
+        ]]>
+    </update>
+
+</mapper>

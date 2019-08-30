@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
+
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>2.0</jsp-version>
+  <display-name>"acc Tags"</display-name>
+  <tlib-version>2.2.3</tlib-version>
+  <short-name>acc</short-name>
+  <uri>/acc-tags</uri>
+  
+  <tag>
+  	<name>dic</name>
+  	<tag-class>com.acc.tags.DictionaryDataTag</tag-class>
+  	<bodycontent>empty</bodycontent>
+  	<attribute>
+	      <name>typeName</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+	      <name>typeId</name>
+	      <required>true</required>
+	      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+	      <name>isMap</name>
+	      <required>false</required>
+	      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+</taglib>

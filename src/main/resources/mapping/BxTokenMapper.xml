@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxTokenMapper">
+
+	<resultMap id="bxToken" type="com.acc.model.BxToken">
+        <result property="accessToken" column="ACCESS_TOKEN" jdbcType="VARCHAR"/>
+        <result property="lastTime" column="LAST_TIME" jdbcType="VARCHAR"/>
+        <result property="liftTime" column="LIFT_TIME" jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <select id="getToken" resultMap="bxToken">
+        SELECT ACCESS_TOKEN,LAST_TIME,LIFT_TIME
+        FROM BX_TOKEN limit 1
+    </select>
+
+    <delete id="delete">
+        <![CDATA[
+        DELETE FROM BX_TOKEN
+        ]]>
+    </delete>
+
+    <insert id="insert">
+        INSERT INTO BX_TOKEN (
+        ACCESS_TOKEN,
+        LAST_TIME
+        ) VALUES (
+        	#{accessToken} ,
+        	now()
+        )
+    </insert>
+</mapper>

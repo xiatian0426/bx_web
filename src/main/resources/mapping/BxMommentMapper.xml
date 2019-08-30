@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxMommentMapper">
+
+	<resultMap id="bxMomment" type="com.acc.model.BxMomment">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="role" column="ROLE" jdbcType="INTEGER"/>
+        <result property="commentator_wechat" column="COMMENTATOR_WECHAT" jdbcType="VARCHAR"/>
+        <result property="commentator_name" column="COMMENTATOR_NAME" jdbcType="VARCHAR"/>
+        <result property="commentator_img" column="COMMENTATOR_IMG" jdbcType="VARCHAR"/>
+        <result property="comment_context" column="COMMENT_CONTEXT" jdbcType="VARCHAR"/>
+        <result property="member_img" column="MEMBER_IMG" jdbcType="VARCHAR"/>
+        <result property="member_id" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="create_date" column="CREATE_DATE" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+	</resultMap>
+
+
+    <select id="getCountByWechat" resultType="java.lang.Integer">
+        select count(1)
+    	from BX_COMMENT c
+    	where c.RESPONDENT_ID=#{memberId}
+        and c.`STATUS`=0
+    </select>
+
+	<select id="getMommentListByWechat" resultMap="bxMomment">
+    	select c.id,c.role,c.COMMENTATOR_WECHAT,c.COMMENTATOR_IMG,c.COMMENTATOR_NAME,
+    	c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`
+    	from BX_COMMENT c
+    	where c.RESPONDENT_ID=#{memberId}
+        and c.`STATUS`=0
+    </select>
+
+    <select id="getCountByMemberId" resultType="java.lang.Integer">
+        select count(1)
+        from BX_COMMENT c
+        where c.RESPONDENT_ID=#{memberId}
+        and c.`STATUS`=0
+    </select>
+
+    <select id="getMommentListByMemberId" resultMap="bxMomment">
+        select c.id,c.role,c.COMMENTATOR_WECHAT,c.COMMENTATOR_IMG,c.COMMENTATOR_NAME,
+        c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`
+        from BX_COMMENT c
+        where c.RESPONDENT_ID=#{memberId}
+        and c.`STATUS`=0
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_COMMENT (
+        COMMENTATOR_WECHAT,
+        RESPONDENT_ID,
+        COMMENTATOR_IMG,
+        COMMENTATOR_NAME,
+        COMMENT_CONTEXT,
+        CREATE_DATE
+        ) VALUES (
+        #{commentator_wechat},
+        #{respondent_id},
+        #{commentator_img} ,
+        #{commentator_name},
+        #{comment_context},
+        now()
+        )
+    </insert>
+</mapper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxMemberMapper">
+
+	<resultMap id="bxMember" type="com.acc.model.BxMember">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="company_name" column="COMPANY_NAME" jdbcType="VARCHAR"/>
+        <result property="post_name" column="POST_NAME" jdbcType="VARCHAR"/>
+        <result property="years" column="YEARS" jdbcType="INTEGER"/>
+        <result property="signature" column="SIGNATURE" jdbcType="VARCHAR"/>
+        <result property="wechat" column="WECHAT" jdbcType="VARCHAR"/>
+        <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+        <result property="introduce" column="INTRODUCE" jdbcType="VARCHAR"/>
+        <result property="memberImg" column="MEMBER_IMG" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+
+
+	<select id="getMemberByWechat" resultMap="bxMember">
+    	SELECT m.ID,
+        m.NAME,
+        m.COMPANY_NAME,
+        m.POST_NAME,
+        m.YEARS,
+        m.SIGNATURE,
+        m.INTRODUCE,
+        MEMBER_IMG,
+        WECHAT,
+        PHONE
+	    FROM BX_MEMBER m
+	    where m.WECHAT=#{wechat}
+    </select>
+
+    <select id="getMemberById" resultMap="bxMember">
+        SELECT m.ID,
+        m.NAME,
+        m.COMPANY_NAME,
+        m.POST_NAME,
+        m.YEARS,
+        m.SIGNATURE,
+        m.INTRODUCE,
+        MEMBER_IMG,
+        WECHAT,
+        PHONE
+        FROM BX_MEMBER m
+        where m.id=#{id}
+    </select>
+
+    <update id="updateMemberById" >
+        <![CDATA[
+        UPDATE BX_MEMBER SET
+            NAME = #{name},
+            COMPANY_NAME = #{company_name},
+            POST_NAME = #{post_name},
+            YEARS = #{years},
+            SIGNATURE = #{signature},
+            INTRODUCE = #{introduce},
+            PHONE = #{phone},
+            MEMBER_IMG = #{memberImg}
+          WHERE ID = #{id}
+    ]]>
+    </update>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_MEMBER (
+        NAME,
+        COMPANY_NAME,
+        POST_NAME,
+        YEARS,
+        SIGNATURE,
+        INTRODUCE,
+        MEMBER_IMG,
+        WECHAT,
+        PHONE,
+        CREATE_DATE,
+        STATUS,
+        CREATER_ID
+        ) VALUES (
+        #{name} ,
+        #{company_name},
+        #{post_name},
+        #{years},
+        #{signature},
+        #{introduce},
+        #{memberImg},
+        #{wechat},
+        #{phone},
+        now() ,
+        0 ,
+        #{createrId}
+        )
+    </insert>
+    <delete id="deleteMemberById">
+        <![CDATA[
+        DELETE FROM BX_MEMBER WHERE id=#{id}
+      ]]>
+    </delete>
+
+</mapper>

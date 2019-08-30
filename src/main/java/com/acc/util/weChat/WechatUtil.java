@@ -1,0 +1,106 @@
+package com.acc.util.weChat;
+
+import com.acc.resolve.WeChatConfig;
+import com.acc.util.HttpClientUtil;
+import com.alibaba.fastjson.JSONObject;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.codehaus.xfire.util.Base64;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.security.*;
+import java.security.spec.InvalidParameterSpecException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+public class WechatUtil {
+    /**
+     * 获取openid和session_key
+     * @param code
+     * @return
+     */
+    public static Map<String,String> getOpenIdAndSessionKey(String code) {
+        Map<String,String> result = new HashMap<String, String>();
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + WeChatConfig.APP_ID + "&secret="
+                + WeChatConfig.APP_SECRET + "&js_code=" + code + "&grant_type=authorization_code";
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        String openid = (String) oppidObj.get("openid");
+        String session_key = (String) oppidObj.get("session_key");
+        result.put("openid",openid);
+        result.put("session_key",session_key);
+        return result;
+    }
+
+    /**
+     * 获取token
+     * @return
+     */
+    public static String getDDToken(){
+        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + WeChatConfig.APP_ID + "&secret="+WeChatConfig.APP_SECRET;
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        String access_token = (String) oppidObj.get("access_token");
+        return access_token;
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public static JSONObject getUserInfo(String encryptedData,String sessionkey,String iv){
+        // 被加密的数据
+        byte[] dataByte = Base64.decode(encryptedData);
+        // 加密秘钥
+        byte[] keyByte = Base64.decode(sessionkey);
+        // 偏移量
+        byte[] ivByte = Base64.decode(iv);
+        try {
+            // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要
+            int base = 16;
+            if (keyByte.length % base != 0) {
+                int groups = keyByte.length / base + (keyByte.length % base != 0 ? 1 : 0);
+                byte[] temp = new byte[groups * base];
+                Arrays.fill(temp, (byte) 0);
+                System.arraycopy(keyByte, 0, temp, 0, keyByte.length);
+                keyByte = temp;
+            }
+            // 初始化
+            Security.addProvider(new BouncyCastleProvider());
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding","BC");
+            SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
+            AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
+            parameters.init(new IvParameterSpec(ivByte));
+            cipher.init(Cipher.DECRYPT_MODE, spec, parameters);// 初始化
+            byte[] resultByte = cipher.doFinal(dataByte);
+            if (null != resultByte && resultByte.length > 0) {
+                String result = new String(resultByte, "UTF-8");
+                return JSONObject.parseObject(result);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidParameterSpecException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}

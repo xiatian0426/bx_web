@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxQAMapper">
+
+	<resultMap id="bxQA" type="com.acc.model.BxQA">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="ask" column="ASK" jdbcType="VARCHAR"/>
+        <result property="answer" column="ANSWER" jdbcType="VARCHAR"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+        <result property="createDate" column="CREATE_DATE" jdbcType="VARCHAR"/>
+        <result property="createrId" column="CREATER_ID" jdbcType="INTEGER"/>
+        <result property="qaOrder" column="QA_ORDER" jdbcType="INTEGER"/>
+	</resultMap>
+
+
+    <select id="getQACount" resultType="java.lang.Integer">
+        SELECT count(1)
+             FROM BX_QA c
+             WHERE c.MEMBER_ID=#{memberId}
+             AND c.STATUS=0
+         ORDER BY c.QA_ORDER
+    </select>
+
+	<select id="getQAList" resultMap="bxQA">
+         SELECT c.ID,c.ASK,c.ANSWER,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.QA_ORDER
+             FROM BX_QA c
+             WHERE c.MEMBER_ID=#{memberId}
+             AND c.STATUS=0
+         ORDER BY c.QA_ORDER
+    </select>
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM BX_QA WHERE id=#{id}
+    ]]>
+    </delete>
+    <select id="getQAById" resultMap="bxQA">
+        SELECT c.ID,c.ASK,c.ANSWER,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.QA_ORDER
+        FROM BX_QA c
+        WHERE c.id = #{id}
+    </select>
+
+    <update id="updateById" >
+        UPDATE BX_QA SET
+            ASK = #{ask},
+            <if test="qaOrder != null and qaOrder != 0">QA_ORDER=#{qaOrder},</if>
+            ANSWER = #{answer}
+        WHERE ID = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_QA (
+        	ASK,
+            ANSWER,
+            <if test="memberId != null and memberId != 0">MEMBER_ID,</if>
+            STATUS,
+            CREATE_DATE,
+            CREATER_ID,
+            QA_ORDER
+        ) VALUES (
+        	#{ask} ,
+        	#{answer},
+        	<if test="memberId != null and memberId != 0">#{memberId} ,</if>
+        	0 ,
+        	now() ,
+        	#{createrId} ,
+        	#{qaOrder}
+        )
+    </insert>
+</mapper>

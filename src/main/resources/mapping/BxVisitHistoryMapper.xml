@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxVisitHistoryMapper">
+
+	<resultMap id="bxVisitHistory" type="com.acc.model.BxVisitHistory">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="headSculpture" column="HEAD_SCULPTURE" jdbcType="VARCHAR"/>
+        <result property="nickName" column="NICK_NAME" jdbcType="VARCHAR"/>
+        <result property="openId" column="OPENID" jdbcType="INTEGER"/>
+        <result property="sex" column="SEX" jdbcType="VARCHAR"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="VARCHAR"/>
+	</resultMap>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_VISIT_HISTORY (
+        HEAD_SCULPTURE,
+        NICK_NAME,
+        OPENID,
+        SEX,
+        MEMBER_ID,
+        CREATE_TIME
+        ) VALUES (
+        	#{headSculpture} ,
+        	#{nickName},
+        	#{openId},
+        	#{sex} ,
+        	#{memberId},
+        	now()
+        )
+    </insert>
+</mapper>
