@@ -32,6 +32,8 @@ public class BxHonor implements java.io.Serializable, Cloneable{
 
     private String isFirst;
 
+    private String isLast;
+
     public int getId() {
         return id;
     }
@@ -102,6 +104,14 @@ public class BxHonor implements java.io.Serializable, Cloneable{
 
     public void setIsFirst(String isFirst) {
         this.isFirst = isFirst;
+    }
+
+    public String getIsLast() {
+        return isLast;
+    }
+
+    public void setIsLast(String isLast) {
+        this.isLast = isLast;
     }
 }
 
