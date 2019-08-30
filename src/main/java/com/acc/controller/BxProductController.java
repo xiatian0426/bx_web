@@ -415,10 +415,14 @@ public class BxProductController {
                         String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
                         String fileSavePath=path + Constants.proDetailImgPath + bxProductImg.getProductId() + "/";
                         if(bxProductImg.getIsFirst()!=null){
+                            System.out.println("bxProductImg.getIsFirst()====================="+bxProductImg.getIsFirst());
+                            System.out.println("0".equals(bxProductImg.getIsFirst()));
+                            System.out.println("fileSavePath============================"+fileSavePath);
+                            System.out.println("bxProductImg.getProductId()"+bxProductImg.getProductId());
                             if("0".equals(bxProductImg.getIsFirst())){
                                 //删除该产品的整个详情文件夹
                                 boo = true;
-                                bxProductService.deleteProductDetailImgById(""+bxProductImg.getProductId());
+                                bxProductService.deleteProductDetailImgByProId(""+bxProductImg.getProductId());
                             }
                             Map<String,Object> mapImg = PictureChange.imageUpload(file,fileSavePath,boo,true);
                             int re = Integer.valueOf((String)mapImg.get("code")).intValue();
