@@ -438,6 +438,7 @@ public class BxProductController {
                                         String[] png = fileTemp.list();
                                         boolean boo;
                                         for (int i = 0; i < png.length; i++) {
+                                            System.out.println("png[i]========================"+png[i]);
                                             boo = true;
                                             for(BxProductImg bxProductImgg:bxProductImgList){
                                                 if(bxProductImgg.getImageUrl().equals(png[i])){
@@ -445,6 +446,7 @@ public class BxProductController {
                                                     break;
                                                 }
                                             }
+                                            System.out.println("boo===================="+boo);
                                             if(boo){
                                                 new File(path + png[i]).delete();
                                             }

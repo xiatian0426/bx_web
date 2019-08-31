@@ -164,9 +164,9 @@ public class PictureChange {
             MultipartFile multipartFile;
             List<String> list = new ArrayList<String>();
             System.out.println("deleteBoo============================"+deleteBoo);
-            if(deleteBoo)
-                System.out.println("fileSavePath============================"+fileSavePath);
+            if(deleteBoo){
                 deleteFile(fileSavePath);
+            }
             long time;
             for (int i = 0; i < file.length; i++) {
                 multipartFile = file[i];
