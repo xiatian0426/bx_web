@@ -346,7 +346,7 @@ public class BxHomePageController {
                                                 }
                                             }
                                             if(boo){
-                                                new File(path + png[i]).delete();
+                                                new File(fileSavePath + png[i]).delete();
                                             }
                                         }
                                     }

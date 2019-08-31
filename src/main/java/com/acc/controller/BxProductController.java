@@ -414,10 +414,6 @@ public class BxProductController {
                         String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
                         String fileSavePath=path + Constants.proDetailImgPath + bxProductImg.getProductId() + "/";
                         if(bxProductImg.getIsFirst()!=null){
-                            System.out.println("bxProductImg.getIsFirst()====================="+bxProductImg.getIsFirst());
-                            System.out.println("0".equals(bxProductImg.getIsFirst()));
-                            System.out.println("fileSavePath============================"+fileSavePath);
-                            System.out.println("bxProductImg.getProductId()"+bxProductImg.getProductId());
                             if("0".equals(bxProductImg.getIsFirst())){
                                 bxProductService.deleteProductDetailImgByProId(""+bxProductImg.getProductId());
                             }
@@ -438,7 +434,6 @@ public class BxProductController {
                                         String[] png = fileTemp.list();
                                         boolean boo;
                                         for (int i = 0; i < png.length; i++) {
-                                            System.out.println("png[i]========================"+png[i]);
                                             boo = true;
                                             for(BxProductImg bxProductImgg:bxProductImgList){
                                                 if(bxProductImgg.getImageUrl().equals(png[i])){
@@ -446,9 +441,8 @@ public class BxProductController {
                                                     break;
                                                 }
                                             }
-                                            System.out.println("boo===================="+boo);
                                             if(boo){
-                                                new File(path + png[i]).delete();
+                                                new File(fileSavePath + png[i]).delete();
                                             }
                                         }
                                     }
