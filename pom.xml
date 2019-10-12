@@ -9,8 +9,8 @@
 	<description />
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <acc.root.local>116.62.146.75</acc.root.local>
-		<acc.web.port>8081</acc.web.port>
+        <acc.root.local>39.105.44.125</acc.root.local>
+		<acc.web.port>8080</acc.web.port>
 	</properties>
 	<dependencies>
 		<dependency>  
