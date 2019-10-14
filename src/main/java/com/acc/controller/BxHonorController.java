@@ -54,9 +54,11 @@ public class BxHonorController {
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
                 List<String> imageUrl = new ArrayList<String>();
+                String url;
                 for (BxHonor bxHonor:bxHonorList){
-                    bxHonor.setImageUrl(basePath+Constants.honorImgPath+bxHonor.getMemberId()+"/"+bxHonor.getImageUrl());
-                    imageUrl.add(basePath+Constants.honorImgPath+bxHonor.getMemberId()+"/"+bxHonor.getImageUrl());
+                    url = basePath+Constants.honorImgPath+bxHonor.getMemberId()+"/"+bxHonor.getImageUrl();
+                    bxHonor.setImageUrl(url);
+                    imageUrl.add(url);
                 }
                 map.put("list",bxHonorList);
                 map.put("imageUrl",imageUrl);
