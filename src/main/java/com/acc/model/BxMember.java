@@ -7,6 +7,8 @@
 
 package com.acc.model;
 
+import com.acc.vo.BaseQuery;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
  */
 
 
-public class BxMember implements java.io.Serializable, Cloneable{
+public class BxMember extends BaseQuery implements java.io.Serializable, Cloneable{
 	
 	private static final long serialVersionUID = 1756258302889590552L;
 

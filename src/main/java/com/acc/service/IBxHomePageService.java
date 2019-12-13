@@ -5,7 +5,7 @@ import com.acc.model.*;
 
 import java.util.List;
 
-public interface IBxHomePageService {
+public interface IBxHomePageService extends IBaseService<BxMomment>{
 	/**
 	 * 根据id获取会员信息
 	 * @return

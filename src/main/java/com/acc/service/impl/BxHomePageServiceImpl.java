@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service("bxHomePageService")
 @Transactional
-public class BxHomePageServiceImpl implements IBxHomePageService {
+public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements IBxHomePageService {
 
 	private static Logger _logger = LoggerFactory.getLogger(BxHomePageServiceImpl.class);
 	@Autowired

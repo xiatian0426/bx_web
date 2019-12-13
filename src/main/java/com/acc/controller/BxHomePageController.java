@@ -14,6 +14,8 @@ import com.acc.service.IBxHomePageService;
 import com.acc.service.IBxHonorService;
 import com.acc.util.Constants;
 import com.acc.util.PictureChange;
+import com.acc.vo.BaseQuery;
+import com.acc.vo.Page;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.fileupload.FileItem;
@@ -87,18 +89,19 @@ public class BxHomePageController {
      * @return
      */
     @RequestMapping(value = "/getMommentListById", method = RequestMethod.GET)
-    public void getMommentListById(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+    public void getMommentListById(final HttpServletRequest request, final HttpServletResponse response, @ModelAttribute BxMember query) throws IOException {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         String result = "";
         try {
             String memberId = request.getParameter("id");
+//            String page = request.getParameter("page");
+//            String size = request.getParameter("size");
             if (StringUtils.isNotEmpty(memberId)) {
-                Integer count = bxHomePageService.getCountByMemberId(memberId);
+                Page<BxMomment> page = bxHomePageService.selectPage(query);
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("count", count);
-                List<BxMomment> bxMommentList = bxHomePageService.getMommentListByMemberId(memberId);
+                List<BxMomment> bxMommentList = (List<BxMomment>)page.getResult();
                 String path = request.getContextPath();
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
@@ -106,7 +109,7 @@ public class BxHomePageController {
                 for (BxMomment bxMomment : bxMommentList) {
                     bxMomment.setMember_img(basePath + Constants.memberImgPath + bxMomment.getMember_id() + "/" + bxMomment.getMember_img());
                 }
-                map.put("list", bxMommentList);
+                map.put("page", page);
                 result = JSON.toJSONString(map);
             }
         } catch (Exception e) {
