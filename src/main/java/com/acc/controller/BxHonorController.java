@@ -53,6 +53,7 @@ public class BxHonorController {
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
+                basePath = Constants.imgVideoPath;
                 List<String> imageUrl = new ArrayList<String>();
                 String url;
                 for (BxHonor bxHonor:bxHonorList){

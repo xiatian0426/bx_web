@@ -66,6 +66,7 @@ public class BxHomePageController {
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
+                basePath = Constants.imgVideoPath;
                 bxMember = bxHomePageService.getMemberById(Integer.parseInt(memberId));
                 if(bxMember!=null){
                     bxMember.setMemberImg(basePath + Constants.memberImgPath + bxMember.getId() + "/" + bxMember.getMemberImg());
@@ -106,6 +107,7 @@ public class BxHomePageController {
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
+                basePath = Constants.imgVideoPath;
                 for (BxMomment bxMomment : bxMommentList) {
                     bxMomment.setMember_img(basePath + Constants.memberImgPath + bxMomment.getMember_id() + "/" + bxMomment.getMember_img());
                 }
@@ -178,6 +180,7 @@ public class BxHomePageController {
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
+                basePath = Constants.imgVideoPath;
                 bxMember = bxHomePageService.getMemberById(Integer.parseInt(memberId));
                 if (bxMember != null) {
                     bxMember.setMemberImg(basePath + Constants.memberImgPath + bxMember.getId() + "/" + bxMember.getMemberImg());

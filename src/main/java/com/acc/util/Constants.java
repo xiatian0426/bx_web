@@ -15,4 +15,6 @@ public class Constants {
 	public static final String COOKIESUSERNAME = "cookieUserName_web";
 	//cookies存放有效期(单位：秒)
 	public static final int COOKIESTIMES = 60 * 60 * 3;//三小时
+
+    public final static String imgVideoPath  = "http://116.62.146.75:8082/";
 }

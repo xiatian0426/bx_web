@@ -58,6 +58,7 @@ public class BxProductController {
                     String basePath = request.getScheme() + "://"
                             + request.getServerName() + ":" + request.getServerPort()
                             + path + "/";
+                    basePath = Constants.imgVideoPath;
                     for(BxProduct bxProduct:list){
                         bxProduct.setProductImg(basePath+Constants.proImgPath+bxProduct.getId()+"/"+bxProduct.getProductImg());
                     }
@@ -94,6 +95,7 @@ public class BxProductController {
                     String basePath = request.getScheme() + "://"
                             + request.getServerName() + ":" + request.getServerPort()
                             + path + "/";
+                    basePath = Constants.imgVideoPath;
                     BxProduct resultBxProduct = new BxProduct();
                     resultBxProduct.setId(list.get(0).getId());
                     resultBxProduct.setProductName(list.get(0).getProductName());
@@ -193,6 +195,7 @@ public class BxProductController {
                     String basePath = request.getScheme() + "://"
                             + request.getServerName() + ":" + request.getServerPort()
                             + path + "/";
+                    basePath = Constants.imgVideoPath;
                     bxProductResult.setProductImg(basePath+Constants.proImgPath+bxProductList.get(0).getId()+"/"+bxProductList.get(0).getProductImg());
                     bxProductResult.setProductName(bxProductList.get(0).getProductName());
                     bxProductResult.setProductDesc(bxProductList.get(0).getProductDesc());

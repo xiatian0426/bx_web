@@ -58,6 +58,7 @@ public class BxRecruitController {
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
+                basePath = Constants.imgVideoPath;
                 for (BxRecruit bxRecruit:bxRecruitList){
                     bxRecruit.setImageUrl(basePath+Constants.recruitImgPath+bxRecruit.getMemberId()+"/"+bxRecruit.getImageUrl());
                 }
