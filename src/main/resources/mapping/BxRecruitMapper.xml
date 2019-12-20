@@ -28,7 +28,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
          FROM BX_RECRUIT c
          WHERE c.MEMBER_ID=#{memberId}
          AND c.STATUS=0
-         ORDER BY c.RECRUIT_ORDER
     </select>
 
 	<select id="getRecruitList" resultMap="bxRecruit">
