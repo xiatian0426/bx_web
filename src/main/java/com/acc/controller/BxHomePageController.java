@@ -165,7 +165,7 @@ public class BxHomePageController {
             }
         } catch (Exception e) {
             status = -1;
-            result = "更新失败，请联系管理员!";
+            result = "保存失败，请联系管理员!";
             _logger.error("saveMomment失败：" + ExceptionUtil.getMsg(e));
             e.printStackTrace();
         }
