@@ -12,8 +12,10 @@ import com.acc.frames.web.ResourceExposer;
 import com.acc.model.*;
 import com.acc.service.IBxHomePageService;
 import com.acc.service.IBxHonorService;
+import com.acc.service.IBxTokenService;
 import com.acc.util.Constants;
 import com.acc.util.PictureChange;
+import com.acc.util.weChat.WechatUtil;
 import com.acc.vo.BaseQuery;
 import com.acc.vo.Page;
 import com.alibaba.fastjson.JSON;
@@ -44,6 +46,9 @@ public class BxHomePageController {
 
     @Autowired
     private IBxHonorService bxHonorService;
+
+    @Autowired
+    private IBxTokenService bxTokenService;
 
     /**
      * 根据id获取会员信息
@@ -140,8 +145,20 @@ public class BxHomePageController {
         int status = 0;
         try {
             if (bxMomment!=null) {
-                bxHomePageService.insert(bxMomment);
-                result = "操作成功!";
+                BxToken bxToken = bxTokenService.getToken();
+                if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
+                    Integer res = WechatUtil.checkMsg(bxToken.getAccessToken(),bxMomment.getComment_context());
+                    if(res.intValue()==0){
+                        bxHomePageService.insert(bxMomment);
+                        result = "操作成功!";
+                    }else{
+                        status = 2;
+                        result = "信息不符合要求!";
+                    }
+                }else{
+                    status = 1;
+                    result = "参数有误，请联系管理员!";
+                }
             }else{
                 status = 1;
                 result = "参数有误，请联系管理员!";

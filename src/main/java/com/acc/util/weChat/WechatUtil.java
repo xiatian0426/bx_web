@@ -2,6 +2,7 @@ package com.acc.util.weChat;
 
 import com.acc.resolve.WeChatConfig;
 import com.acc.util.HttpClientUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.codehaus.xfire.util.Base64;
@@ -50,6 +51,58 @@ public class WechatUtil {
         return access_token;
     }
 
+    /**
+     * 小程序文本验证
+     * @param access_token
+     * @param content
+     * @return
+     */
+    public static Integer checkMsg(String access_token,String content) {
+        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+access_token;
+        JSONObject data = new JSONObject();
+        data.put("content",content);
+        String argsJSONStr = JSON.toJSONString(data);
+        String reusult = HttpClientUtil.doPostJson(url,argsJSONStr);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        Integer errcode = (Integer) oppidObj.get("errcode");
+        return errcode;
+    }
+    /**
+     * 小程序图片验证(还未完成)
+     * @param access_token
+     * @param content
+     * @return
+     */
+    public static Integer checkImg(String access_token,String content) {
+        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+access_token;
+        JSONObject data = new JSONObject();
+        data.put("content",content);
+        String argsJSONStr = JSON.toJSONString(data);
+        String reusult = HttpClientUtil.doPostJson(url,argsJSONStr);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        Integer errcode = (Integer) oppidObj.get("errcode");
+        return errcode;
+    }
+    /**
+     * 小程序视频验证(还未完成)
+     * @param access_token
+     * @param content
+     * @return
+     */
+    public static Integer checkMedia(String access_token,String content) {
+        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+access_token;
+        JSONObject data = new JSONObject();
+        data.put("content",content);
+        String argsJSONStr = JSON.toJSONString(data);
+        String reusult = HttpClientUtil.doPostJson(url,argsJSONStr);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        Integer errcode = (Integer) oppidObj.get("errcode");
+        return errcode;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(checkMsg("29_DMDnVG0TEc4Qd_Z29UYSbAdzTkSxb7YFcgJ_rfa6btzXhwpZz9V0mel5k82CDxZya5VrWLHtwfw42B5Rcl9Z4BsSm5zxJ5pXlCng8Ur95yk_EJdjvxm5KKGjrArp085t8G9nCLbbph28SFlZHBZeADANHF","dfsfd43李zxcz蒜7782法fgnv级"));
+    }
     /**
      * 获取用户信息
      */
