@@ -117,14 +117,7 @@ public class WechatUtil {
      * @return
      */
     public static Integer checkMedia(String access_token,String content) {
-        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+access_token;
-        JSONObject data = new JSONObject();
-        data.put("content",content);
-        String argsJSONStr = JSON.toJSONString(data);
-        String reusult = HttpClientUtil.doPostJson(url,argsJSONStr);
-        JSONObject oppidObj = JSONObject.parseObject(reusult);
-        Integer errcode = (Integer) oppidObj.get("errcode");
-        return errcode;
+        return 0;
     }
 
     public static void main(String[] args) {
