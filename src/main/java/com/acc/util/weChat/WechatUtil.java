@@ -4,8 +4,17 @@ import com.acc.resolve.WeChatConfig;
 import com.acc.util.HttpClientUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.codehaus.xfire.util.Base64;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -13,6 +22,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidParameterSpecException;
@@ -58,30 +68,47 @@ public class WechatUtil {
      * @return
      */
     public static Integer checkMsg(String access_token,String content) {
-        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+access_token;
-        JSONObject data = new JSONObject();
-        data.put("content",content);
-        String argsJSONStr = JSON.toJSONString(data);
-        String reusult = HttpClientUtil.doPostJson(url,argsJSONStr);
-        JSONObject oppidObj = JSONObject.parseObject(reusult);
-        Integer errcode = (Integer) oppidObj.get("errcode");
-        return errcode;
+        try{
+            String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+access_token;
+            JSONObject data = new JSONObject();
+            data.put("content",content);
+            String argsJSONStr = JSON.toJSONString(data);
+            String reusult = HttpClientUtil.doPostJson(url,argsJSONStr);
+            JSONObject oppidObj = JSONObject.parseObject(reusult);
+            Integer errcode = (Integer) oppidObj.get("errcode");
+            return errcode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("----------------调用腾讯内容过滤系统出错------------------");
+            return -1;
+        }
     }
     /**
-     * 小程序图片验证(还未完成)
+     * 小程序图片验证
      * @param access_token
-     * @param content
+     * @param multipartFile
      * @return
      */
-    public static Integer checkImg(String access_token,String content) {
-        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+access_token;
-        JSONObject data = new JSONObject();
-        data.put("content",content);
-        String argsJSONStr = JSON.toJSONString(data);
-        String reusult = HttpClientUtil.doPostJson(url,argsJSONStr);
-        JSONObject oppidObj = JSONObject.parseObject(reusult);
-        Integer errcode = (Integer) oppidObj.get("errcode");
-        return errcode;
+    public static Integer checkImg(String access_token,MultipartFile multipartFile) {
+            try {
+                CloseableHttpClient httpclient = HttpClients.createDefault();
+                HttpPost request = new HttpPost("https://api.weixin.qq.com/wxa/img_sec_check?access_token=" + access_token);
+                request.addHeader("Content-Type", "application/octet-stream");
+                InputStream inputStream = multipartFile.getInputStream();
+                byte[] byt = new byte[inputStream.available()];
+                inputStream.read(byt);
+                request.setEntity(new ByteArrayEntity(byt, ContentType.create("image/jpg")));
+                CloseableHttpResponse response = httpclient.execute(request);
+                HttpEntity httpEntity = response.getEntity();
+                String result = EntityUtils.toString(httpEntity, "UTF-8");// 转成string
+                JSONObject jso = JSONObject.parseObject(result);
+                Object errcode = jso.get("errcode");
+                Integer errCode = (Integer) errcode;
+                return errCode;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
     }
     /**
      * 小程序视频验证(还未完成)
