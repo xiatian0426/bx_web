@@ -25,7 +25,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select count(1)
     	from BX_COMMENT c
     	where c.RESPONDENT_ID=#{memberId}
-        and c.`STATUS`=0
+        and c.`STATUS`=2
     </select>
 
 	<select id="getMommentListByWechat" resultMap="bxMomment">
@@ -33,7 +33,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     	c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`
     	from BX_COMMENT c
     	where c.RESPONDENT_ID=#{memberId}
-        and c.`STATUS`=0
+        and c.`STATUS`=2
         order by c.CREATE_DATE desc
     </select>
 
@@ -41,7 +41,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select count(1)
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{memberId}
-        and c.`STATUS`=0
+        and c.`STATUS`=2
     </select>
 
     <select id="getMommentListByMemberId" resultMap="bxMomment">
@@ -49,7 +49,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{memberId}
-        and c.`STATUS`=0
+        and c.`STATUS`=2
         order by c.CREATE_DATE desc
     </select>
 
@@ -75,7 +75,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select count(1)
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{id}
-        and c.`STATUS`=0
+        and c.`STATUS`=2
     </select>
 
     <!--
@@ -87,7 +87,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{id}
-        and c.`STATUS`=0
+        and c.`STATUS`=2
         order by c.CREATE_DATE desc
         LIMIT #{skip},#{pageSize}
     </select>

@@ -18,6 +18,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
         <result property="introduce" column="INTRODUCE" jdbcType="VARCHAR"/>
         <result property="memberImg" column="MEMBER_IMG" jdbcType="VARCHAR"/>
+        <result property="company_addr" column="COMPANY_ADDR" jdbcType="VARCHAR"/>
+        <result property="longitude" column="LONGITUDE" jdbcType="VARCHAR"/>
+        <result property="latitude" column="LATITUDE" jdbcType="VARCHAR"/>
+        <result property="page_style" column="PAGE_STYLE" jdbcType="INTEGER"/>
 	</resultMap>
 	
 
@@ -32,7 +36,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         m.INTRODUCE,
         MEMBER_IMG,
         WECHAT,
-        PHONE
+        PHONE,
+        COMPANY_ADDR,
+        LONGITUDE,
+        LATITUDE,
+        PAGE_STYLE
 	    FROM BX_MEMBER m
 	    where m.WECHAT=#{wechat}
     </select>
@@ -47,7 +55,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         m.INTRODUCE,
         MEMBER_IMG,
         WECHAT,
-        PHONE
+        PHONE,
+        COMPANY_ADDR,
+        LONGITUDE,
+        LATITUDE,
+        PAGE_STYLE
         FROM BX_MEMBER m
         where m.id=#{id}
     </select>
