@@ -59,6 +59,11 @@ public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements
     }
 
     @Override
+    public void updateMommentStatus(BxMomment bxMomment) throws Exception{
+        bxMommentMapper.updateMommentStatus(bxMomment);
+    }
+
+    @Override
     public void addMember(BxMember bxMember) throws Exception {
         bxMemberMapper.insert(bxMember);
     }

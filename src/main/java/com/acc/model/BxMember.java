@@ -60,6 +60,11 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
 
     private Integer page_style;
 
+    /**
+     * 用于辅助查询
+     */
+    private String status;
+
     private List<BxHonor> bxHonorList = new ArrayList<BxHonor>();
 
     public int getId() {
@@ -204,6 +209,14 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
 
     public void setPage_style(Integer page_style) {
         this.page_style = page_style;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
 

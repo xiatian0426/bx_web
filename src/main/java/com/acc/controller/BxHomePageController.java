@@ -104,7 +104,7 @@ public class BxHomePageController {
             String memberId = request.getParameter("id");
 //            String page = request.getParameter("page");
 //            String size = request.getParameter("size");
-            if (StringUtils.isNotEmpty(memberId)) {
+            if (StringUtils.isNotEmpty(memberId) && query!=null && query.getStatus()!=null) {
                 Page<BxMomment> page = bxHomePageService.selectPage(query);
                 Map<String, Object> map = new HashMap<String, Object>();
                 List<BxMomment> bxMommentList = (List<BxMomment>)page.getResult();
@@ -127,7 +127,41 @@ public class BxHomePageController {
         out.flush();
         out.close();
     }
-
+    /**
+     * 添加评论
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/editMommentStatus", method = RequestMethod.POST)
+    public void editMommentStatus(@ModelAttribute BxMomment bxMomment,final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String result;
+        int status = 0;
+        try {
+            if (bxMomment!=null) {
+                bxHomePageService.updateMommentStatus(bxMomment);
+                result = "操作成功!";
+            }else{
+                status = 1;
+                result = "参数有误，请联系管理员!";
+            }
+        } catch (Exception e) {
+            status = -1;
+            result = "保存失败，请联系管理员!";
+            _logger.error("saveMomment失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("result", result);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
     /**
      * 添加评论
      *

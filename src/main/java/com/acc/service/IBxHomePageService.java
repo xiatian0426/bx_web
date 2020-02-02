@@ -38,6 +38,8 @@ public interface IBxHomePageService extends IBaseService<BxMomment>{
      */
     void updateMemberById(BxMember bxMember) throws Exception;
 
+    void updateMommentStatus(BxMomment bxMomment) throws Exception;
+
     /**
      * 后台管理--更新个人信息
      * @param bxMember

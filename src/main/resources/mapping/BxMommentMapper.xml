@@ -75,7 +75,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         select count(1)
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{id}
-        and c.`STATUS`=2
+        <if test="status != null and status != ''">
+            and c.`STATUS`=#{status}
+        </if>
     </select>
 
     <!--
@@ -87,8 +89,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{id}
-        and c.`STATUS`=2
+        <if test="status != null and status != ''">
+            and c.`STATUS`=#{status}
+        </if>
         order by c.CREATE_DATE desc
         LIMIT #{skip},#{pageSize}
     </select>
+
+    <update id="updateMommentStatus">
+        UPDATE BX_COMMENT SET
+        STATUS = #{status},
+        CHECK_ID = #{respondent_id},
+        CHECK_DATE = now()
+        WHERE
+        ID = #{id}
+        and RESPONDENT_ID = #{respondent_id}
+    </update>
 </mapper>

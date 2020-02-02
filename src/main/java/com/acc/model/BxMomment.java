@@ -49,7 +49,7 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 	private String create_date;
 
     /**
-     * 0：未删除 1：已删除
+     * 0：未审核 1：已删除 2：审核通过 3：审核不通过
      */
 	private int status;
 

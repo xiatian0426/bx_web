@@ -15,4 +15,6 @@ public interface BxMommentMapper {
 
     Integer getCountByWechat(@Param("wechat") String wechat) throws SelectException;
     Integer getCountByMemberId(@Param("memberId") String memberId) throws SelectException;
+
+    void updateMommentStatus(BxMomment bxMomment) throws Exception;
 }
