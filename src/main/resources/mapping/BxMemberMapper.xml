@@ -19,8 +19,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="introduce" column="INTRODUCE" jdbcType="VARCHAR"/>
         <result property="memberImg" column="MEMBER_IMG" jdbcType="VARCHAR"/>
         <result property="company_addr" column="COMPANY_ADDR" jdbcType="VARCHAR"/>
-        <result property="longitude" column="LONGITUDE" jdbcType="VARCHAR"/>
-        <result property="latitude" column="LATITUDE" jdbcType="VARCHAR"/>
+        <result property="longitude" column="LONGITUDE" jdbcType="DOUBLE"/>
+        <result property="latitude" column="LATITUDE" jdbcType="DOUBLE"/>
         <result property="page_style" column="PAGE_STYLE" jdbcType="INTEGER"/>
 	</resultMap>
 	
