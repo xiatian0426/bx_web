@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxProVideoMapper">
+
+	<resultMap id="bxProVideo" type="com.acc.model.BxProVideo">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="videoUrl" column="VIDEO_URL" jdbcType="VARCHAR"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+        <result property="createDate" column="CREATE_DATE" jdbcType="VARCHAR"/>
+        <result property="createrId" column="CREATER_ID" jdbcType="INTEGER"/>
+        <result property="proVideoOrder" column="PROVIDEO_ORDER" jdbcType="INTEGER"/>
+	</resultMap>
+
+    <select id="getProVideoById" resultMap="bxProVideo">
+        SELECT c.ID,c.VIDEO_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.PROVIDEO_ORDER
+        FROM BX_PROVIDEO c
+        WHERE c.id=#{id}
+    </select>
+
+    <select id="getProVideoCount" resultType="java.lang.Integer">
+        SELECT count(1)
+         FROM BX_PROVIDEO c
+         WHERE c.MEMBER_ID=#{memberId}
+         AND c.STATUS=0
+    </select>
+
+	<select id="getProVideoList" resultMap="bxProVideo">
+         SELECT c.ID,c.VIDEO_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.PROVIDEO_ORDER
+         FROM BX_PROVIDEO c
+         WHERE c.MEMBER_ID=#{memberId}
+         AND c.STATUS=0
+         ORDER BY c.PROVIDEO_ORDER
+    </select>
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM BX_PROVIDEO WHERE id=#{id}
+    ]]>
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_PROVIDEO (
+        VIDEO_URL,
+        MEMBER_ID,
+        STATUS,
+        CREATE_DATE,
+        CREATER_ID,
+        PROVIDEO_ORDER
+        ) VALUES (
+        #{videoUrl} ,
+        #{memberId},
+        0 ,
+        now() ,
+        #{createrId} ,
+        #{ProVideoOrder}
+        )
+    </insert>
+</mapper>
