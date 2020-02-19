@@ -3,6 +3,7 @@ package com.acc.util.weChat;
 import com.acc.resolve.WeChatConfig;
 import com.acc.util.HttpClientUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -247,8 +248,8 @@ public class WechatUtil {
         String city = (String) oppidObj.get("city");
         String country = (String) oppidObj.get("country");
         String headimgurl = (String) oppidObj.get("headimgurl");
-//        String privilege = (String) oppidObj.get("privilege");
-//        String unionid = (String) oppidObj.get("unionid");
+        JSONArray privilege = (JSONArray) oppidObj.get("privilege");
+        String unionid = (String) oppidObj.get("unionid");
         result.put("openid",openid);
         result.put("nickname",nickname);
         result.put("sex",sex);
@@ -256,6 +257,8 @@ public class WechatUtil {
         result.put("city",city);
         result.put("country",country);
         result.put("headimgurl",headimgurl);
+        result.put("privilege",privilege);
+        result.put("unionid",unionid);
         return result;
     }
 }

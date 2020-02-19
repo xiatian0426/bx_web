@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxPublicUserInfoMapper">
+
+    <resultMap id="bxPublicUserInfo" type="com.acc.model.BxPublicUserInfo">
+        <result property="openid" column="OPENID" jdbcType="VARCHAR"/>
+        <result property="nickname" column="NICKNAME" jdbcType="VARCHAR"/>
+        <result property="sex" column="SEX" jdbcType="INTEGER"/>
+        <result property="province" column="PROVINCE" jdbcType="VARCHAR"/>
+        <result property="city" column="CITY" jdbcType="VARCHAR"/>
+        <result property="country" column="COUNTRY" jdbcType="VARCHAR"/>
+        <result property="headimgurl" column="HEADIMGURL" jdbcType="VARCHAR"/>
+        <result property="privilege" column="PRIVILEGE" jdbcType="VARCHAR"/>
+        <result property="unionid" column="UNIONID" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getUserInfoByOpenId" resultMap="bxPublicUserInfo">
+        SELECT OPENID,NICKNAME,SEX,PROVINCE,CITY,COUNTRY,HEADIMGURL,PRIVILEGE,UNIONID
+        FROM BX_PUBLIC_USERINFO where OPENID=#{openid} limit 1
+    </select>
+
+    <insert id="savePublicUserInfo">
+        INSERT INTO BX_PUBLIC_USERINFO (
+         OPENID,
+         NICKNAME,
+         SEX,
+         PROVINCE,
+         CITY,
+         COUNTRY,
+         HEADIMGURL,
+         PRIVILEGE,
+         UNIONID,
+         CREATE_DATE
+        ) VALUES (
+         #{openid} ,
+         #{nickname} ,
+         #{sex} ,
+         #{province} ,
+         #{city} ,
+         #{country} ,
+         #{headimgurl} ,
+         #{privilege} ,
+         #{unionid} ,
+         now()
+        )
+    </insert>
+
+    <update id="updatePublicUserInfo" >
+        UPDATE BX_PUBLIC_USERINFO SET
+        NICKNAME=#{nickname},
+        SEX=#{sex},
+        PROVINCE=#{province},
+        CITY=#{city},
+        COUNTRY=#{country},
+        HEADIMGURL=#{headimgurl},
+        PRIVILEGE=#{privilege},
+        UNIONID=#{unionid}
+        WHERE OPENID=#{openid}
+    </update>
+</mapper>
