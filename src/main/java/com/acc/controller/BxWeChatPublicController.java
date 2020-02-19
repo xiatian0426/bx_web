@@ -43,7 +43,7 @@ public class BxWeChatPublicController {
      * @param response
      * @throws IOException
      */
-    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUserInfo", method = RequestMethod.POST)
     @ResponseBody
     public void getUserInfo(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
