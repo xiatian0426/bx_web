@@ -176,4 +176,86 @@ public class WechatUtil {
         }
         return null;
     }
+
+    /**
+     * 获取openid和access_token(公众号)
+     * @param code
+     * @return
+     */
+    public static Map<String,String> getPublicOpenIdAndSessionKey(String code) {
+        Map<String,String> result = new HashMap<String, String>();
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+WeChatConfig.PUBLIC_APP_ID+"&secret="+
+                WeChatConfig.PUBLIC_APP_SECRET+"&code="+code+"&grant_type=authorization_code";
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        String openid = (String) oppidObj.get("openid");
+        String access_token = (String) oppidObj.get("access_token");
+        String refresh_token = (String) oppidObj.get("refresh_token");
+        result.put("openid",openid);
+        result.put("access_token",access_token);
+        result.put("refresh_token",refresh_token);
+        return result;
+    }
+
+    /**
+     * 校验access_token是否有效(公众号)
+     * @return
+     */
+    public static Map<String,Object> checkPublicAccessToken(String access_token,String openid) {
+        Map<String,Object> result = new HashMap<String, Object>();
+        String url = "https://api.weixin.qq.com/sns/auth?access_token="+access_token+"&openid="+openid;
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        Integer errcode = (Integer) oppidObj.get("errcode");
+        String errmsg = (String) oppidObj.get("errmsg");
+        result.put("errcode",errcode);
+        result.put("errmsg",errmsg);
+        return result;
+    }
+
+    /**
+     * 校验access_token是否有效(公众号)
+     * @return
+     */
+    public static Map<String,Object> updatePublicAccessToken(String refresh_token) {
+        Map<String,Object> result = new HashMap<String, Object>();
+        String url = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid="+WeChatConfig.PUBLIC_APP_ID+"&grant_type=refresh_token&refresh_token="+refresh_token;
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        String access_token = (String) oppidObj.get("access_token");
+        Integer expires_in = (Integer) oppidObj.get("expires_in");
+        String openid = (String) oppidObj.get("openid");
+        result.put("access_token",access_token);
+        result.put("expires_in",expires_in);
+        result.put("openid",openid);
+        return result;
+    }
+
+    /**
+     * 获取用户信息(公众号)
+     * @return
+     */
+    public static Map<String,Object> getPublicUserInfo(String access_token,String openid){
+        Map<String,Object> result = new HashMap<String, Object>();
+        String url = "https://api.weixin.qq.com/sns/userinfo?access_token="+access_token+"&openid="+openid+"&lang=zh_CN";
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        openid = (String) oppidObj.get("openid");
+        String nickname = (String) oppidObj.get("nickname");
+        Integer sex = (Integer) oppidObj.get("sex");
+        String province = (String) oppidObj.get("province");
+        String city = (String) oppidObj.get("city");
+        String country = (String) oppidObj.get("country");
+        String headimgurl = (String) oppidObj.get("headimgurl");
+//        String privilege = (String) oppidObj.get("privilege");
+//        String unionid = (String) oppidObj.get("unionid");
+        result.put("openid",openid);
+        result.put("nickname",nickname);
+        result.put("sex",sex);
+        result.put("province",province);
+        result.put("city",city);
+        result.put("country",country);
+        result.put("headimgurl",headimgurl);
+        return result;
+    }
 }
