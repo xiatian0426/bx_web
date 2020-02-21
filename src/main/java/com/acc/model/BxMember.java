@@ -69,12 +69,6 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
      * 小程序码
      */
     private String wxaCode;
-    /**
-     *
-     */
-    private String comment_tag;
-
-    private List<BxCommentTag> commentTagList;
 
     private List<BxHonor> bxHonorList = new ArrayList<BxHonor>();
 
@@ -238,20 +232,5 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
         this.wxaCode = wxaCode;
     }
 
-    public String getComment_tag() {
-        return comment_tag;
-    }
-
-    public void setComment_tag(String comment_tag) {
-        this.comment_tag = comment_tag;
-    }
-
-    public List<BxCommentTag> getCommentTagList() {
-        return commentTagList;
-    }
-
-    public void setCommentTagList(List<BxCommentTag> commentTagList) {
-        this.commentTagList = commentTagList;
-    }
 }
 
