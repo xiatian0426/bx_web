@@ -4,6 +4,7 @@ public class Constants {
 
     public final static String honorImgPath  = "res/images/honorImg/";
     public final static String memberImgPath  = "res/images/memberImg/";
+    public final static String memberImgWxaCodePath  = "res/images/memberImg/wxaCode/";
     public final static String proImgPath  = "res/images/proImg/";
     public final static String proDetailImgPath  = "res/images/proDetailImg/";
     public final static String recruitImgPath  = "res/images/recruitImg/";
@@ -18,4 +19,6 @@ public class Constants {
 	public static final int COOKIESTIMES = 60 * 60 * 3;//三小时
 
     public final static String imgVideoPath  = "http://116.62.146.75:8082/";
+
+    public final static String BASEPATH  = "https://www.lovexhr.com/";
 }

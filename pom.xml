@@ -307,7 +307,7 @@
 			<properties>
                 <!--<pf.project.root>${project.basedir}</pf.project.root>-->
                 <!--<pf.project.root>D:\\own\\bx-web\\src\\main\\webapp\\</pf.project.root>-->
-                <pf.project.root>/usr/local/tomcat3/webapps/ROOT/</pf.project.root>
+                <pf.project.root>/usr/local/tomcat/webapps/ROOT/</pf.project.root>
 				<pf.web.root>http://${acc.root.local}:${acc.web.port}</pf.web.root>
 				<pf.css.root>http://${acc.root.local}:${acc.web.port}/res/css</pf.css.root>
 				<pf.image.root>http://${acc.root.local}:${acc.web.port}/res/images</pf.image.root>

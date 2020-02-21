@@ -1,8 +1,8 @@
 package com.acc.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +13,15 @@ import com.acc.model.BxToken;
 import com.acc.model.BxVisitHistory;
 import com.acc.service.IBxTokenService;
 import com.acc.service.IBxVisitHistoryService;
+import com.acc.util.Constants;
 import com.acc.util.weChat.WechatUtil;
 import com.alibaba.fastjson.JSON;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,6 +210,97 @@ public class BxWeChatController {
         out.close();
     }
 
+    /*
+     * 获取二维码
+     * 这里的 post 方法 为 json post【重点】
+     */
+    @RequestMapping(value = "/getWxaCodeUnLimit", method = RequestMethod.GET)
+    public void getWxaCodeUnLimit( HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        try{
+            String scene =request.getParameter("scene");
+            String page="page/msg_waist/msg_waist";
+            BxToken bxToken = bxTokenService.getToken();
+            if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
+                String token = bxToken.getAccessToken();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("scene", scene);  //参数
+    //            params.put("page", "page/msg_waist/msg_waist"); //位置
+                params.put("width", 430);
+                CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+                HttpPost httpPost = new HttpPost("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+token);  // 接口
+                httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
+                String body = JSON.toJSONString(params);           //必须是json模式的 post
+                StringEntity entity;
+                entity = new StringEntity(body);
+                entity.setContentType("image/png");
+                httpPost.setEntity(entity);
+                HttpResponse response1;
+                response1 = httpClient.execute(httpPost);
+                InputStream inputStream = response1.getEntity().getContent();
+                String name = scene+".png";
+                String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
+                String filePath = Constants.memberImgWxaCodePath;
+                int result = saveToImgByInputStream(inputStream, path + filePath,name);  //保存图片
+                if(result==1){
+                    //保存成功
+                    map.put("filePath",Constants.BASEPATH + filePath + name);
+                    map.put("code",0);
+                    map.put("message","获取用户信息成功!");
+                }else{
+                    //保存失败
+                    map.put("filePath","");
+                    map.put("code",-1);
+                    map.put("message","获取用户信息失败!");
+                }
+            }
+        } catch (Exception e) {
+            map.put("code",-1);
+            map.put("message","获取用户信息失败!");
+            _logger.error("getUserInfo失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+    /**
+     * 将二进制转换成文件保存
+     * @param instreams 二进制流
+     * @param imgPath 图片的保存路径
+     * @param imgName 图片的名称
+     * @return
+     *      1：保存正常
+     *      0：保存失败
+     */
+    public static int saveToImgByInputStream(InputStream instreams,String imgPath,String imgName){
+        int stateInt = 1;
+        if(instreams != null){
+            try {
+                File file=new File(imgPath,imgName);//可以是任何图片格式.jpg,.png等
+                // 判断文件父目录是否存在
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdir();
+                }
+                FileOutputStream fos=new FileOutputStream(file);
+                byte[] b = new byte[1024];
+                int nRead = 0;
+                while ((nRead = instreams.read(b)) != -1) {
+                    fos.write(b, 0, nRead);
+                }
+                fos.flush();
+                fos.close();
+            } catch (Exception e) {
+                stateInt = 0;
+                e.printStackTrace();
+            } finally {
+            }
+        }
+        return stateInt;
+    }
 
 
 
