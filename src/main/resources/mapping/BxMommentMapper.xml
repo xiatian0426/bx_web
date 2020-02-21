@@ -61,14 +61,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         COMMENTATOR_IMG,
         COMMENTATOR_NAME,
         COMMENT_CONTEXT,
-        CREATE_DATE
+        CREATE_DATE,
+        COMMENT_TAG
         ) VALUES (
         #{commentator_wechat},
         #{respondent_id},
         #{commentator_img} ,
         #{commentator_name},
         #{comment_context},
-        now()
+        now(),
+        #{comment_tag}
         )
     </insert>
 

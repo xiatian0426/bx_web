@@ -223,6 +223,10 @@ public class BxHomePageController {
                 if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
                     Integer res = WechatUtil.checkMsg(bxToken.getAccessToken(),bxMomment.getComment_context());
                     if(res.intValue()==0){
+                        if(bxMomment.getComment_tag()!=null && bxMomment.getComment_tag().endsWith(",")
+                                && bxMomment.getComment_tag().length()>1){
+                            bxMomment.setComment_tag(bxMomment.getComment_tag().substring(0,bxMomment.getComment_tag().length()-1));
+                        }
                         bxHomePageService.insert(bxMomment);
                         result = "操作成功!";
                     }else{
