@@ -8,6 +8,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.acc.dao.BxCommentTagMapper;
 import com.acc.frames.web.ResourceExposer;
 import com.acc.model.*;
 import com.acc.service.IBxHomePageService;
@@ -49,6 +50,9 @@ public class BxHomePageController {
 
     @Autowired
     private IBxTokenService bxTokenService;
+
+    @Autowired
+    private BxCommentTagMapper bxCommentTagMapper;
 
     /**
      * 根据id获取会员信息
@@ -115,6 +119,10 @@ public class BxHomePageController {
                 basePath = Constants.imgVideoPath;
                 for (BxMomment bxMomment : bxMommentList) {
                     bxMomment.setMember_img(basePath + Constants.memberImgPath + bxMomment.getMember_id() + "/" + bxMomment.getMember_img());
+                    if(bxMomment.getComment_tag()!=null && !bxMomment.getComment_tag().equals("")){
+                        List<BxCommentTag> bxCommentTagList = bxCommentTagMapper.getCommentTagList(bxMomment.getComment_tag());
+                        bxMomment.setCommentTagList(bxCommentTagList);
+                    }
                 }
                 map.put("page", page);
                 result = JSON.toJSONString(map);

@@ -8,6 +8,7 @@
 package com.acc.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 
@@ -60,6 +61,8 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 	private int respondent_id;
 
 	private String comment_tag;
+
+    private List<BxCommentTag> commentTagList;
 
     public int getId() {
         return id;
@@ -155,6 +158,14 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 
     public void setComment_tag(String comment_tag) {
         this.comment_tag = comment_tag;
+    }
+
+    public List<BxCommentTag> getCommentTagList() {
+        return commentTagList;
+    }
+
+    public void setCommentTagList(List<BxCommentTag> commentTagList) {
+        this.commentTagList = commentTagList;
     }
 }
 
