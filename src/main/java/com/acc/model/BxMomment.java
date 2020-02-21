@@ -59,6 +59,8 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 
 	private int respondent_id;
 
+	private String comment_tag;
+
     public int getId() {
         return id;
     }
@@ -145,6 +147,14 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 
     public void setRespondent_id(int respondent_id) {
         this.respondent_id = respondent_id;
+    }
+
+    public String getComment_tag() {
+        return comment_tag;
+    }
+
+    public void setComment_tag(String comment_tag) {
+        this.comment_tag = comment_tag;
     }
 }
 

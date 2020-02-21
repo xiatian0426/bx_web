@@ -1,9 +1,6 @@
 package com.acc.service.impl;
 
-import com.acc.dao.BxCaseMapper;
-import com.acc.dao.BxMemberMapper;
-import com.acc.dao.BxMommentMapper;
-import com.acc.dao.BxProductMapper;
+import com.acc.dao.*;
 import com.acc.exception.SelectException;
 import com.acc.model.*;
 import com.acc.service.IBxHomePageService;
@@ -13,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service("bxHomePageService")
@@ -25,13 +23,21 @@ public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements
     @Autowired
     private BxMommentMapper bxMommentMapper;
 
+    @Autowired
+    private BxCommentTagMapper bxCommentTagMapper;
+
     @Override
 	public BxMember getMemberByWechat(String wechat) throws SelectException {
 		return bxMemberMapper.getMemberByWechat(wechat);
 	}
     @Override
     public BxMember getMemberById(int id) throws SelectException {
-        return bxMemberMapper.getMemberById(id);
+        BxMember bxMember = bxMemberMapper.getMemberById(id);
+        if(bxMember!=null && bxMember.getComment_tag()!=null && !bxMember.getComment_tag().equals("")){
+            List<BxCommentTag> bxCommentTagList = bxCommentTagMapper.getCommentTagList(bxMember.getComment_tag());
+            bxMember.setCommentTagList(bxCommentTagList);
+        }
+        return bxMember;
     }
     @Override
     public List<BxMomment> getMommentListByWechat(String wechat) throws SelectException{

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxCommentTagMapper">
+
+	<resultMap id="bxCommentTag" type="com.acc.model.BxCommentTag">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="tag_content" column="TAG_CONTENT" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+        <result property="create_date" column="CREATE_DATE" jdbcType="VARCHAR"/>
+        <result property="creater_id" column="CREATER_ID" jdbcType="INTEGER"/>
+        <result property="modify_date" column="MODIFY_DATE" jdbcType="VARCHAR"/>
+        <result property="modifier_id" column="MODIFIER_ID" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<select id="getCommentTagList" resultMap="bxCommentTag">
+         SELECT ID,TAG_CONTENT,STATUS,CREATE_DATE,CREATER_ID,MODIFY_DATE,MODIFIER_ID
+         FROM BX_COMMENT_TAG c
+         WHERE c.STATUS=0
+         and id in (${ids})
+    </select>
+
+</mapper>
