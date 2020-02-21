@@ -216,7 +216,7 @@ public class BxWeChatController {
     }
 
     /*
-     * 获取二维码
+     * 生成二维码
      * 这里的 post 方法 为 json post【重点】
      */
     @RequestMapping(value = "/getWxaCodeUnLimit", method = RequestMethod.GET)

@@ -92,6 +92,38 @@ public class BxHomePageController {
     }
 
     /**
+     * 根据id获取会员信息
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getCommentTagByMemberId", method = RequestMethod.GET)
+    public void getCommentTagByMemberId(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<BxCommentTag> bxCommentTagList = new ArrayList<BxCommentTag>();
+        try {
+            String memberId = request.getParameter("id");
+            if (StringUtils.isNotEmpty(memberId)) {
+                BxMember bxMember = bxHomePageService.getMemberById(Integer.parseInt(memberId));
+                if(bxMember!=null){
+                    bxCommentTagList = bxMember.getCommentTagList();
+                }
+            }
+        } catch (Exception e) {
+            _logger.error("getCommentTagByMemberId失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("bxCommentTagList", bxCommentTagList);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+    /**
      * 根据id获取所有评论
      *
      * @param request
