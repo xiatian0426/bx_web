@@ -8,4 +8,6 @@ public interface IBxTokenService {
     BxToken getToken() throws SelectException;
 
     void updateToken(BxToken bxToken) throws Exception;
+
+    void updateMemberWxaCodeById(String id,String wxaCode) throws Exception;
 }

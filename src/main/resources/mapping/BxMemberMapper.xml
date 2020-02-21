@@ -113,4 +113,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
       ]]>
     </delete>
 
+
+    <update id="updateMemberWxaCodeById" >
+        <![CDATA[
+        UPDATE BX_MEMBER SET
+            WXACODE = #{wxaCode}
+          WHERE ID = #{id}
+    ]]>
+    </update>
 </mapper>

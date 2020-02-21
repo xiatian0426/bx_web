@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.acc.exception.ExceptionUtil;
+import com.acc.model.BxMember;
 import com.acc.model.BxToken;
 import com.acc.model.BxVisitHistory;
+import com.acc.service.IBxHomePageService;
 import com.acc.service.IBxTokenService;
 import com.acc.service.IBxVisitHistoryService;
 import com.acc.util.Constants;
@@ -41,6 +43,9 @@ public class BxWeChatController {
 
     @Autowired
     private IBxTokenService bxTokenService;
+
+    @Autowired
+    private IBxHomePageService bxHomePageService;
 
     /**
      * 获取openID
@@ -222,44 +227,52 @@ public class BxWeChatController {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
             String scene =request.getParameter("scene");
-            String page="page/msg_waist/msg_waist";
-            BxToken bxToken = bxTokenService.getToken();
-            if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
-                String token = bxToken.getAccessToken();
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("scene", scene);  //参数
-    //            params.put("page", "page/msg_waist/msg_waist"); //位置
-                params.put("width", 430);
-                CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-                HttpPost httpPost = new HttpPost("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+token);  // 接口
-                httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
-                String body = JSON.toJSONString(params);           //必须是json模式的 post
-                StringEntity entity;
-                entity = new StringEntity(body);
-                entity.setContentType("image/png");
-                httpPost.setEntity(entity);
-                HttpResponse response1;
-                response1 = httpClient.execute(httpPost);
-                InputStream inputStream = response1.getEntity().getContent();
-                String name = scene+".png";
-                String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
-                String filePath = Constants.memberImgWxaCodePath;
-                int result = saveToImgByInputStream(inputStream, path + filePath,name);  //保存图片
-                if(result==1){
-                    //保存成功
-                    map.put("filePath",Constants.BASEPATH + filePath + name);
-                    map.put("code",0);
-                    map.put("message","获取用户信息成功!");
-                }else{
-                    //保存失败
-                    map.put("filePath","");
-                    map.put("code",-1);
-                    map.put("message","获取用户信息失败!");
+            //验证用户是否存在
+            BxMember bxMember = bxHomePageService.getMemberById(Integer.valueOf(scene));
+            if(bxMember!=null){
+                String page="page/msg_waist/msg_waist";
+                BxToken bxToken = bxTokenService.getToken();
+                if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
+                    String token = bxToken.getAccessToken();
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    params.put("scene", scene);  //参数
+                    //            params.put("page", "page/msg_waist/msg_waist"); //位置
+                    params.put("width", 430);
+                    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+                    HttpPost httpPost = new HttpPost("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+token);  // 接口
+                    httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
+                    String body = JSON.toJSONString(params);           //必须是json模式的 post
+                    StringEntity entity;
+                    entity = new StringEntity(body);
+                    entity.setContentType("image/png");
+                    httpPost.setEntity(entity);
+                    HttpResponse response1;
+                    response1 = httpClient.execute(httpPost);
+                    InputStream inputStream = response1.getEntity().getContent();
+                    String name = scene+".png";
+                    String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
+                    String filePath = Constants.memberImgWxaCodePath;
+                    int result = saveToImgByInputStream(inputStream, path + filePath,name);  //保存图片
+                    if(result==1){
+                        //保存成功
+                        map.put("filePath",Constants.BASEPATH + filePath + name);
+                        //保存数据
+                        bxTokenService.updateMemberWxaCodeById(scene,filePath + name);
+                        map.put("code",0);
+                        map.put("message","获取二维码成功!");
+                    }else{
+                        //保存失败
+                        map.put("code",-1);
+                        map.put("message","获取二维码失败!");
+                    }
                 }
+            }else{
+                map.put("code",-1);
+                map.put("message","获取二维码失败!");
             }
         } catch (Exception e) {
             map.put("code",-1);
-            map.put("message","获取用户信息失败!");
+            map.put("message","获取二维码失败!");
             _logger.error("getUserInfo失败：" + ExceptionUtil.getMsg(e));
             e.printStackTrace();
         }

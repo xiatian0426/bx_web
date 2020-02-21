@@ -15,4 +15,7 @@ public interface BxMemberMapper {
     void insert(BxMember bxMember) throws Exception;
 
     void deleteMemberById(int id) throws Exception;
+
+    void updateMemberWxaCodeById(@Param("id") String id,@Param("wxaCode") String wxaCode) throws Exception;
+
 }
