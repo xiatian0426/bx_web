@@ -22,6 +22,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="longitude" column="LONGITUDE" jdbcType="DOUBLE"/>
         <result property="latitude" column="LATITUDE" jdbcType="DOUBLE"/>
         <result property="page_style" column="PAGE_STYLE" jdbcType="INTEGER"/>
+        <result property="wxaCode" column="WXACODE" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 
@@ -40,7 +41,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         COMPANY_ADDR,
         LONGITUDE,
         LATITUDE,
-        PAGE_STYLE
+        PAGE_STYLE,
+        WXACODE
 	    FROM BX_MEMBER m
 	    where m.WECHAT=#{wechat}
     </select>
@@ -59,7 +61,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         COMPANY_ADDR,
         LONGITUDE,
         LATITUDE,
-        PAGE_STYLE
+        PAGE_STYLE,
+        WXACODE
         FROM BX_MEMBER m
         where m.id=#{id}
     </select>

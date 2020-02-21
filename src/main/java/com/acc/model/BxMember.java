@@ -65,6 +65,11 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
      */
     private String status;
 
+    /**
+     * 小程序码
+     */
+    private String wxaCode;
+
     private List<BxHonor> bxHonorList = new ArrayList<BxHonor>();
 
     public int getId() {
@@ -217,6 +222,14 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getWxaCode() {
+        return wxaCode;
+    }
+
+    public void setWxaCode(String wxaCode) {
+        this.wxaCode = wxaCode;
     }
 }
 
