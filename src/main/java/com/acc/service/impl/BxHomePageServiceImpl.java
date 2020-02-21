@@ -23,21 +23,13 @@ public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements
     @Autowired
     private BxMommentMapper bxMommentMapper;
 
-    @Autowired
-    private BxCommentTagMapper bxCommentTagMapper;
-
     @Override
 	public BxMember getMemberByWechat(String wechat) throws SelectException {
 		return bxMemberMapper.getMemberByWechat(wechat);
 	}
     @Override
     public BxMember getMemberById(int id) throws SelectException {
-        BxMember bxMember = bxMemberMapper.getMemberById(id);
-        if(bxMember!=null && bxMember.getComment_tag()!=null && !bxMember.getComment_tag().equals("")){
-            List<BxCommentTag> bxCommentTagList = bxCommentTagMapper.getCommentTagList(bxMember.getComment_tag());
-            bxMember.setCommentTagList(bxCommentTagList);
-        }
-        return bxMember;
+        return bxMemberMapper.getMemberById(id);
     }
     @Override
     public List<BxMomment> getMommentListByWechat(String wechat) throws SelectException{
