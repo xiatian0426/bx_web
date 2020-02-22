@@ -31,6 +31,8 @@ public class BxMemberTag implements java.io.Serializable, Cloneable{
 
     private int count;
 
+    private String tag_content;
+
     public int getId() {
         return id;
     }
@@ -61,6 +63,14 @@ public class BxMemberTag implements java.io.Serializable, Cloneable{
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getTag_content() {
+        return tag_content;
+    }
+
+    public void setTag_content(String tag_content) {
+        this.tag_content = tag_content;
     }
 }
 

@@ -12,14 +12,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="member_id" column="MEMBER_ID" jdbcType="INTEGER"/>
         <result property="comment_tag_id" column="COMMENT_TAG_ID" jdbcType="INTEGER"/>
         <result property="count" column="COUNT" jdbcType="INTEGER"/>
+        <result property="tag_content" column="TAG_CONTENT" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<select id="getMemberTagById" resultMap="bxMemberTag">
     	SELECT m.ID,
         m.MEMBER_ID,
         m.COMMENT_TAG_ID,
-        m.COUNT
+        m.COUNT,
+        t.TAG_CONTENT
 	    FROM BX_MEMBER_TAG m
+	    LEFT JOIN BX_COMMENT_TAG t ON m.COMMENT_TAG_ID=t.id
 	    where m.MEMBER_ID=#{memberId}
     </select>
 
