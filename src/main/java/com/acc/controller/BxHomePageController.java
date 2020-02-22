@@ -79,6 +79,9 @@ public class BxHomePageController {
                 bxMember = bxHomePageService.getMemberById(Integer.parseInt(memberId));
                 if(bxMember!=null){
                     bxMember.setMemberImg(basePath + Constants.memberImgPath + bxMember.getId() + "/" + bxMember.getMemberImg());
+                    if(bxMember.getWxaCode()!=null && !bxMember.getWxaCode().equals("")){
+                        bxMember.setWxaCode(Constants.BASEPATH + bxMember.getWxaCode());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -335,9 +338,6 @@ public class BxHomePageController {
                         bxHonor.setImageUrl(basePath + Constants.honorImgPath + bxHonor.getMemberId() + "/" + bxHonor.getImageUrl());
                     }
                     bxMember.setBxHonorList(bxHonorList);
-                    if(bxMember.getWxaCode()!=null && !bxMember.getWxaCode().equals("")){
-                        bxMember.setWxaCode(Constants.BASEPATH + bxMember.getWxaCode());
-                    }
                 }
             }
         } catch (Exception e) {
