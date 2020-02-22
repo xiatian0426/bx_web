@@ -23,4 +23,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    where m.MEMBER_ID=#{memberId}
     </select>
 
+    <update id="updateMemberTag" >
+        <![CDATA[
+        UPDATE BX_MEMBER_TAG SET
+            COUNT = #{count}
+          WHERE ID = #{id}
+    ]]>
+    </update>
+    <insert id="saveMemberTag" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_MEMBER_TAG (
+        MEMBER_ID,
+        COMMENT_TAG_ID,
+        COUNT
+        ) VALUES (
+        #{member_id} ,
+        #{comment_tag_id},
+        #{count}
+    </insert>
+
 </mapper>

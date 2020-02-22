@@ -76,4 +76,14 @@ public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements
     public List<BxMemberTag> getMemberTagById(String memberId) throws SelectException{
         return bxMemberTagMapper.getMemberTagById(memberId);
     }
+
+    @Override
+    public void updateMemberTag(BxMemberTag bxMemberTag) throws Exception{
+        bxMemberTagMapper.updateMemberTag(bxMemberTag);
+    }
+
+    @Override
+    public void saveMemberTag(BxMemberTag bxMemberTag) throws Exception{
+        bxMemberTagMapper.saveMemberTag(bxMemberTag);
+    }
 }

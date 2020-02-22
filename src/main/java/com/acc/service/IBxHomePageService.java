@@ -17,6 +17,10 @@ public interface IBxHomePageService extends IBaseService<BxMomment>{
 
     List<BxMemberTag> getMemberTagById(String memberId) throws SelectException;
 
+    void updateMemberTag(BxMemberTag bxMemberTag) throws Exception;
+
+    void saveMemberTag(BxMemberTag bxMemberTag) throws Exception;
+
     /**
      * 根据id获取所有评论
      * @return

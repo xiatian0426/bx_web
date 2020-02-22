@@ -9,4 +9,8 @@ import java.util.List;
 public interface BxMemberTagMapper {
 
     List<BxMemberTag> getMemberTagById(@Param("memberId") String memberId) throws SelectException;
+
+    void updateMemberTag(BxMemberTag bxMemberTag) throws Exception;
+
+    void saveMemberTag(BxMemberTag bxMemberTag) throws Exception;
 }
