@@ -335,6 +335,9 @@ public class BxHomePageController {
                         bxHonor.setImageUrl(basePath + Constants.honorImgPath + bxHonor.getMemberId() + "/" + bxHonor.getImageUrl());
                     }
                     bxMember.setBxHonorList(bxHonorList);
+                    if(bxMember.getWxaCode()!=null && !bxMember.getWxaCode().equals("")){
+                        bxMember.setWxaCode(Constants.BASEPATH + bxMember.getWxaCode());
+                    }
                 }
             }
         } catch (Exception e) {
