@@ -22,6 +22,8 @@ public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements
 	private BxMemberMapper bxMemberMapper;
     @Autowired
     private BxMommentMapper bxMommentMapper;
+    @Autowired
+    private BxMemberTagMapper bxMemberTagMapper;
 
     @Override
 	public BxMember getMemberByWechat(String wechat) throws SelectException {
@@ -68,5 +70,10 @@ public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements
     @Override
     public void deleteMemberById(int id) throws Exception {
         bxMemberMapper.deleteMemberById(id);
+    }
+
+    @Override
+    public List<BxMemberTag> getMemberTagById(String memberId) throws SelectException{
+        return bxMemberTagMapper.getMemberTagById(memberId);
     }
 }

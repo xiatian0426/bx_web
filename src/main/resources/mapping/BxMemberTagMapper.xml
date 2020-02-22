@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxMemberTagMapper">
+
+	<resultMap id="bxMemberTag" type="com.acc.model.BxMemberTag">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="member_id" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="comment_tag_id" column="COMMENT_TAG_ID" jdbcType="INTEGER"/>
+        <result property="count" column="COUNT" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<select id="getMemberTagById" resultMap="bxMemberTag">
+    	SELECT m.ID,
+        m.MEMBER_ID,
+        m.COMMENT_TAG_ID,
+        m.COUNT
+	    FROM BX_MEMBER_TAG m
+	    where m.MEMBER_ID=#{memberId}
+    </select>
+
+</mapper>

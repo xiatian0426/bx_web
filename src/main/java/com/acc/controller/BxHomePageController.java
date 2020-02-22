@@ -161,6 +161,33 @@ public class BxHomePageController {
         out.flush();
         out.close();
     }
+
+    /**
+     * 根据用户id获取该用户所有评论标签
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getMemberTagById", method = RequestMethod.GET)
+    public void getMemberTagById(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            String memberId = request.getParameter("id");
+            List<BxMemberTag> bxMemberTagList = bxHomePageService.getMemberTagById(memberId);
+            map.put("bxMemberTagList", bxMemberTagList);
+        } catch (Exception e) {
+            _logger.error("getMemberTagById：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
     /**
      * 添加评论
      *
@@ -179,6 +206,8 @@ public class BxHomePageController {
         try {
             if (bxMomment!=null) {
                 bxHomePageService.updateMommentStatus(bxMomment);
+                //更新用户的评价标签
+
                 result = "操作成功!";
             }else{
                 status = 1;
