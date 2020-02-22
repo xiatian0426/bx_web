@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 
-public class BxMemberTag extends BaseQuery implements java.io.Serializable, Cloneable{
+public class BxMemberTag implements java.io.Serializable, Cloneable{
 	
 	private static final long serialVersionUID = 1757258302889590552L;
 
