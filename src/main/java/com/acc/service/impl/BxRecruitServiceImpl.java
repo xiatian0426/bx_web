@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service("bxRecruitService")
 @Transactional
-public class BxRecruitServiceImpl implements IBxRecruitService {
+public class BxRecruitServiceImpl extends BaseServiceImpl<BxRecruit> implements IBxRecruitService {
 
 	private static Logger _logger = LoggerFactory.getLogger(BxRecruitServiceImpl.class);
     @Autowired
@@ -43,6 +43,11 @@ public class BxRecruitServiceImpl implements IBxRecruitService {
     @Override
     public void insert(BxRecruit bxRecruit) throws Exception {
         bxRecruitMapper.insert(bxRecruit);
+    }
+
+    @Override
+    public void updateById(BxRecruit bxRecruit) throws Exception{
+        bxRecruitMapper.updateById(bxRecruit);
     }
 
 }

@@ -21,33 +21,41 @@
         <property name="proRoot" value="${pf.project.root}" />
 	</bean>
 	<!-- 登录过滤器 -->
-<!-- 	<mvc:interceptors>  -->
-<!-- 		<mvc:interceptor> -->
-<!-- 			<mvc:mapping path="/**"/> -->
-<!-- 			<bean id="interceptorSession" class="com.acc.frames.filter.SessionInterceptor"> -->
-<!-- 				<property name="filterMap"> -->
-<!-- 					<map> -->
-<!-- 						<entry key="/register/**"> -->
-<!-- 							<value>/register/reginfo,/register/reglogin</value> -->
-<!-- 						</entry> -->
-<!-- 					</map> -->
-<!-- 				</property> -->
-<!-- 				<property name="noFilterList"> -->
-<!-- 					<list> -->
-<!-- 						<value>/common/**</value> -->
-<!-- 						<value>/account/login**</value> -->
-<!-- 						<value>/account/verifycode**</value> -->
-<!-- 						<value>/account/logout/**</value> -->
-<!-- 						<value>/404.jsp**</value> -->
-<!-- 						<value>/500.jsp**</value> -->
-<!-- 						<value>/authentication/images/**</value> -->
-<!-- 						<value>/favicon.ico**</value> -->
-<!-- 						<value>/resources/**</value> -->
-<!-- 					</list> -->
-<!-- 				</property> -->
-<!-- 			</bean> -->
-<!-- 		</mvc:interceptor> -->
-<!-- 	</mvc:interceptors> -->
+ 	<!--<mvc:interceptors>
+ 		<mvc:interceptor>
+ 			<mvc:mapping path="/**"/>
+ 			<bean id="interceptorSession" class="com.acc.frames.filter.SessionInterceptor">
+ 				<property name="filterMap">
+ 					<map>
+ 						<entry key="/register/**">
+ 							<value>/register/reginfo,/register/reglogin</value>
+ 						</entry>
+ 					</map>
+ 				</property>
+ 				<property name="noFilterList">
+ 					<list>
+ 						<value>/common/**</value>
+                        <value>/homePage/**</value>
+                        <value>/honor/**</value>
+                        <value>/product/**</value>
+                        <value>/QA/**</value>
+                        <value>/recruit/**</value>
+                        <value>/weChat/**</value>
+                        <value>/proVideo/**</value>
+                        <value>/weChatPublic/**</value>
+ 						<value>/accountWeb/login**</value>
+ 						<value>/accountWeb/verifycode**</value>
+ 						<value>/accountWeb/logout/**</value>
+ 						<value>/404.jsp**</value>
+ 						<value>/500.jsp**</value>
+ 						<value>/authentication/images/**</value>
+ 						<value>/favicon.ico**</value>
+ 						<value>/resources/**</value>
+ 					</list>
+ 				</property>
+ 			</bean>
+ 		</mvc:interceptor>
+ 	</mvc:interceptors>-->
 	<!-- component-scan自动搜索@Component , @Controller , @Service , @Repository等标注的类 -->
 	<!-- 默认值如果适合，该项可以不用修改 -->
 	<context:component-scan base-package="com.**.service" />

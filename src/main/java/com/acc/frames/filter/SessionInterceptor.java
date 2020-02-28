@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.acc.model.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
@@ -60,7 +61,12 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			if (isUnFilter) {
 				return true;
 			} else {
-                return true;
+                UserInfo sessionUser = (UserInfo) request.getSession().getAttribute(Constants.LOGINUSER);
+                if (sessionUser != null) {
+                    return true;
+                } else {
+                    return false;
+                }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

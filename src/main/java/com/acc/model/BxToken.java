@@ -16,6 +16,8 @@ public class BxToken implements java.io.Serializable, Cloneable{
 	
 	private String liftTime;
 
+	private Integer type;
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -38,6 +40,14 @@ public class BxToken implements java.io.Serializable, Cloneable{
 
     public void setLiftTime(String liftTime) {
         this.liftTime = liftTime;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }
 

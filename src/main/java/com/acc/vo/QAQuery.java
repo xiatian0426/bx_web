@@ -1,5 +1,5 @@
 
-package com.acc.model;
+package com.acc.vo;
 
 /**
  * @author 
@@ -8,9 +8,9 @@ package com.acc.model;
  */
 
 
-public class BxQA implements java.io.Serializable, Cloneable{
+public class QAQuery extends BaseQuery implements java.io.Serializable, Cloneable{
 	
-	private static final long serialVersionUID = 1756758302889590552L;
+	private static final long serialVersionUID = 1756758302889590542L;
 
 	private int id;
 	
@@ -28,14 +28,7 @@ public class BxQA implements java.io.Serializable, Cloneable{
 
     private int qaOrder;
 
-    /**
-     * modifyDate       db_column: MODIFY_DATE
-     */
-    private String modifyDate;
-    /**
-     * modifierId       db_column: MODIFIER_ID
-     */
-    private String modifierId;
+    private String sortColumns;
 
     public int getId() {
         return id;
@@ -101,20 +94,12 @@ public class BxQA implements java.io.Serializable, Cloneable{
         this.qaOrder = qaOrder;
     }
 
-    public String getModifyDate() {
-        return modifyDate;
+    public String getSortColumns() {
+        return sortColumns;
     }
 
-    public void setModifyDate(String modifyDate) {
-        this.modifyDate = modifyDate;
-    }
-
-    public String getModifierId() {
-        return modifierId;
-    }
-
-    public void setModifierId(String modifierId) {
-        this.modifierId = modifierId;
+    public void setSortColumns(String sortColumns) {
+        this.sortColumns = sortColumns;
     }
 }
 

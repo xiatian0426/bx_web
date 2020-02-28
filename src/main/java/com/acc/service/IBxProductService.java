@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface IBxProductService {
+public interface IBxProductService extends IBaseService<BxProduct>{
 	/**
 	 * 根据id获取会员信息
 	 * @return
@@ -50,6 +50,8 @@ public interface IBxProductService {
     void insertProductVideo(BxProductVideo bxProductVideo) throws Exception;
 
     void insertProductImg(BxProductImg bxProductImg) throws Exception;
+
+    void updateProductImg(BxProductImg bxProductImg) throws Exception;
 
     BxProductImg getProductDetailImgById(String id) throws SelectException;
 

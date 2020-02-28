@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service("bxQAService")
 @Transactional
-public class BxQAServiceImpl implements IBxQAService {
+public class BxQAServiceImpl extends BaseServiceImpl<BxQA> implements IBxQAService {
 
 	private static Logger _logger = LoggerFactory.getLogger(BxQAServiceImpl.class);
 	@Autowired

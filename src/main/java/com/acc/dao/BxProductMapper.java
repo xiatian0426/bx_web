@@ -35,6 +35,8 @@ public interface BxProductMapper {
 
     void insertProductImg(BxProductImg bxProductImg) throws Exception;
 
+    void updateProductImg(BxProductImg bxProductImg) throws Exception;
+
     void insertProductVideo(BxProductVideo bxProductVideo) throws Exception;
 
     void insertProduct(BxProduct bxProduct) throws Exception;

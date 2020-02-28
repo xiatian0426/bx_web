@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface IBxQAService {
+public interface IBxQAService extends IBaseService<BxQA>{
 	/**
 	 * QA信息
 	 * @return

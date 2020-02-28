@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service("bxHonorService")
 @Transactional
-public class BxHonorServiceImpl implements IBxHonorService {
+public class BxHonorServiceImpl extends BaseServiceImpl<BxHonor> implements IBxHonorService {
 
 	private static Logger _logger = LoggerFactory.getLogger(BxHonorServiceImpl.class);
     @Autowired

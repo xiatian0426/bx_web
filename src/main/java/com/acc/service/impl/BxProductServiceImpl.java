@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service("bxProductService")
 @Transactional
-public class BxProductServiceImpl implements IBxProductService {
+public class BxProductServiceImpl extends BaseServiceImpl<BxProduct> implements IBxProductService {
 
 	private static Logger _logger = LoggerFactory.getLogger(BxProductServiceImpl.class);
 	@Autowired
@@ -119,6 +119,11 @@ public class BxProductServiceImpl implements IBxProductService {
     @Override
     public void insertProductImg(BxProductImg bxProductImg) throws Exception {
         bxProductMapper.insertProductImg(bxProductImg);
+    }
+
+    @Override
+    public void updateProductImg(BxProductImg bxProductImg) throws Exception {
+        bxProductMapper.updateProductImg(bxProductImg);
     }
 
     @Override

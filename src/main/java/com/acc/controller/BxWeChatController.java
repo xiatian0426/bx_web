@@ -92,7 +92,7 @@ public class BxWeChatController {
         PrintWriter out = response.getWriter();
         Map<String,Object> result = new HashMap<String, Object>();
         try{
-            BxToken bxToken = bxTokenService.getToken();
+            BxToken bxToken = bxTokenService.getToken(0);
             if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
                 result.put("access_token",bxToken.getAccessToken());
             }
@@ -125,6 +125,7 @@ public class BxWeChatController {
             String access_token = WechatUtil.getDDToken();
             BxToken bxToken = new BxToken();
             bxToken.setAccessToken(access_token);
+            bxToken.setType(0);
             bxTokenService.updateToken(bxToken);
             result.put("access_token",access_token);
             result.put("code",0);
@@ -231,7 +232,7 @@ public class BxWeChatController {
             BxMember bxMember = bxHomePageService.getMemberById(Integer.valueOf(scene));
             if(bxMember!=null){
                 String page="page/msg_waist/msg_waist";
-                BxToken bxToken = bxTokenService.getToken();
+                BxToken bxToken = bxTokenService.getToken(0);
                 if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
                     String token = bxToken.getAccessToken();
                     Map<String, Object> params = new HashMap<String, Object>();

@@ -24,13 +24,13 @@ public class BxTokenServiceImpl implements IBxTokenService {
     private BxMemberMapper bxMemberMapper;
 
     @Override
-    public BxToken getToken() throws SelectException {
-        return bxTokenMapper.getToken();
+    public BxToken getToken(Integer type) throws SelectException {
+        return bxTokenMapper.getToken(type);
     }
 
     @Override
     public void updateToken(BxToken bxToken) throws Exception {
-        bxTokenMapper.delete();
+        bxTokenMapper.delete(bxToken.getType());
         bxTokenMapper.insert(bxToken);
 
     }

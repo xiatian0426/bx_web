@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * 定时更新token
+ * 小程序后台定时更新token
  *
  */
-@Component("tokenJob")
-public class TokenJob {
+@Component("tokenWebJob")
+public class TokenWebJob {
 
     @Autowired
     private IBxTokenService bxTokenService;
@@ -25,10 +25,10 @@ public class TokenJob {
 	public void execute () {
 	    try{
             System.out.println("===> 开始更新token");
-            String access_token = WechatUtil.getDDToken();
+            String access_token = WechatUtil.getDDWebToken();
             BxToken bxToken = new BxToken();
             bxToken.setAccessToken(access_token);
-            bxToken.setType(0);
+            bxToken.setType(1);
             bxTokenService.updateToken(bxToken);
             System.out.println("===> 结束更新token");
         }catch (Exception e){

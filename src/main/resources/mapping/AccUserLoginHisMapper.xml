@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.AccUserLoginHisMapper">
+
+	<resultMap id="accUserLoginHis" type="com.acc.model.AccUserLoginHis">
+        <result property="id" column="ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="url" column="URL"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		ID,USER_NAME,CREATE_TIME,URL
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO BX_USER_LOGIN_HIS (
+        	ID ,
+        	USER_NAME ,
+        	CREATE_TIME ,
+        	URL 
+        ) VALUES (
+        	#{id} ,
+        	#{userName} ,
+        	#{createTime} ,
+        	#{url} 
+        )
+    ]]>
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="update" >
+    <![CDATA[
+        UPDATE BX_USER_LOGIN_HIS SET
+	        USER_NAME = #{userName} ,
+	        CREATE_TIME = #{createTime} ,
+	        URL = #{url} 
+        WHERE 
+	        ID = #{id} 
+    ]]>
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM BX_USER_LOGIN_HIS WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="accUserLoginHis">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM BX_USER_LOGIN_HIS 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	
+	<sql id="pageWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       
+		</where>
+	</sql>
+		
+    <select id="pageCount" resultType="long">
+        SELECT count(*) FROM BX_USER_LOGIN_HIS 
+		<include refid="pageWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findPage" resultMap="accUserLoginHis">
+    	SELECT <include refid="columns" />
+	    FROM BX_USER_LOGIN_HIS 
+		<include refid="pageWhere"/>
+		
+		<if test="sortColumns != null and sortColumns !=''">
+			${sortColumns}
+		</if>
+    </select>
+
+	
+</mapper>
+

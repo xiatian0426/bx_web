@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.acc.dao.UserInfoMapper">
+
+	<resultMap id="userInfo" type="com.acc.model.UserInfo">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="userName" column="USER_NAME" />
+        <result property="userPassword" column="USER_PASSWORD" />
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="company_name" column="COMPANY_NAME" jdbcType="VARCHAR"/>
+        <result property="post_name" column="POST_NAME" jdbcType="VARCHAR"/>
+        <result property="years" column="YEARS" jdbcType="INTEGER"/>
+        <result property="signature" column="SIGNATURE" jdbcType="VARCHAR"/>
+        <result property="wechat" column="WECHAT" jdbcType="VARCHAR"/>
+        <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+        <result property="introduce" column="INTRODUCE" jdbcType="VARCHAR"/>
+        <result property="memberImg" column="MEMBER_IMG" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="VARCHAR"/>
+        <result property="roleId" column="ROLE_ID" />
+        <result property="manageDepart" column="MANAGEDEPART" />
+        <result property="departClass" column="DEPARTCLASS" />
+        <result property="userRealname" column="USER_REALNAME" />
+        <result property="company_addr" column="COMPANY_ADDR" />
+        <result property="longitude" column="LONGITUDE" />
+        <result property="latitude" column="LATITUDE" />
+        <result property="page_style" column="PAGE_STYLE" />
+        <result property="openIdWeb" column="OPENID_WEB" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		ID,USER_NAME,USER_PASSWORD,NAME,
+        COMPANY_NAME,
+        POST_NAME,
+        YEARS,
+        SIGNATURE,
+        INTRODUCE,
+        MEMBER_IMG,
+        WECHAT,
+        PHONE,
+        CREATE_DATE,
+        STATUS,
+        CREATER_ID,ROLE_ID,MANAGEDEPART,DEPARTCLASS,USER_REALNAME,COMPANY_ADDR,LONGITUDE,LATITUDE,PAGE_STYLE,OPENID_WEB
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		<![CDATA[
+			INSERT INTO BX_MEMBER (
+				USER_NAME ,
+				USER_PASSWORD ,
+				NAME ,
+				COMPANY_NAME ,
+				POST_NAME,
+				YEARS ,
+				SIGNATURE ,
+				INTRODUCE ,
+				MEMBER_IMG ,
+				WECHAT ,
+				PHONE ,
+				CREATE_DATE ,
+				STATUS ,
+				CREATER_ID ,
+				ROLE_ID ,
+				MANAGEDEPART ,
+				DEPARTCLASS ,
+				USER_REALNAME,
+				COMPANY_ADDR,
+				LONGITUDE,
+				LATITUDE,
+				PAGE_STYLE
+			) VALUES (
+				#{userName} ,
+				#{userPassword} ,
+				#{name},
+				#{company_name},
+				#{post_name},
+				#{years} ,
+				#{signature} ,
+				#{introduce} ,
+				#{memberImg} ,
+				#{wechat} ,
+				#{phone} ,
+				now() ,
+				1 ,
+				#{createrId} ,
+				#{roleId} ,
+				#{manageDepart} ,
+				#{departClass} ,
+				#{userRealname},
+				#{company_addr},
+				#{longitude},
+				#{latitude},
+				#{page_style}
+			)
+		]]>
+		<!-- oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName <selectKey resultType="java.lang.Long" 
+			order="BEFORE" keyProperty="userId"> SELECT sequenceName.nextval AS ID FROM 
+			DUAL </selectKey> -->
+	</insert>
+	<update id="update">
+			UPDATE BX_MEMBER SET
+				USER_PASSWORD = #{userPassword} ,
+				NAME = #{name} ,
+				COMPANY_NAME = #{company_name} ,
+				POST_NAME = #{post_name} ,
+				YEARS = #{years} ,
+				SIGNATURE = #{signature} ,
+				INTRODUCE = #{introduce} ,
+				<if test="memberImg != null and memberImg != ''">MEMBER_IMG = #{memberImg} ,</if>
+				WECHAT = #{wechat} ,
+				PHONE = #{phone} ,
+				MODIFY_DATE = now() ,
+				MODIFIER_ID = #{modifierId} ,
+                <if test="roleId != null and roleId != ''">ROLE_ID = #{roleId} ,</if>
+				MANAGEDEPART = #{manageDepart} ,
+				DEPARTCLASS = #{departClass} ,
+				USER_REALNAME = #{userRealname},
+                COMPANY_ADDR = #{company_addr},
+                LONGITUDE = #{longitude},
+                LATITUDE = #{latitude},
+                PAGE_STYLE = #{page_style}
+			WHERE 
+				ID = #{id} 
+	</update>
+
+    <update id="updateImg">
+        UPDATE BX_MEMBER SET
+        MEMBER_IMG = #{memberImg}
+        WHERE
+        ID = #{id}
+    </update>
+
+    <update id="updateOpenIdWeb">
+        UPDATE BX_MEMBER SET
+        OPENID_WEB = #{openIdWeb}
+        WHERE
+        USER_NAME = #{userName}
+    </update>
+
+	<delete id="delete">
+		<![CDATA[
+			DELETE FROM BX_MEMBER WHERE
+			ID = #{id} 
+		]]>
+	</delete>
+
+	<select id="getById" resultMap="userInfo">
+		SELECT
+		<include refid="columns" />
+		<![CDATA[
+				FROM BX_MEMBER 
+			WHERE 
+				ID = #{id} 
+		]]>
+	</select>
+	<select id="getByUserName" resultMap="userInfo">
+		SELECT
+		<include refid="columns" />
+		<![CDATA[
+			FROM BX_MEMBER 
+		WHERE 
+			USER_NAME = #{userName} 
+		]]>
+	</select>
+
+    <select id="getByOpenIdWeb" resultMap="userInfo">
+        SELECT
+        <include refid="columns" />
+        <![CDATA[
+			FROM BX_MEMBER
+		WHERE
+			OPENID_WEB = #{openIdWeb}
+		]]>
+    </select>
+
+	<sql id="pageWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+			<if test="id != 0 and id != '' and id != null">
+				AND ID = #{id}
+			</if>
+			<if test="userName != '' and userName != null">
+				AND USER_NAME = #{userName}
+			</if>
+			<if test="userPassword != '' and userPassword != null">
+				AND USER_PASSWORD = #{userPassword}
+			</if>
+        </where>
+	</sql>
+
+	<select id="pageCount" resultType="long">
+		SELECT count(*) FROM BX_MEMBER
+		<include refid="pageWhere" />
+	</select>
+	
+	<!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 offset,pageSize,lastRows
+		三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+	<select id="findPage" resultMap="userInfo">
+		SELECT
+		<include refid="columns" />
+		FROM BX_MEMBER
+		<include refid="pageWhere" />
+		LIMIT #{skip},#{pageSize}
+		<!-- <if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if> -->
+	</select>
+
+    <select id="getAll" resultMap="userInfo">
+        SELECT <include refid="columns" /> FROM BX_MEMBER where STATUS=1
+    </select>
+
+	<update id="updateUserStatus">
+		UPDATE BX_MEMBER SET
+				STATUS = #{status}
+			WHERE 
+				ID = #{id} 
+	</update>
+	<select id="getAllByMap" resultMap="userInfo">
+		SELECT <include refid="columns" /> FROM BX_MEMBER 
+		<include refid="pageWhere" />
+	</select>
+</mapper>

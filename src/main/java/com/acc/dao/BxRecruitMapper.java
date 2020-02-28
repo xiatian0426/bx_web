@@ -17,4 +17,6 @@ public interface BxRecruitMapper {
     void insert(BxRecruit bxRecruit) throws Exception;
 
     BxRecruit getRecruitById(String id) throws SelectException;
+
+    void updateById(BxRecruit bxRecruit) throws Exception;
 }

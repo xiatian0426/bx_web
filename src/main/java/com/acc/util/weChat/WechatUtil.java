@@ -261,4 +261,34 @@ public class WechatUtil {
         result.put("unionid",unionid);
         return result;
     }
+
+    /**
+     * 获取小程序后台token(小程序后台)
+     * @return
+     */
+    public static String getDDWebToken(){
+        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + WeChatConfig.WEB_APP_ID + "&secret="+WeChatConfig.WEB_APP_SECRET;
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        String access_token = (String) oppidObj.get("access_token");
+        return access_token;
+    }
+
+    /**
+     * 获取openid和session_key(小程序后台)
+     * @param code
+     * @return
+     */
+    public static Map<String,String> getOpenIdAndSessionKeyWeb(String code) {
+        Map<String,String> result = new HashMap<String, String>();
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + WeChatConfig.WEB_APP_ID + "&secret="
+                + WeChatConfig.WEB_APP_SECRET + "&js_code=" + code + "&grant_type=authorization_code";
+        String reusult = HttpClientUtil.doGet(url,null);
+        JSONObject oppidObj = JSONObject.parseObject(reusult);
+        String openid = (String) oppidObj.get("openid");
+        String session_key = (String) oppidObj.get("session_key");
+        result.put("openid",openid);
+        result.put("session_key",session_key);
+        return result;
+    }
 }

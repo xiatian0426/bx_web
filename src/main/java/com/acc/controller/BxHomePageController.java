@@ -270,7 +270,7 @@ public class BxHomePageController {
         int status = 0;
         try {
             if (bxMomment!=null) {
-                BxToken bxToken = bxTokenService.getToken();
+                BxToken bxToken = bxTokenService.getToken(0);
                 if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
                     Integer res = WechatUtil.checkMsg(bxToken.getAccessToken(),bxMomment.getComment_context());
                     if(res.intValue()==0){

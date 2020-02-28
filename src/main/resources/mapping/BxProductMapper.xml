@@ -16,6 +16,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="productOrder" column="PRODUCT_ORDER" jdbcType="INTEGER"/>
         <result property="imageOrder" column="IMAGE_ORDER" jdbcType="INTEGER"/>
         <result property="productDesc" column="PRODUCT_DESC" jdbcType="VARCHAR"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="imgId" column="IMGID" jdbcType="VARCHAR"/>
 	</resultMap>
     <resultMap id="bxProductImg" type="com.acc.model.BxProductImg">
         <result property="id" column="ID" jdbcType="INTEGER"/>
@@ -58,6 +60,32 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         where p.MEMBER_ID=#{memberId}
 				and p.STATUS=0
         order by p.PRODUCT_ORDER
+    </select>
+
+    <select id="pageCount" resultType="long">
+        SELECT count(*)
+        FROM  BX_PRODUCT c,BX_MEMBER m
+        WHERE c.MEMBER_ID=m.id
+        AND m.STATUS=1
+        <if test="memberId != null and memberId != 0">AND c.MEMBER_ID=#{memberId}</if>
+        <if test="productName != null and productName != ''">AND c.PRODUCT_NAME like CONCAT('%',#{productName},'%')</if>
+        AND c.STATUS=0
+    </select>
+
+    <!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 offset,pageSize,lastRows
+        三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+    <select id="findPage" resultMap="bxProduct">
+        select c.id,c.PRODUCT_NAME,c.PRODUCT_IMG,c.PRODUCT_ORDER,c.PRODUCT_DESC,c.MEMBER_ID
+        from BX_PRODUCT c,BX_MEMBER m
+        WHERE c.MEMBER_ID=m.id
+        AND m.STATUS=1
+        <if test="memberId != null and memberId != 0">AND c.MEMBER_ID=#{memberId}</if>
+        <if test="productName != null and productName != ''">AND c.PRODUCT_NAME like CONCAT('%',#{productName},'%')</if>
+        AND c.STATUS=0
+        <if test="sortColumns != null and sortColumns != ''">
+            ORDER BY ${sortColumns}
+        </if>
+        LIMIT #{skip},#{pageSize}
     </select>
 
 	<select id="getDetailByProductId" resultMap="bxProduct">
@@ -181,4 +209,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         0
         )
     </insert>
+
+    <update id="updateProductImg" >
+        UPDATE BX_PRODUCT_IMG SET
+        <if test="imageOrder != null and imageOrder != 0">IMAGE_ORDER=#{imageOrder},</if>
+        <if test="imageUrl != null and imageUrl != ''">IMAGE_URL = #{imageUrl},</if>
+        MODIFY_DATE = now()
+        WHERE id = #{id}
+    </update>
 </mapper>

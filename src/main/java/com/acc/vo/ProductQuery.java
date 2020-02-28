@@ -5,7 +5,10 @@
  * Since 2008 - 2016
  */
 
-package com.acc.model;
+package com.acc.vo;
+
+import com.acc.model.BxCase;
+import com.acc.model.BxProductImg;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +20,9 @@ import java.util.List;
  */
 
 
-public class BxProduct implements java.io.Serializable, Cloneable{
+public class ProductQuery extends BaseQuery implements java.io.Serializable, Cloneable{
 	
-	private static final long serialVersionUID = 1756258302889590553L;
+	private static final long serialVersionUID = 1756257302889590553L;
 
 	private int id;
 
@@ -76,17 +79,9 @@ public class BxProduct implements java.io.Serializable, Cloneable{
 
     private String bxCaseCxContext;
     //BxCase的属性 end
-
     private int status;
 
-    /**
-     * modifyDate       db_column: MODIFY_DATE
-     */
-    private String modifyDate;
-    /**
-     * modifierId       db_column: MODIFIER_ID
-     */
-    private String modifierId;
+    private String sortColumns;
 
     private List<BxProductImg> bxProductImgList = new ArrayList<BxProductImg>();
 
@@ -268,14 +263,6 @@ public class BxProduct implements java.io.Serializable, Cloneable{
         this.bxCaseCxContext = bxCaseCxContext;
     }
 
-    public int getImgId() {
-        return imgId;
-    }
-
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
-    }
-
     public int getStatus() {
         return status;
     }
@@ -284,20 +271,20 @@ public class BxProduct implements java.io.Serializable, Cloneable{
         this.status = status;
     }
 
-    public String getModifyDate() {
-        return modifyDate;
+    public int getImgId() {
+        return imgId;
     }
 
-    public void setModifyDate(String modifyDate) {
-        this.modifyDate = modifyDate;
+    public void setImgId(int imgId) {
+        this.imgId = imgId;
     }
 
-    public String getModifierId() {
-        return modifierId;
+    public String getSortColumns() {
+        return sortColumns;
     }
 
-    public void setModifierId(String modifierId) {
-        this.modifierId = modifierId;
+    public void setSortColumns(String sortColumns) {
+        this.sortColumns = sortColumns;
     }
 }
 

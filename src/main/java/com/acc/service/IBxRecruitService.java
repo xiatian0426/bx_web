@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface IBxRecruitService {
+public interface IBxRecruitService extends IBaseService<BxRecruit>{
 	/**
 	 * 招聘信息
 	 * @return
@@ -21,4 +21,6 @@ public interface IBxRecruitService {
     void deleteById(String id) throws Exception;
 
     void insert(BxRecruit bxRecruit) throws Exception;
+
+    void updateById(BxRecruit bxRecruit) throws Exception;
 }

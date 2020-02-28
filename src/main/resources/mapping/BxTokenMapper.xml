@@ -15,24 +15,25 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
     <select id="getToken" resultMap="bxToken">
         SELECT ACCESS_TOKEN,LAST_TIME,LIFT_TIME
-        FROM BX_TOKEN WHERE TYPE = 0 limit 1
+        FROM BX_TOKEN WHERE 1 = 1
+        <if test="type != null">and TYPE = ${type}</if>
+        limit 1
     </select>
 
     <delete id="delete">
-        <![CDATA[
-        DELETE FROM BX_TOKEN WHERE TYPE = 0
-        ]]>
+        DELETE FROM BX_TOKEN WHERE 1=1
+        <if test="type != null">and TYPE = ${type}</if>
     </delete>
 
     <insert id="insert">
         INSERT INTO BX_TOKEN (
         ACCESS_TOKEN,
-        LAST_TIME,
-        TYPE
+        LAST_TIME
+        <if test="type != null">,TYPE</if>
         ) VALUES (
         	#{accessToken} ,
-        	now(),
-        	0
+        	now()
+        <if test="type != null">,${type}</if>
         )
     </insert>
 </mapper>

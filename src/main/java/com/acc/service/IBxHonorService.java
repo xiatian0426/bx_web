@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface IBxHonorService {
+public interface IBxHonorService extends IBaseService<BxHonor>{
 	/**
 	 * 荣誉信息
 	 * @return

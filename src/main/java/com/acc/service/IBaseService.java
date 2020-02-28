@@ -13,5 +13,5 @@ public interface IBaseService<T> {
 	 * @throws SelectException
 	 */
 	Page<T> selectPage (BaseQuery query) throws SelectException;
-
+	
 }
