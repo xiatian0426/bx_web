@@ -62,4 +62,6 @@ public interface IBxProductService extends IBaseService<BxProduct>{
     void deleteProductDetailVideoById(String id) throws Exception;
 
     List<BxProductImg> getProductDetailImgByProId(@Param("productId") String productId) throws SelectException;
+
+    void deleteProImgById(String id) throws Exception;
 }

@@ -128,11 +128,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
     <delete id="deleteProByProId">
         <![CDATA[
-        DELETE FROM BX_PRODUCT WHERE id=#{productId}
+        DELETE FROM BX_PRODUCT WHERE id=#{id}
         ]]>
     </delete>
     <select id="getProDetail" resultMap="bxProduct">
-        select p.id,p.PRODUCT_NAME,p.PRODUCT_IMG,p.PRODUCT_ORDER,p.PRODUCT_DESC,v.VIDEO_URL PRODUCT_VIDEO,i.IMAGE_URL,i.IMAGE_ORDER
+        select p.id,p.PRODUCT_NAME,p.PRODUCT_IMG,p.PRODUCT_ORDER,p.PRODUCT_DESC,v.VIDEO_URL PRODUCT_VIDEO,i.IMAGE_URL,i.IMAGE_ORDER,i.ID IMGID
         from BX_PRODUCT p
 		left join BX_PRODUCT_VIDEO v ON p.id=v.PRODUCT_ID
 		left join BX_PRODUCT_IMG i ON p.id = i.PRODUCT_ID

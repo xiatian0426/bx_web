@@ -474,7 +474,7 @@ public class BxProductWebController {
                             if(file[0].getOriginalFilename()==null || "".equals(file[0].getOriginalFilename())){
                                 bxProductImg.setImageUrl(null);
                                 bxProductService.updateProductImg(bxProductImg);
-                                message = "添加成功";
+                                message = "更新成功";
                             }else{
                                 String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
                                 String fileSavePath=path + Constants.proDetailImgPath + bxProductImg.getProductId() + "/";
@@ -550,9 +550,9 @@ public class BxProductWebController {
         String message = "操作成功!";
         int status = 0;
         try {
-            String productId = request.getParameter("id");
-            if(StringUtils.isNotEmpty(productId)){
-                bxProductService.deleteProductDetailImgByProId(productId);
+            String id = request.getParameter("id");
+            if(StringUtils.isNotEmpty(id)){
+                bxProductService.deleteProImgById(id);
             }
         } catch (Exception e) {
             status = -1;

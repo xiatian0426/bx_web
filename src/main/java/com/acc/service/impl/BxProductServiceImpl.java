@@ -142,6 +142,11 @@ public class BxProductServiceImpl extends BaseServiceImpl<BxProduct> implements 
     }
 
     @Override
+    public void deleteProImgById(String id) throws Exception{
+        bxProductMapper.deleteProImgById(id);
+    }
+
+    @Override
     public void deleteProductDetailVideoById(String id) throws Exception {
         bxProductMapper.deleteProVideoById(id);
     }
