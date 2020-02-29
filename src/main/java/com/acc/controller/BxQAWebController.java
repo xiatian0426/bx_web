@@ -241,4 +241,42 @@ public class BxQAWebController {
         out.flush();
         out.close();
     }
+
+    /**
+     * 根据id查QA信息
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getQAById", method = RequestMethod.GET)
+    public void getQAById(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String,Object> map = new HashMap<String, Object>();
+        try{
+            String openIdWeb = request.getParameter("openIdWeb");
+            UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
+            if(staff!=null){
+                String qaId = request.getParameter("id");
+                if(StringUtils.isNotEmpty(qaId) ){
+                    BxQA bxQA = bxQAService.getQAById(qaId);
+                    map.put("bxQA",bxQA);
+                    map.put("code",0);
+                    map.put("message","获取成功!");
+                }
+            }else{
+                map.put("code",-1);
+                map.put("message","未登录，请先登录!");
+            }
+        } catch (Exception e) {
+            map.put("code",-1);
+            map.put("message","获取失败!");
+            _logger.error("getQAById失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
 }
