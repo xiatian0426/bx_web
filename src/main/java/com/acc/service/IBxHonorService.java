@@ -20,6 +20,8 @@ public interface IBxHonorService extends IBaseService<BxHonor>{
 
     void deleteByMemId(int memberId) throws Exception;
 
+    void deleteById(int id) throws Exception;
+
     void insert(BxHonor bxHonor) throws Exception;
 
     void updateById(BxHonor bxHonor) throws Exception;

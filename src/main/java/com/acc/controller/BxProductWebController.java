@@ -16,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,10 +71,7 @@ public class BxProductWebController {
                     page = bxProductService.selectPage(query);
                 }
                 if(page != null && page.getResult()!=null && page.getResult().size()>0){
-                    String path = request.getContextPath();
-                    String basePath = request.getScheme() + "://"
-                            + request.getServerName() + ":" + request.getServerPort()
-                            + path + "/";
+                    String basePath = Constants.webPath;
                     for(BxProduct bxProduct:page.getResult()){
                         bxProduct.setProductImg(basePath+ Constants.proImgPath+bxProduct.getId()+"/"+bxProduct.getProductImg());
                     }
@@ -233,10 +227,7 @@ public class BxProductWebController {
                     }
                 }
                 if(page != null && page.getResult()!=null && page.getResult().size()>0){
-                    String path = request.getContextPath();
-                    String basePath = request.getScheme() + "://"
-                            + request.getServerName() + ":" + request.getServerPort()
-                            + path + "/";
+                    String basePath = Constants.webPath;
                     for(BxProduct bxProduct:page.getResult()){
                         bxProduct.setProductImg(basePath+ Constants.proImgPath+bxProduct.getId()+"/"+bxProduct.getProductImg());
                     }
@@ -277,17 +268,14 @@ public class BxProductWebController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                String basePath="";
+                String basePath = "";
                 String productId = request.getParameter("productId");
                 if(StringUtils.isNotEmpty(productId)){
                     List<BxProduct> bxProductList = bxProductService.getProDetail(productId);
                     if(bxProductList!=null && bxProductList.size()>0){
                         BxProduct bxProductResult= new BxProduct();
                         bxProductResult.setId(bxProductList.get(0).getId());
-                        String path = request.getContextPath();
-                        basePath = request.getScheme() + "://"
-                                + request.getServerName() + ":" + request.getServerPort()
-                                + path + "/";
+                        basePath = Constants.webPath;
                         bxProductResult.setProductImg(basePath+ Constants.proImgPath+bxProductList.get(0).getId()+"/"+bxProductList.get(0).getProductImg());
                         bxProductResult.setProductName(bxProductList.get(0).getProductName());
                         bxProductResult.setProductDesc(bxProductList.get(0).getProductDesc());
@@ -542,6 +530,39 @@ public class BxProductWebController {
         result.put("status", status);
         result.put("message", message);
         out.print(JSON.toJSONString(result));
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 删除产品详情图片
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/deleteProductDetailImgById", method = RequestMethod.POST)
+    public void deleteProductDetailImgById (final HttpServletRequest request,
+                                                           final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String message = "操作成功!";
+        int status = 0;
+        try {
+            String productId = request.getParameter("id");
+            if(StringUtils.isNotEmpty(productId)){
+                bxProductService.deleteProductDetailImgByProId(productId);
+            }
+        } catch (Exception e) {
+            status = -1;
+            message = "操作失败，请联系管理员!";
+            _logger.error("操作失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("message", message);
+        out.print(JSON.toJSONString(map));
         out.flush();
         out.close();
     }

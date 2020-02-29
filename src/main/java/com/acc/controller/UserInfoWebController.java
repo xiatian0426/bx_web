@@ -64,10 +64,7 @@ public class UserInfoWebController {
                 }
                 UserInfo userInfo = userInfoService.getById(userId);
                 if(userInfo!=null){
-                    String path = request.getContextPath();
-                    String basePath = request.getScheme() + "://"
-                            + request.getServerName() + ":" + request.getServerPort()
-                            + path + "/";
+                    String basePath = Constants.webPath;
                     String fileSavePath=basePath + Constants.memberImgPath + userInfo.getId() + "/";
                     userInfo.setMemberImg(fileSavePath+userInfo.getMemberImg());
                 }

@@ -65,6 +65,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     ]]>
     </delete>
 
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM BX_HONOR WHERE id=#{id}
+    ]]>
+    </delete>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
         INSERT INTO BX_HONOR (

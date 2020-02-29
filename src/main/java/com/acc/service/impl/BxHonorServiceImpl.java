@@ -41,6 +41,11 @@ public class BxHonorServiceImpl extends BaseServiceImpl<BxHonor> implements IBxH
     }
 
     @Override
+    public void deleteById(int id) throws Exception {
+        bxHonorMapper.deleteById(id);
+    }
+
+    @Override
     public void insert(BxHonor bxHonor) throws Exception {
         bxHonorMapper.insert(bxHonor);
     }

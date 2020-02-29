@@ -201,4 +201,44 @@ public class BxQAWebController {
         out.flush();
         out.close();
     }
+
+    /**
+     * 删除QA信息
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/deleteById", method = RequestMethod.POST)
+    public void deleteById(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String,Object> result = new HashMap<String, Object>();
+        try{
+            String openIdWeb = request.getParameter("openIdWeb");
+            UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
+            if(staff!=null){
+                String qaId = request.getParameter("id");
+                if(StringUtils.isNotEmpty(qaId)){
+                    bxQAService.deleteById(qaId);
+                    result.put("code",0);
+                    result.put("message","删除成功!");
+                }else{
+                    result.put("code",1);
+                    result.put("message","参数不正确!");
+                }
+            }else{
+                result.put("code",-1);
+                result.put("message","未登录，请先登录!");
+            }
+        } catch (Exception e) {
+            result.put("code",-1);
+            result.put("message","删除失败!");
+            _logger.error("deleteRecruit失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        out.print(JSON.toJSONString(result));
+        out.flush();
+        out.close();
+    }
 }

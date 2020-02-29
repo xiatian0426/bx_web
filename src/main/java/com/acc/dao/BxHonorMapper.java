@@ -14,6 +14,8 @@ public interface BxHonorMapper {
 
     void deleteByMemId(@Param("memberId") int memberId) throws Exception;
 
+    void deleteById(@Param("id") int id) throws Exception;
+
     void insert(BxHonor bxHonor) throws Exception;
 
     void updateById(BxHonor bxHonor) throws Exception;

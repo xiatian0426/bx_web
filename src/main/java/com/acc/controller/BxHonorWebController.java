@@ -18,10 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,10 +64,11 @@ public class BxHonorWebController {
             Page<BxHonor> page = null;
             if(staff!=null){
                 if(query!=null){
-                    String path = request.getContextPath();
-                    String basePath = request.getScheme() + "://"
-                            + request.getServerName() + ":" + request.getServerPort()
-                            + path + "/";
+//                    String path = request.getContextPath();
+//                    String basePath = request.getScheme() + "://"
+//                            + request.getServerName() + ":" + request.getServerPort()
+//                            + path + "/";
+                    String basePath = Constants.webPath;
                     query.setSortColumns("c.HONOR_ORDER");
                     String memberId = String.valueOf(staff.getId());
                     if(StringUtils.isNotEmpty(memberId) ){
@@ -260,6 +258,64 @@ public class BxHonorWebController {
             }else{
                 status = -1;
                 message = "参数有误，请联系管理员!";
+            }
+        } catch (Exception e) {
+            status = -1;
+            message = "操作失败，请联系管理员!";
+            _logger.error("操作失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("message", message);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 删除荣誉
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/deleteHonorById", method = RequestMethod.POST)
+    public void deleteHonorById (final HttpServletRequest request,
+                                                final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String message = "操作成功!";
+        int status = 0;
+        try{
+            String openIdWeb = request.getParameter("openIdWeb");
+            UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
+            if(staff!=null){
+                String id = request.getParameter("id");
+                if(StringUtils.isNotEmpty(id)){
+                    BxHonor bxHonor = bxHonorService.getHonorById(Integer.valueOf(id));
+                    if(bxHonor!=null){
+                        bxHonorService.deleteById(Integer.valueOf(id));
+                        int memberId = bxHonor.getMemberId();
+                        String imageUrl = bxHonor.getImageUrl();
+                        String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
+                        String fileSavePath=path + Constants.honorImgPath + memberId + "/";
+                        String imgUrl = null;
+                        if(imageUrl!=null && !"".equals(imageUrl)){
+                            imgUrl = imageUrl.split("/")[imageUrl.split("/").length-1];
+                        }
+                        new File(fileSavePath+imgUrl).delete();
+                    }else{
+                        status = 1;
+                        message = "参数不正确!";
+                    }
+                }else{
+                    status = 1;
+                    message = "参数不正确!";
+                }
+            }else{
+                status = -1;
+                message = "未登录，请先登录!";
             }
         } catch (Exception e) {
             status = -1;

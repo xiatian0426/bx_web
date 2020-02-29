@@ -20,5 +20,7 @@ public class Constants {
 
     public final static String imgVideoPath  = "http://39.105.44.125:8082/";
 
+    public final static String webPath = "http://39.105.44.125:8082/";
+
     public final static String BASEPATH  = "https://www.lovexhr.com/";
 }
