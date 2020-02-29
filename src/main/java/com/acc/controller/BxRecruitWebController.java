@@ -80,6 +80,7 @@ public class BxRecruitWebController {
                 for (BxRecruit bxRecruit:page.getResult()){
                     bxRecruit.setImageUrl(basePath+ Constants.recruitImgPath+bxRecruit.getMemberId()+"/"+bxRecruit.getImageUrl());
                 }
+                map.put("page",page);
             }else{
                 status = -1;
                 message = "未登录，请先登录!";
