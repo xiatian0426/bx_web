@@ -70,7 +70,7 @@ public class BxQAWebController {
                 }
                 map.put("page", page);
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -115,19 +115,19 @@ public class BxQAWebController {
                             bxQAService.updateById(bxQA);
                             message = "更新成功!";
                         }else{
-                            status = -1;
+                            status = 99;
                             message = "信息校验错误，请联系管理员!";
                         }
                     }else{
-                        status = -1;
+                        status = 2;
                         message = "信息校验错误，请联系管理员!";
                     }
                 }else{
-                    status = -1;
+                    status = 3;
                     message = "操作失败，请联系管理员!";
                 }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -174,11 +174,11 @@ public class BxQAWebController {
                             bxQAService.insert(bxQA);
                             message = "更新成功!";
                         }else{
-                            status = -1;
+                            status = 99;
                             message = "信息校验错误，请联系管理员!";
                         }
                     }else{
-                        status = -1;
+                        status = 2;
                         message = "信息校验错误，请联系管理员!";
                     }
                 }else{
@@ -186,7 +186,7 @@ public class BxQAWebController {
                     message = "操作失败，请联系管理员!";
                 }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -266,7 +266,7 @@ public class BxQAWebController {
                     map.put("message","获取成功!");
                 }
             }else{
-                map.put("code",-1);
+                map.put("code",98);
                 map.put("message","未登录，请先登录!");
             }
         } catch (Exception e) {

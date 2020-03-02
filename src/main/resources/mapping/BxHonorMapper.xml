@@ -93,7 +93,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <update id="updateById">
         <![CDATA[
         UPDATE BX_HONOR
-        SET IMAGE_URL=#{imageUrl},HONOR_ORDER=#{honorOrder}
+        SET
+        <if test="honorOrder != null and honorOrder != 0">HONOR_ORDER=#{honorOrder},</if>
+        <if test="imageUrl != null and imageUrl != ''">IMAGE_URL=#{imageUrl},</if>
+        MODIFY_DATE = now()
         WHERE id=#{id}
         ]]>
     </update>

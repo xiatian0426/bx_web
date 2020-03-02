@@ -78,7 +78,7 @@ public class BxProductWebController {
                 }
                 map.put("page", page);
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -116,7 +116,7 @@ public class BxProductWebController {
             if(staff!=null){
                 if (bxProduct != null) {
                     if(bxProduct.getType()!=null && !"".equals(bxProduct.getType())){
-                        if(file != null){
+//                        if(file != null){
                             //敏感信息验证
                             BxToken bxToken = bxTokenService.getToken(1);
                             if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
@@ -124,16 +124,23 @@ public class BxProductWebController {
                                         +bxProduct.getBxCaseName()+bxProduct.getBxCaseTimeLimit()+bxProduct.getBxCaseTbContext()
                                         +bxProduct.getBxCaseLpContext()+bxProduct.getBxCaseCxContext();
                                 int checkMsgResult = WechatUtil.checkMsg(bxToken.getAccessToken(),content);
-                                int checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                                int checkImgResult = 0;
+                                if(file!=null && file.length>0){
+                                    checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                                }
                                 if(checkMsgResult== 0 && checkImgResult == 0){
                                     if(bxProduct.getType().equals("0")){//添加
-                                        if(bxProduct.getMemberId()==0){
-                                            bxProduct.setMemberId(staff.getId());
+                                        if(file != null){
+                                            if(bxProduct.getMemberId()==0){
+                                                bxProduct.setMemberId(staff.getId());
+                                            }
+                                            bxProduct.setCreateId(staff.getId());
+                                            bxProductService.addProduct(bxProduct);
+                                        }else{
+                                            boo = false;
                                         }
-                                        bxProduct.setCreateId(staff.getId());
-                                        bxProductService.addProduct(bxProduct);
                                     }else{
-                                        if(file[0].getOriginalFilename()==null || "".equals(file[0].getOriginalFilename())){
+                                        if(file == null){
                                             boo = false;
                                             bxProduct.setProductImg(null);
                                             bxProduct.setModifierId(String.valueOf(staff.getId()));
@@ -153,38 +160,39 @@ public class BxProductWebController {
                                                 bxProductService.updateProduct(bxProduct);
                                                 message = "添加/更新成功!";
                                             }else{
-                                                status = -1;
+                                                status = 5;
                                                 message = "参数有误，请联系管理员!";
                                             }
                                         }else{
-                                            status = -1;
+                                            status = 4;
                                             message = "添加/更新失败!";
                                         }
                                     }else{
-                                        message = "更新成功!";
+                                        status = 0;
+                                        message = "操作成功!";
                                     }
                                 }else{
-                                    status = -1;
+                                    status = 99;
                                     message = "信息校验有误，请联系管理员!";
                                 }
                             }else{
-                                status = -1;
+                                status = 3;
                                 message = "信息校验错误，请联系管理员!";
                             }
-                        }else{
-                            status = -1;
-                            message = "文件不能为空!";
-                        }
+//                        }else{
+//                            status = -1;
+//                            message = "文件不能为空!";
+//                        }
                     }else{
                         status = -1;
                         message = "参数有误，请联系管理员!";
                     }
                 } else {
-                    status = -1;
+                    status = 2;
                     message = "参数有误，请联系管理员!";
                 }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -234,7 +242,7 @@ public class BxProductWebController {
                 }
                 message = "操作成功!";
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -309,7 +317,7 @@ public class BxProductWebController {
                 map.put("result", request.getParameter("result"));
                 map.put("basePath",basePath);
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -350,7 +358,7 @@ public class BxProductWebController {
                     result.put("message","删除成功!");
                 }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -407,15 +415,15 @@ public class BxProductWebController {
                                 }
                                 message = "添加成功";
                             }else{
-                                status = -1;
+                                status = 4;
                                 message = "添加失败!";
                             }
                         }else{
-                            status = -1;
+                            status = 3;
                             message = "信息校验错误，请联系管理员!";
                         }
 //                        }else{
-//                            status = -1;
+//                            status = 99;
 //                            message = "信息校验错误，请联系管理员!";
 //                        }
 //                    }else{
@@ -427,11 +435,11 @@ public class BxProductWebController {
                         message = "参数有误，请联系管理员!";
                     }
                 }else{
-                    status = -1;
+                    status = 2;
                     message = "参数有误，请联系管理员!";
                 }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -466,12 +474,15 @@ public class BxProductWebController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                if(file != null && file.length>0){
+//                if(file != null && file.length>0){
                     BxToken bxToken = bxTokenService.getToken(1);
                     if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
-                        int checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                        int checkImgResult = 0;
+                        if(file!=null && file.length>0){
+                            checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                        }
                         if(checkImgResult == 0){
-                            if(file[0].getOriginalFilename()==null || "".equals(file[0].getOriginalFilename())){
+                            if(file == null){
                                 bxProductImg.setImageUrl(null);
                                 bxProductService.updateProductImg(bxProductImg);
                                 message = "更新成功";
@@ -501,24 +512,24 @@ public class BxProductWebController {
                                     }
                                     message = "添加成功";
                                 }else{
-                                    status = -1;
+                                    status = 3;
                                     message = "添加失败!";
                                 }
                             }
                         }else{
-                            status = -1;
+                            status = 99;
                             message = "信息校验有误，请联系管理员!";
                         }
                     }else{
-                        status = -1;
+                        status = 2;
                         message = "信息校验有误，请联系管理员!";
                     }
-                }else{
-                    status = -1;
-                    message = "文件不能为空!";
-                }
+//                }else{
+//                    status = -1;
+//                    message = "文件不能为空!";
+//                }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {

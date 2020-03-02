@@ -143,9 +143,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     <update id="updateProByProId" >
         UPDATE BX_PRODUCT SET
             PRODUCT_NAME = #{productName},
-            PRODUCT_DESC = #{productDesc},
-            <if test="productOrder != null and productOrder != 0">PRODUCT_ORDER=#{productOrder},</if>
-            PRODUCT_IMG=#{productImg}
+            PRODUCT_DESC = #{productDesc}
+            <if test="productOrder != null and productOrder != 0">,PRODUCT_ORDER=#{productOrder}</if>
+            <if test="productImg != null and productImg != ''">,PRODUCT_IMG=#{productImg}</if>
         WHERE ID = #{id}
     </update>
 

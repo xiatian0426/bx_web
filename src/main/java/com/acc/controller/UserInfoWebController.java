@@ -70,7 +70,7 @@ public class UserInfoWebController {
                 }
                 map.put("userInfo", userInfo);
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class UserInfoWebController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/editUser", method = RequestMethod.POST)
-	public void editUser (final HttpServletRequest request, final HttpServletResponse response, UserInfo user,@RequestParam(value="file") MultipartFile[] file) throws IOException {
+	public void editUser (final HttpServletRequest request, final HttpServletResponse response, UserInfo user,@RequestParam(value="file",required=false) MultipartFile[] file) throws IOException {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
@@ -113,10 +113,13 @@ public class UserInfoWebController {
                             +user.getLatitude()+user.getLongitude()+user.getYears()+user.getSignature()
                             +user.getWechat()+user.getPage_style()+user.getIntroduce();
                     int checkMsgResult = WechatUtil.checkMsg(bxToken.getAccessToken(),content);
-                    int checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                    int checkImgResult = 0;
+                    if(file!=null && file.length>0){
+                        checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                    }
                     if(checkMsgResult== 0 && checkImgResult == 0){
-                        if(file!=null && file.length>0){
-                            if(file[0].getOriginalFilename()==null || "".equals(file[0].getOriginalFilename())){
+//                        if(file!=null && file.length>0){
+                            if(file==null){
                                 user.setMemberImg(null);
                             }else{
                                 String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
@@ -136,7 +139,7 @@ public class UserInfoWebController {
                                     }
                                 }
                             }
-                        }
+//                        }
                         user.setModifierId(staff.getId()+"");
                         user.setModifyDate(CalendarUtil.getCurrentDate());
                         user.setRoleId(null);
@@ -151,15 +154,15 @@ public class UserInfoWebController {
                         user.setStatus(userInfo.getStatus());
                         userInfoService.update(user);
                     }else{
-                        status = -1;
+                        status = 99;
                         message = "信息校验错误，请联系管理员!";
                     }
                 }else{
-                    status = -1;
+                    status = 2;
                     message = "信息校验错误，请联系管理员!";
                 }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
 		} catch (Exception e) {

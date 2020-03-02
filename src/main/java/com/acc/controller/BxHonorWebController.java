@@ -83,7 +83,7 @@ public class BxHonorWebController {
                 }
                 map.put("page", page);
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
@@ -115,7 +115,7 @@ public class BxHonorWebController {
         int status = 0;
         try {
             if (bxHonor != null) {
-                if(file!=null && file.length>0){
+//                if(file!=null && file.length>0){
                     String openIdWeb = request.getParameter("openIdWeb");
                     UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
                     if(staff!=null){
@@ -123,9 +123,12 @@ public class BxHonorWebController {
                         //敏感信息验证
                         BxToken bxToken = bxTokenService.getToken(1);
                         if(bxToken!=null && bxToken.getAccessToken()!=null && !bxToken.getAccessToken().equals("")){
-                            int checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                            int checkImgResult = 0;
+                            if(file!=null && file.length>0){
+                                checkImgResult = WechatUtil.checkImg(bxToken.getAccessToken(),file[0]);
+                            }
                             if(checkImgResult == 0){
-                                if(file[0].getOriginalFilename()==null || "".equals(file[0].getOriginalFilename())){
+                                if(file==null){
                                     bxHonor.setImageUrl(null);
                                     bxHonorService.updateById(bxHonor);
                                     message = "更新成功!";
@@ -150,29 +153,29 @@ public class BxHonorWebController {
                                         }
                                         message = "更新成功!";
                                     }else if(re==-1){
-                                        status = -1;
+                                        status = 3;
                                         message = "没有文件!";
                                     }else{
-                                        status = -1;
+                                        status = 4;
                                         message = "上传文件有问题!";
                                     }
                                 }
                             }else{
-                                status = -1;
+                                status = 99;
                                 message = "信息校验错误，请联系管理员!";
                             }
                         }else{
-                            status = -1;
+                            status = 2;
                             message = "信息校验错误，请联系管理员!";
                         }
                     }else{
-                        status = -1;
+                        status = 98;
                         message = "未登录，请先登录!";
                     }
-                }else{
-                    status = -1;
-                    message = "没有文件";
-                }
+//                }else{
+//                    status = -1;
+//                    message = "没有文件";
+//                }
             } else {
                 status = -1;
                 message = "参数有误，请联系管理员!";
@@ -233,30 +236,30 @@ public class BxHonorWebController {
                                     }
                                     message = "添加成功!";
                                 }else if(re==-1){
-                                    status = -1;
+                                    status = 6;
                                     message = "没有文件";
                                 }else{
-                                    status = -1;
+                                    status = 5;
                                     message = "上传文件有问题";
                                 }
                             }else{
-                                status = -1;
+                                status = 99;
                                 message = "信息校验错误，请联系管理员!";
                             }
                         }else{
-                            status = -1;
+                            status = 2;
                             message = "信息校验错误，请联系管理员!";
                         }
                     }else{
-                        status = -1;
+                        status = 98;
                         message = "未登录，请先登录!";
                     }
                 }else{
-                    status = -1;
+                    status = 3;
                     message = "没有文件";
                 }
             }else{
-                status = -1;
+                status = 4;
                 message = "参数有误，请联系管理员!";
             }
         } catch (Exception e) {
@@ -314,7 +317,7 @@ public class BxHonorWebController {
                     message = "参数不正确!";
                 }
             }else{
-                status = -1;
+                status = 98;
                 message = "未登录，请先登录!";
             }
         } catch (Exception e) {
