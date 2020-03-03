@@ -288,6 +288,7 @@ public class BxProductWebController {
                         bxProductResult.setProductName(bxProductList.get(0).getProductName());
                         bxProductResult.setProductDesc(bxProductList.get(0).getProductDesc());
                         bxProductResult.setProductOrder(bxProductList.get(0).getProductOrder());
+                        bxProductResult.setVideoId(bxProductList.get(0).getVideoId());
                         if(bxProductList.get(0).getProductVideo()!=null && !"".equals(bxProductList.get(0).getProductVideo())){
                             bxProductResult.setProductVideo(basePath+ Constants.proVideoPath+bxProductList.get(0).getId()+"/"+bxProductList.get(0).getProductVideo());
                         }
