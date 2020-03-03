@@ -62,6 +62,8 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 
 	private String comment_tag;
 
+	private Integer starLevel;
+
     private List<BxCommentTag> commentTagList;
 
     public int getId() {
@@ -166,6 +168,14 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 
     public void setCommentTagList(List<BxCommentTag> commentTagList) {
         this.commentTagList = commentTagList;
+    }
+
+    public Integer getStarLevel() {
+        return starLevel;
+    }
+
+    public void setStarLevel(Integer starLevel) {
+        this.starLevel = starLevel;
     }
 }
 

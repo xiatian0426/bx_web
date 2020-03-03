@@ -19,6 +19,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="create_date" column="CREATE_DATE" jdbcType="VARCHAR"/>
         <result property="status" column="STATUS" jdbcType="INTEGER"/>
         <result property="comment_tag" column="COMMENT_TAG" jdbcType="VARCHAR"/>
+        <result property="starLevel" column="STAR_LEVEL" jdbcType="INTEGER"/>
 	</resultMap>
 
 
@@ -31,7 +32,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<select id="getMommentListByWechat" resultMap="bxMomment">
     	select c.id,c.role,c.COMMENTATOR_WECHAT,c.COMMENTATOR_IMG,c.COMMENTATOR_NAME,
-    	c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`
+    	c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`,c.STAR_LEVEL
     	from BX_COMMENT c
     	where c.RESPONDENT_ID=#{memberId}
         and c.`STATUS`=2
@@ -47,7 +48,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
     <select id="getMommentListByMemberId" resultMap="bxMomment">
         select c.id,c.role,c.COMMENTATOR_WECHAT,c.COMMENTATOR_IMG,c.COMMENTATOR_NAME,
-        c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`,c.COMMENT_TAG
+        c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`,c.COMMENT_TAG,c.STAR_LEVEL
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{memberId}
         and c.`STATUS`=2
@@ -62,7 +63,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         COMMENTATOR_NAME,
         COMMENT_CONTEXT,
         CREATE_DATE,
-        COMMENT_TAG
+        COMMENT_TAG,
+        STAR_LEVEL
         ) VALUES (
         #{commentator_wechat},
         #{respondent_id},
@@ -70,7 +72,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         #{commentator_name},
         #{comment_context},
         now(),
-        #{comment_tag}
+        #{comment_tag},
+        #{starLevel}
         )
     </insert>
 
@@ -89,7 +92,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     -->
     <select id="findPage" resultMap="bxMomment">
         select c.id,c.role,c.COMMENTATOR_WECHAT,c.COMMENTATOR_IMG,c.COMMENTATOR_NAME,
-        c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`,c.COMMENT_TAG
+        c.COMMENT_CONTEXT,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.`STATUS`,c.COMMENT_TAG,c.STAR_LEVEL
         from BX_COMMENT c
         where c.RESPONDENT_ID=#{id}
         <if test="status != null and status != ''">

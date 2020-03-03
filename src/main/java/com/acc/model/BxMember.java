@@ -24,6 +24,8 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
 	private static final long serialVersionUID = 1756258302889590552L;
 
 	private int id;
+
+    private String userName;
 	
 	private String name;
 
@@ -69,6 +71,27 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
      * 小程序码
      */
     private String wxaCode;
+
+    /**
+     * roleId       db_column: ROLE_ID
+     */
+    private String roleId;
+    /**
+     * manageDepart       db_column: MANAGEDEPART
+     */
+    private String manageDepart;
+    /**
+     * departClass       db_column: DEPARTCLASS
+     */
+    private String departClass;
+    /**
+     * userRealname       db_column: USER_REALNAME
+     */
+    private String userRealname;
+    /**
+     * maxCustomerNum       db_column: MAX_CUSTOMER_NUM
+     */
+    private String maxCustomerNum;
 
     private List<BxHonor> bxHonorList = new ArrayList<BxHonor>();
 
@@ -232,5 +255,52 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
         this.wxaCode = wxaCode;
     }
 
+    public String getUserRealname() {
+        return userRealname;
+    }
+
+    public void setUserRealname(String userRealname) {
+        this.userRealname = userRealname;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getManageDepart() {
+        return manageDepart;
+    }
+
+    public void setManageDepart(String manageDepart) {
+        this.manageDepart = manageDepart;
+    }
+
+    public String getDepartClass() {
+        return departClass;
+    }
+
+    public void setDepartClass(String departClass) {
+        this.departClass = departClass;
+    }
+
+    public String getMaxCustomerNum() {
+        return maxCustomerNum;
+    }
+
+    public void setMaxCustomerNum(String maxCustomerNum) {
+        this.maxCustomerNum = maxCustomerNum;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }
 
