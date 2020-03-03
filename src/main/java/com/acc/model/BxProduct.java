@@ -54,6 +54,8 @@ public class BxProduct implements java.io.Serializable, Cloneable{
 
     private int imgId;
 
+    private int videoId;
+
     /**
      * 用于确定是添加还是更新 0：添加 1：更新
      */
@@ -298,6 +300,14 @@ public class BxProduct implements java.io.Serializable, Cloneable{
 
     public void setModifierId(String modifierId) {
         this.modifierId = modifierId;
+    }
+
+    public int getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(int videoId) {
+        this.videoId = videoId;
     }
 }
 

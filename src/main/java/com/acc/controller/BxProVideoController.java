@@ -36,7 +36,7 @@ public class BxProVideoController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "/getProVideoList", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/getProVideoList", method = RequestMethod.GET)
 	public void getProVideoList(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("utf-8");
 	    response.setContentType("text/html;charset=utf-8");
@@ -65,5 +65,5 @@ public class BxProVideoController {
         out.print(JSON.toJSONString(map));
 	    out.flush();
 	    out.close();
-	}
+	}*/
 }

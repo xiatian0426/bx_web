@@ -17,7 +17,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="imageOrder" column="IMAGE_ORDER" jdbcType="INTEGER"/>
         <result property="productDesc" column="PRODUCT_DESC" jdbcType="VARCHAR"/>
         <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
-        <result property="imgId" column="IMGID" jdbcType="VARCHAR"/>
+        <result property="imgId" column="IMGID" jdbcType="INTEGER"/>
+        <result property="videoId" column="VIDEOID" jdbcType="INTEGER"/>
 	</resultMap>
     <resultMap id="bxProductImg" type="com.acc.model.BxProductImg">
         <result property="id" column="ID" jdbcType="INTEGER"/>
@@ -132,7 +133,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         ]]>
     </delete>
     <select id="getProDetail" resultMap="bxProduct">
-        select p.id,p.PRODUCT_NAME,p.PRODUCT_IMG,p.PRODUCT_ORDER,p.PRODUCT_DESC,v.VIDEO_URL PRODUCT_VIDEO,i.IMAGE_URL,i.IMAGE_ORDER,i.ID IMGID
+        select p.id,p.PRODUCT_NAME,p.PRODUCT_IMG,p.PRODUCT_ORDER,p.PRODUCT_DESC,v.VIDEO_URL PRODUCT_VIDEO,i.IMAGE_URL,i.IMAGE_ORDER,i.ID IMGID,v.id VIDEOID
         from BX_PRODUCT p
 		left join BX_PRODUCT_VIDEO v ON p.id=v.PRODUCT_ID
 		left join BX_PRODUCT_IMG i ON p.id = i.PRODUCT_ID
