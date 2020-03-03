@@ -34,7 +34,7 @@ public class BxProduct implements java.io.Serializable, Cloneable{
     /**
      * 产品视频
      */
-    private String productVideo;
+    private String productVideo="";
     /**
      * 产品本身图片
      */
