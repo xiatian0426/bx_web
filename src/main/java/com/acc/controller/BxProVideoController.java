@@ -31,7 +31,7 @@ public class BxProVideoController {
 	private IBxProVideoService bxProVideoService;
 
 	/**
-	 * 招聘信息
+	 * 用户视频信息
 	 * @param request
 	 * @param response
 	 * @return

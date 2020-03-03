@@ -561,9 +561,20 @@ public class BxProductWebController {
         String message = "操作成功!";
         int status = 0;
         try {
-            String id = request.getParameter("id");
-            if(StringUtils.isNotEmpty(id)){
-                bxProductService.deleteProImgById(id);
+            String openIdWeb = request.getParameter("openIdWeb");
+            UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
+            if(staff!=null){
+                String id = request.getParameter("id");
+                if(StringUtils.isNotEmpty(id)){
+                    BxProductImg bxProductImg = bxProductService.getProductDetailImgById(id);
+                    String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
+                    String fileSavePath=path + Constants.proDetailImgPath + bxProductImg.getProductId() + "/";
+                    new File(fileSavePath+bxProductImg.getImageUrl()).delete();
+                    bxProductService.deleteProImgById(id);
+                }
+            }else{
+                status = 98;
+                message = "未登录，请先登录!";
             }
         } catch (Exception e) {
             status = -1;
@@ -574,6 +585,51 @@ public class BxProductWebController {
         map.put("status", status);
         map.put("message", message);
         out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 删除商品视频信息
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/deleteProductDetailVideoById", method = RequestMethod.POST)
+    public void deleteProductDetailVideoById(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String,Object> result = new HashMap<String, Object>();
+        try {
+            String openIdWeb = request.getParameter("openIdWeb");
+            UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
+            if(staff!=null){
+                String id = request.getParameter("id");
+                if(StringUtils.isNotEmpty(id)){
+                    //删除视频
+                    BxProductVideo bxProductVideo = bxProductService.getProductDetailVideoById(id);
+                    String path = (String)request.getSession().getServletContext().getAttribute("proRoot");
+                    String fileSavePath=path + Constants.proVideoPath + bxProductVideo.getProductId() + "/";
+                    new File(fileSavePath+bxProductVideo.getVideoUrl()).delete();
+                    //删除数据
+                    bxProductService.deleteProductDetailVideoById(id);
+                    result.put("code",0);
+                    result.put("message","删除成功!");
+                }
+            }else{
+                result.put("code",98);
+                result.put("message","未登录，请先登录!");
+            }
+
+        } catch (Exception e) {
+            result.put("code",-1);
+            result.put("message","删除失败!");
+            _logger.error("deleteRecruit失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        out.print(JSON.toJSONString(result));
         out.flush();
         out.close();
     }
