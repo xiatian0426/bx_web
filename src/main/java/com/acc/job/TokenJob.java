@@ -21,7 +21,7 @@ public class TokenJob {
 	/**
 	 * 每一个小时执行一次
 	 */
-	@Scheduled(cron = "0 * 22 * * ?")
+	@Scheduled(cron = "0 0 0/1 * * ?")
 	public void execute () {
 	    try{
             System.out.println("===> 开始更新token");
