@@ -92,6 +92,7 @@ public class WechatUtil {
      */
     public static Integer checkImg(String access_token,MultipartFile multipartFile) {
             try {
+                System.out.println("access_token==="+access_token);
                 CloseableHttpClient httpclient = HttpClients.createDefault();
                 HttpPost request = new HttpPost("https://api.weixin.qq.com/wxa/img_sec_check?access_token=" + access_token);
                 request.addHeader("Content-Type", "application/octet-stream");
@@ -105,6 +106,7 @@ public class WechatUtil {
                 JSONObject jso = JSONObject.parseObject(result);
                 Object errcode = jso.get("errcode");
                 Integer errCode = (Integer) errcode;
+                System.out.println("errCode==="+errCode);
                 return errCode;
             } catch (Exception e) {
                 e.printStackTrace();
