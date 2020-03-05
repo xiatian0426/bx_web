@@ -99,7 +99,9 @@ public class BxProductController {
                     BxProduct resultBxProduct = new BxProduct();
                     resultBxProduct.setId(list.get(0).getId());
                     resultBxProduct.setProductName(list.get(0).getProductName());
-                    resultBxProduct.setProductVideo(basePath+Constants.proVideoPath+list.get(0).getId()+"/"+list.get(0).getProductVideo());
+                    if(list.get(0).getProductVideo()!=null && !"".equals(list.get(0).getProductVideo())){
+                        resultBxProduct.setProductVideo(basePath+Constants.proVideoPath+list.get(0).getId()+"/"+list.get(0).getProductVideo());
+                    }
                     List<String> imgUrlList = new ArrayList<String>();
                     for(BxProduct bxProduct:list){
                         imgUrlList.add(basePath+Constants.proDetailImgPath+bxProduct.getId()+"/"+bxProduct.getImageUrl());
@@ -199,7 +201,9 @@ public class BxProductController {
                     bxProductResult.setProductImg(basePath+Constants.proImgPath+bxProductList.get(0).getId()+"/"+bxProductList.get(0).getProductImg());
                     bxProductResult.setProductName(bxProductList.get(0).getProductName());
                     bxProductResult.setProductDesc(bxProductList.get(0).getProductDesc());
-                    bxProductResult.setProductVideo(basePath+Constants.proVideoPath+bxProductList.get(0).getId()+"/"+bxProductList.get(0).getProductVideo());
+                    if(bxProductList.get(0).getProductVideo()!=null && !"".equals(bxProductList.get(0).getProductVideo())){
+                        bxProductResult.setProductVideo(basePath+Constants.proVideoPath+bxProductList.get(0).getId()+"/"+bxProductList.get(0).getProductVideo());
+                    }
                     List<BxProductImg> bxProductImgList = new ArrayList<BxProductImg>();
                     BxProductImg bxProductImg;
                     for(BxProduct bxProduct:bxProductList){
