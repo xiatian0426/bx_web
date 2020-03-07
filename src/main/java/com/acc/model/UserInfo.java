@@ -107,6 +107,11 @@ public class UserInfo implements java.io.Serializable, Cloneable{
 
     private String openIdWeb;
 
+    /**
+     * 小程序码
+     */
+    private String wxaCode;
+
     private List<BxHonor> bxHonorList = new ArrayList<BxHonor>();
 
     public int getId() {
@@ -159,6 +164,14 @@ public class UserInfo implements java.io.Serializable, Cloneable{
 
     public String getIntroduce() {
         return introduce;
+    }
+
+    public String getWxaCode() {
+        return wxaCode;
+    }
+
+    public void setWxaCode(String wxaCode) {
+        this.wxaCode = wxaCode;
     }
 
     public void setIntroduce(String introduce) {

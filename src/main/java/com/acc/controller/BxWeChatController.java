@@ -219,7 +219,7 @@ public class BxWeChatController {
     /*
      * 生成二维码
      * 这里的 post 方法 为 json post【重点】
-     */
+     *//*
     @RequestMapping(value = "/getWxaCodeUnLimit", method = RequestMethod.GET)
     public void getWxaCodeUnLimit( HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setCharacterEncoding("utf-8");
@@ -258,7 +258,7 @@ public class BxWeChatController {
                         //保存成功
                         map.put("filePath",Constants.BASEPATH + filePath + name);
                         //保存数据
-                        bxTokenService.updateMemberWxaCodeById(scene,filePath + name);
+                        bxTokenService.updateMemberWxaCodeById(scene,name);
                         map.put("code",0);
                         map.put("message","获取二维码成功!");
                     }else{
@@ -280,7 +280,7 @@ public class BxWeChatController {
         out.print(JSON.toJSONString(map));
         out.flush();
         out.close();
-    }
+    }*/
     /**
      * 将二进制转换成文件保存
      * @param instreams 二进制流

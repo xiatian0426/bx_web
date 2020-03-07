@@ -25,6 +25,7 @@
         <result property="latitude" column="LATITUDE" />
         <result property="page_style" column="PAGE_STYLE" />
         <result property="openIdWeb" column="OPENID_WEB" jdbcType="VARCHAR"/>
+        <result property="wxaCode" column="WXACODE" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<!-- 用于select查询公用抽取的列 -->
@@ -40,7 +41,9 @@
         PHONE,
         CREATE_DATE,
         STATUS,
-        CREATER_ID,ROLE_ID,MANAGEDEPART,DEPARTCLASS,USER_REALNAME,COMPANY_ADDR,LONGITUDE,LATITUDE,PAGE_STYLE,OPENID_WEB
+        CREATER_ID,ROLE_ID,MANAGEDEPART,DEPARTCLASS,
+        USER_REALNAME,COMPANY_ADDR,LONGITUDE,LATITUDE,
+        PAGE_STYLE,OPENID_WEB,WXACODE
 	</sql>
 
 	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
