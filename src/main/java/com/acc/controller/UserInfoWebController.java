@@ -68,7 +68,7 @@ public class UserInfoWebController {
                     String fileSavePath=basePath + Constants.memberImgPath + userInfo.getId() + "/";
                     userInfo.setMemberImg(fileSavePath+userInfo.getMemberImg());
                     if(userInfo.getWxaCode()!=null && !userInfo.getWxaCode().equals("")){
-                        fileSavePath=Constants.BASEPATH + Constants.memberImgWxaCodePath;
+                        fileSavePath=basePath + Constants.memberImgWxaCodePath;
                         userInfo.setWxaCode(fileSavePath+userInfo.getWxaCode());
                     }
                 }
