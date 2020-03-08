@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxQuestionMapper">
+
+	<resultMap id="bxQuestion" type="com.acc.model.BxQuestion">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="question" column="QUESTION" jdbcType="VARCHAR"/>
+        <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+        <result property="memberId" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="status" column="STATUS" jdbcType="INTEGER"/>
+        <result property="createDate" column="CREATE_DATE" jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <select id="pageCount" resultType="long">
+        SELECT count(*)
+        FROM BX_QUESTION c,BX_MEMBER m
+        WHERE c.MEMBER_ID=m.id
+        AND m.STATUS=1
+        <if test="memberId != null and memberId != 0">AND c.MEMBER_ID=#{memberId}</if>
+        <if test="status != null">AND AND c.STATUS=#{status}</if>
+    </select>
+
+    <!-- 分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页 因为分页查询将传 offset,pageSize,lastRows
+        三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现 -->
+    <select id="findPage" resultMap="bxQuestion">
+        SELECT c.ID,c.QUESTION,c.PHONE,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID
+        FROM BX_QUESTION c
+        WHERE 1=1
+        <if test="memberId != null and memberId != 0">AND c.MEMBER_ID=#{memberId}</if>
+        <if test="status != null">AND AND c.STATUS=#{status}</if>
+        <if test="sortColumns != null and sortColumns != ''">
+            ORDER BY ${sortColumns}
+        </if>
+        LIMIT #{skip},#{pageSize}
+    </select>
+
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM BX_QUESTION WHERE id=#{id}
+    ]]>
+    </delete>
+    <select id="getQuestionById" resultMap="bxQuestion">
+        SELECT c.ID,c.QUESTION,c.PHONE,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID
+        FROM BX_QUESTION c
+        WHERE c.id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BX_QUESTION (
+            QUESTION,
+            PHONE,
+            <if test="memberId != null and memberId != 0">MEMBER_ID,</if>
+            STATUS,
+            CREATE_DATE
+        ) VALUES (
+        	#{question} ,
+        	#{phone},
+        	<if test="memberId != null and memberId != 0">#{memberId} ,</if>
+        	0 ,
+        	now()
+        )
+    </insert>
+</mapper>
