@@ -61,7 +61,7 @@ public class BxQAWebController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                query.setSortColumns("c.QA_ORDER");
+                query.setSortColumns("c.QA_ORDER,c.CREATE_DATE");
                 Page<BxQA> page = null;
                 String memberId = String.valueOf(staff.getId());
                 if(StringUtils.isNotEmpty(memberId) ){

@@ -1,11 +1,16 @@
 package com.acc.controller;
 
 import com.acc.exception.ExceptionUtil;
+import com.acc.model.BxHonor;
 import com.acc.model.BxQuestion;
+import com.acc.model.BxToken;
 import com.acc.model.UserInfo;
 import com.acc.service.IBxQuestionService;
 import com.acc.service.IBxTokenService;
 import com.acc.service.IUserInfoService;
+import com.acc.util.Constants;
+import com.acc.util.PictureChange;
+import com.acc.util.weChat.WechatUtil;
 import com.acc.vo.Page;
 import com.acc.vo.QAQuery;
 import com.alibaba.fastjson.JSON;
@@ -17,12 +22,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -81,7 +90,7 @@ public class BxQuestionWebController {
 
 
     /**
-     * 根据id查QA信息
+     * 根据id查Question信息
      * @param request
      * @param response
      * @return
@@ -113,6 +122,50 @@ public class BxQuestionWebController {
             _logger.error("getQAById失败：" + ExceptionUtil.getMsg(e));
             e.printStackTrace();
         }
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 删除question
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/deleteById", method = RequestMethod.POST)
+    public void deleteById(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String message;
+        int status = 0;
+        try {
+            String openIdWeb = request.getParameter("openIdWeb");
+            UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
+            if(staff!=null){
+                String qaId = request.getParameter("id");
+                if(StringUtils.isNotEmpty(qaId) ){
+                    String id = request.getParameter("id");
+                    bxQuestionService.deleteById(id);
+                    message = "删除成功!";
+                }else {
+                    status = -1;
+                    message = "参数有误，请联系管理员!";
+                }
+            }else{
+                status = 98;
+                message = "未登录，请先登录!";
+            }
+        } catch (Exception e) {
+            status = -1;
+            message = "操作失败，请联系管理员!";
+            _logger.error("操作失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("message", message);
         out.print(JSON.toJSONString(map));
         out.flush();
         out.close();

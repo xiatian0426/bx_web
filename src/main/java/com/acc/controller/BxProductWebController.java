@@ -63,7 +63,7 @@ public class BxProductWebController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                query.setSortColumns("c.PRODUCT_ORDER");
+                query.setSortColumns("c.PRODUCT_ORDER,c.CREATE_DATE");
                 Page<BxProduct> page = null;
                 String memberId = String.valueOf(staff.getId());
                 if(StringUtils.isNotEmpty(memberId) ){
@@ -226,7 +226,7 @@ public class BxProductWebController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                query.setSortColumns("c.PRODUCT_ORDER");
+                query.setSortColumns("c.PRODUCT_ORDER,c.CREATE_DATE");
                 if(query.getMemberId()!=0){
                     String memberId = String.valueOf(staff.getId());
                     if(StringUtils.isNotEmpty(memberId) ){

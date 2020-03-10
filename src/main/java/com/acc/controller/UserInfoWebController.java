@@ -3,14 +3,16 @@ package com.acc.controller;
 import com.acc.exception.ExceptionUtil;
 import com.acc.exception.SelectException;
 import com.acc.frames.web.Md5PwdEncoder;
-import com.acc.model.BxToken;
-import com.acc.model.UserInfo;
+import com.acc.model.*;
 import com.acc.service.IBxTokenService;
+import com.acc.service.IBxVisitHistoryService;
 import com.acc.service.IUserInfoService;
 import com.acc.util.CalendarUtil;
 import com.acc.util.Constants;
 import com.acc.util.PictureChange;
 import com.acc.util.weChat.WechatUtil;
+import com.acc.vo.HonorQuery;
+import com.acc.vo.Page;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -40,6 +42,9 @@ public class UserInfoWebController {
 
     @Autowired
     private IBxTokenService bxTokenService;
+
+    @Autowired
+    private IBxVisitHistoryService bxVisitHistoryService;
 
 	/**
 	 * 跳转修改用户信息
@@ -324,4 +329,78 @@ public class UserInfoWebController {
         out.close();
     }
 
+    /**
+     * 保存用户被点赞记录
+     * @param bxThumbUp
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/saveThumbUp", method = RequestMethod.POST)
+    @ResponseBody
+    public void saveThumbUp(@ModelAttribute BxThumbUp bxThumbUp, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String result;
+        int status = 0;
+        try{
+            if(bxThumbUp!=null){
+                bxVisitHistoryService.insertThumbUp(bxThumbUp);
+                result = "添加成功!";
+            }else{
+                status = 1;
+                result = "参数有误，请联系管理员!";
+            }
+        } catch (Exception e) {
+            status = -1;
+            result = "添加失败，请联系管理员!";
+            _logger.error("addRecruit失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("result", result);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 荣誉信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getHonorList", method = {RequestMethod.GET,RequestMethod.POST})
+    public void getHonorList(final HttpServletRequest request, final HttpServletResponse response, @ModelAttribute HonorQuery query) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String message = "操作成功!";
+        int status = 0;
+        try{
+            Page<BxThumbUp> page = null;
+            if(query!=null){
+                query.setSortColumns("c.CREATE_TIME desc");
+                String memberId = request.getParameter("memberId");
+                if(StringUtils.isNotEmpty(memberId) ){
+                    query.setMemberId(Integer.valueOf(memberId));
+                    page = bxVisitHistoryService.selectPage(query);
+                }
+            }
+            map.put("page", page);
+        } catch (Exception e) {
+            status = -1;
+            message = "操作失败，请联系管理员!";
+            _logger.error("操作失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("message", message);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
 }

@@ -69,7 +69,7 @@ public class BxHonorWebController {
 //                            + request.getServerName() + ":" + request.getServerPort()
 //                            + path + "/";
                     String basePath = Constants.webPath;
-                    query.setSortColumns("c.HONOR_ORDER");
+                    query.setSortColumns("c.HONOR_ORDER,c.CREATE_DATE");
                     String memberId = String.valueOf(staff.getId());
                     if(StringUtils.isNotEmpty(memberId) ){
                         query.setMemberId(Integer.valueOf(memberId));

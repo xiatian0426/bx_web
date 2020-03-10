@@ -66,7 +66,7 @@ public class BxCompanyWebController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                query.setSortColumns("c.COMPANY_ORDER");
+                query.setSortColumns("c.COMPANY_ORDER,c.CREATE_DATE");
                 Page<BxCompany> page = null;
                 String memberId = String.valueOf(staff.getId());
                 if(StringUtils.isNotEmpty(memberId) ){

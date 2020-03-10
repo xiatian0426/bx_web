@@ -63,7 +63,7 @@ public class BxRecruitWebController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                query.setSortColumns("c.RECRUIT_ORDER");
+                query.setSortColumns("c.RECRUIT_ORDER,c.CREATE_DATE");
                 Page<BxRecruit> page = null;
                 String memberId = String.valueOf(staff.getId());
                 if(StringUtils.isNotEmpty(memberId) ){
