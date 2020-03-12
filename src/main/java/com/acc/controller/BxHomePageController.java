@@ -80,7 +80,7 @@ public class BxHomePageController {
                 if(bxMember!=null){
                     bxMember.setMemberImg(basePath + Constants.memberImgPath + bxMember.getId() + "/" + bxMember.getMemberImg());
                     if(bxMember.getWxaCode()!=null && !bxMember.getWxaCode().equals("")){
-                        bxMember.setWxaCode(basePath + Constants.memberImgWxaCodePath + bxMember.getWxaCode());
+                        bxMember.setWxaCode(Constants.BASEPATH + Constants.memberImgWxaCodePath + bxMember.getWxaCode());
                     }
                 }
             }
