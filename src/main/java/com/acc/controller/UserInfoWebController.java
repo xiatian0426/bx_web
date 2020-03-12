@@ -110,7 +110,7 @@ public class UserInfoWebController {
         Map<String, Object> map = new HashMap<String, Object>();
         String message = "操作成功!";
         int status = 0;
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaa");
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaa==="+file);
 	    String userId = request.getParameter("id");
 		try {
             String openIdWeb = request.getParameter("openIdWeb");

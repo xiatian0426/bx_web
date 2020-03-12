@@ -111,6 +111,7 @@ public class BxProductWebController {
         int status = 0;
         boolean boo = true;
         try {
+            System.out.println("bbbbbbbbbbbbbbbbbbb==="+file);
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
