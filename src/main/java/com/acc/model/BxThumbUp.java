@@ -37,6 +37,26 @@ public class BxThumbUp implements java.io.Serializable, Cloneable{
 
     private String createTime;
 
+    private Integer status;
+
+    private String modifyTime;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(String modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
     public int getId() {
         return id;
     }

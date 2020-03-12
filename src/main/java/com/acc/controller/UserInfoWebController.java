@@ -13,6 +13,7 @@ import com.acc.util.PictureChange;
 import com.acc.util.weChat.WechatUtil;
 import com.acc.vo.HonorQuery;
 import com.acc.vo.Page;
+import com.acc.vo.ThumbUpQuery;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -347,9 +348,28 @@ public class UserInfoWebController {
         String result;
         int status = 0;
         try{
-            if(bxThumbUp!=null){
-                bxVisitHistoryService.insertThumbUp(bxThumbUp);
-                result = "添加成功!";
+            if(bxThumbUp!=null && bxThumbUp.getCode()!=null && !"".equals(bxThumbUp.getCode()) && bxThumbUp.getMemberId()!=null){
+                String openId = WechatUtil.getOpenIdAndSessionKey(bxThumbUp.getCode()).get("openid");
+                bxThumbUp.setOpenId(openId);
+                if(openId!=null && !"".equals(openId)){
+                    List<BxThumbUp> bxThumbUpList = bxVisitHistoryService.getThumbUpList(openId,bxThumbUp.getMemberId(),null);
+                    if(bxThumbUpList!=null && bxThumbUpList.size()>0){
+                        bxVisitHistoryService.cancelThumbUp(bxThumbUp);
+                    }else{
+                        bxVisitHistoryService.insertThumbUp(bxThumbUp);
+                    }
+                    bxThumbUpList = bxVisitHistoryService.getThumbUpList(openId,bxThumbUp.getMemberId(),null);
+                    if(bxThumbUpList!=null && bxThumbUpList.size()>0){
+                        map.put("bxThumbUp", bxThumbUpList.get(0));
+                    }else{
+                        map.put("bxThumbUp", null);
+                    }
+
+                    result = "操作成功!";
+                }else{
+                    status = -1;
+                    result = "添加失败，请联系管理员!";
+                }
             }else{
                 status = 1;
                 result = "参数有误，请联系管理员!";
@@ -368,12 +388,59 @@ public class UserInfoWebController {
     }
 
     /**
-     * 荣誉信息
+     * 点赞信息
      * @param request
      * @return
      */
-    @RequestMapping(value = "/getHonorList", method = {RequestMethod.GET,RequestMethod.POST})
-    public void getHonorList(final HttpServletRequest request, final HttpServletResponse response, @ModelAttribute HonorQuery query) throws IOException {
+    @RequestMapping(value = "/getThumbUp", method = {RequestMethod.GET,RequestMethod.POST})
+    public void getThumbUp(final HttpServletRequest request, final HttpServletResponse response, @ModelAttribute BxThumbUp bxThumbUp) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String message = "操作成功!";
+        int status = 0;
+        try{
+            if(bxThumbUp!=null && bxThumbUp.getMemberId()!=null){
+                //获取有多少点赞数量
+                List<BxThumbUp> bxThumbUpList = bxVisitHistoryService.getThumbUpList(null,bxThumbUp.getMemberId(),0);
+                if(bxThumbUpList!=null && bxThumbUpList.size()>0){
+                    map.put("count", bxThumbUpList.size());
+                    map.put("list", bxThumbUpList);
+                }else{
+                    map.put("count", 0);
+                    map.put("list", null);
+                }
+                if(bxThumbUp.getOpenId()!=null && !"".equals(bxThumbUp.getOpenId())){
+                    //判断是否本身已点赞
+                    bxThumbUpList = bxVisitHistoryService.getThumbUpList(bxThumbUp.getOpenId(),bxThumbUp.getMemberId(),0);
+                    if(bxThumbUpList!=null && bxThumbUpList.size()>0){
+                        map.put("isThumbUp", 0);
+                    }else{
+                        map.put("isThumbUp", 1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            status = -1;
+            message = "操作失败，请联系管理员!";
+            _logger.error("操作失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("message", message);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+    /**
+     * 点赞信息列表
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getThumbUpList", method = {RequestMethod.GET,RequestMethod.POST})
+    public void getThumbUpList(final HttpServletRequest request, final HttpServletResponse response, @ModelAttribute ThumbUpQuery query) throws IOException {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
@@ -382,7 +449,9 @@ public class UserInfoWebController {
         int status = 0;
         try{
             Page<BxThumbUp> page = null;
-            if(query!=null){
+            if(query!=null && query.getCode()!=null && !"".equals(query.getCode()) && query.getMemberId()!=null){
+                String openId = WechatUtil.getOpenIdAndSessionKey(query.getCode()).get("openid");
+                query.setOpenId(openId);
                 query.setSortColumns("c.CREATE_TIME desc");
                 String memberId = request.getParameter("memberId");
                 if(StringUtils.isNotEmpty(memberId) ){
