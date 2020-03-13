@@ -121,4 +121,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         ID = #{id}
         and RESPONDENT_ID = #{respondent_id}
     </update>
+
+    <select id="getMommentById" resultMap="bxMomment">
+        select c.id,c.role,c.COMMENTATOR_WECHAT,c.COMMENTATOR_IMG,c.COMMENTATOR_NAME,
+        CAST(c.COMMENT_CONTEXT AS CHAR(10000) CHARACTER SET utf8mb4) COMMENT_CONTEXT,
+        DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d') CREATE_DATE,
+        DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE_ALL,
+        c.`STATUS`,c.STAR_LEVEL,c.COMMENT_TAG
+        from BX_COMMENT c
+        where ID = #{id}
+    </select>
 </mapper>

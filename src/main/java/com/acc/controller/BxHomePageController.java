@@ -80,7 +80,7 @@ public class BxHomePageController {
                 if(bxMember!=null){
                     bxMember.setMemberImg(basePath + Constants.memberImgPath + bxMember.getId() + "/" + bxMember.getMemberImg());
                     if(bxMember.getWxaCode()!=null && !bxMember.getWxaCode().equals("")){
-                        bxMember.setWxaCode(Constants.BASEPATH + Constants.memberImgWxaCodePath + bxMember.getWxaCode());
+                        bxMember.setWxaCode(basePath + Constants.memberImgWxaCodePath + bxMember.getWxaCode());
                     }
                 }
             }
@@ -209,30 +209,36 @@ public class BxHomePageController {
         try {
             if (bxMomment!=null) {
                 bxHomePageService.updateMommentStatus(bxMomment);
-                //更新用户的评价标签
-                if(bxMomment.getStatus()==2 && bxMomment.getComment_tag()!=null && !bxMomment.getComment_tag().equals("")){//审核通过 添加或更新用户评论标签
-                    List<BxMemberTag> bxMemberTagList = bxHomePageService.getMemberTagById(String.valueOf(bxMomment.getRespondent_id()));
-                    String[] strs = bxMomment.getComment_tag().split(",");
-                    for (String str:strs){
-                        boolean boo=false;
-                        BxMemberTag bxMemberTagNew = new BxMemberTag();
-                        for(BxMemberTag bxMemberTag:bxMemberTagList){
-                            if(Integer.valueOf(str).intValue()==bxMemberTag.getComment_tag_id()){
-                                boo=true;
-                                bxMemberTagNew = bxMemberTag;
-                                break;
+                BxMomment oldBxMomment = bxHomePageService.getMommentById(bxMomment.getId());
+                if(oldBxMomment!=null){
+                    bxMomment.setComment_tag(oldBxMomment.getComment_tag());
+                    //更新用户的评价标签
+                    System.out.println("mmmmmmmmm==="+bxMomment.getComment_tag());
+                    if(bxMomment.getStatus()==2 && bxMomment.getComment_tag()!=null && !bxMomment.getComment_tag().equals("")){//审核通过 添加或更新用户评论标签
+                        List<BxMemberTag> bxMemberTagList = bxHomePageService.getMemberTagById(String.valueOf(bxMomment.getRespondent_id()));
+                        String[] strs = bxMomment.getComment_tag().split(",");
+                        System.out.println("mmmmmmmmm======"+strs.length);
+                        for (String str:strs){
+                            boolean boo=false;
+                            BxMemberTag bxMemberTagNew = new BxMemberTag();
+                            for(BxMemberTag bxMemberTag:bxMemberTagList){
+                                if(Integer.valueOf(str).intValue()==bxMemberTag.getComment_tag_id()){
+                                    boo=true;
+                                    bxMemberTagNew = bxMemberTag;
+                                    break;
+                                }
                             }
-                        }
-                        if(boo){
-                            //更新
-                            bxMemberTagNew.setCount(bxMemberTagNew.getCount()+1);
-                            bxHomePageService.updateMemberTag(bxMemberTagNew);
-                        }else{
-                            //保存
-                            bxMemberTagNew.setMember_id(bxMomment.getRespondent_id());
-                            bxMemberTagNew.setComment_tag_id(Integer.valueOf(str).intValue());
-                            bxMemberTagNew.setCount(1);
-                            bxHomePageService.saveMemberTag(bxMemberTagNew);
+                            if(boo){
+                                //更新
+                                bxMemberTagNew.setCount(bxMemberTagNew.getCount()+1);
+                                bxHomePageService.updateMemberTag(bxMemberTagNew);
+                            }else{
+                                //保存
+                                bxMemberTagNew.setMember_id(bxMomment.getRespondent_id());
+                                bxMemberTagNew.setComment_tag_id(Integer.valueOf(str).intValue());
+                                bxMemberTagNew.setCount(1);
+                                bxHomePageService.saveMemberTag(bxMemberTagNew);
+                            }
                         }
                     }
                 }

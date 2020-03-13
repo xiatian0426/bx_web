@@ -17,4 +17,6 @@ public interface BxMommentMapper {
     Integer getCountByMemberId(@Param("memberId") String memberId) throws SelectException;
 
     void updateMommentStatus(BxMomment bxMomment) throws Exception;
+
+    BxMomment getMommentById(@Param("id") int id) throws SelectException;
 }

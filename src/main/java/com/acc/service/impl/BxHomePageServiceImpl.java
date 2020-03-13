@@ -86,4 +86,9 @@ public class BxHomePageServiceImpl extends BaseServiceImpl<BxMomment> implements
     public void saveMemberTag(BxMemberTag bxMemberTag) throws Exception{
         bxMemberTagMapper.saveMemberTag(bxMemberTag);
     }
+
+    @Override
+    public BxMomment getMommentById(int id) throws SelectException{
+        return bxMommentMapper.getMommentById(id);
+    }
 }

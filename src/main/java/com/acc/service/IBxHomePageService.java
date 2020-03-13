@@ -54,4 +54,6 @@ public interface IBxHomePageService extends IBaseService<BxMomment>{
     void addMember(BxMember bxMember) throws Exception;
 
     void deleteMemberById(int id) throws Exception;
+
+    BxMomment getMommentById(int id) throws SelectException;
 }
