@@ -50,6 +50,11 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 	private String create_date;
 
     /**
+     * 评论时间带时分秒
+     */
+    private String create_date_all;
+
+    /**
      * 0：未审核 1：已删除 2：审核通过 3：审核不通过
      */
 	private int status;
@@ -176,6 +181,14 @@ public class BxMomment implements java.io.Serializable, Cloneable{
 
     public void setStarLevel(Integer starLevel) {
         this.starLevel = starLevel;
+    }
+
+    public String getCreate_date_all() {
+        return create_date_all;
+    }
+
+    public void setCreate_date_all(String create_date_all) {
+        this.create_date_all = create_date_all;
     }
 }
 
