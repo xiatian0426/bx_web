@@ -26,6 +26,7 @@
         <result property="page_style" column="PAGE_STYLE" />
         <result property="openIdWeb" column="OPENID_WEB" jdbcType="VARCHAR"/>
         <result property="wxaCode" column="WXACODE" jdbcType="VARCHAR"/>
+        <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<!-- 用于select查询公用抽取的列 -->
@@ -43,7 +44,7 @@
         STATUS,
         CREATER_ID,ROLE_ID,MANAGEDEPART,DEPARTCLASS,
         USER_REALNAME,COMPANY_ADDR,LONGITUDE,LATITUDE,
-        PAGE_STYLE,OPENID_WEB,WXACODE
+        PAGE_STYLE,OPENID_WEB,WXACODE,EMAIL
 	</sql>
 
 	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
@@ -71,7 +72,8 @@
 				COMPANY_ADDR,
 				LONGITUDE,
 				LATITUDE,
-				PAGE_STYLE
+				PAGE_STYLE,
+				EMAIL
 			) VALUES (
 				#{userName} ,
 				#{userPassword} ,
@@ -94,7 +96,8 @@
 				#{company_addr},
 				#{longitude},
 				#{latitude},
-				#{page_style}
+				#{page_style},
+				#{email}
 			)
 		]]>
 		<!-- oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
@@ -123,7 +126,8 @@
                 COMPANY_ADDR = #{company_addr},
                 LONGITUDE = #{longitude},
                 LATITUDE = #{latitude},
-                PAGE_STYLE = #{page_style}
+                PAGE_STYLE = #{page_style},
+                EMAIL = #{email}
 			WHERE 
 				ID = #{id} 
 	</update>

@@ -112,6 +112,8 @@ public class UserInfo implements java.io.Serializable, Cloneable{
      */
     private String wxaCode;
 
+    private String email;
+
     private List<BxHonor> bxHonorList = new ArrayList<BxHonor>();
 
     public int getId() {
@@ -388,6 +390,14 @@ public class UserInfo implements java.io.Serializable, Cloneable{
 
     public void setOpenIdWeb(String openIdWeb) {
         this.openIdWeb = openIdWeb;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 

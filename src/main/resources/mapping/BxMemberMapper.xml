@@ -25,6 +25,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="page_style" column="PAGE_STYLE" jdbcType="INTEGER"/>
         <result property="wxaCode" column="WXACODE" jdbcType="VARCHAR"/>
         <result property="userRealname" column="USER_REALNAME" />
+        <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
 	</resultMap>
 	
 	<select id="getMemberByWechat" resultMap="bxMember">
@@ -42,7 +43,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         LONGITUDE,
         LATITUDE,
         PAGE_STYLE,
-        WXACODE
+        WXACODE,
+        EMAIL
 	    FROM BX_MEMBER m
 	    where m.WECHAT=#{wechat}
     </select>
@@ -63,7 +65,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         LATITUDE,
         PAGE_STYLE,
         WXACODE,
-        USER_REALNAME
+        USER_REALNAME,
+        EMAIL
         FROM BX_MEMBER m
         where m.id=#{id}
     </select>
@@ -78,7 +81,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             SIGNATURE = #{signature},
             INTRODUCE = #{introduce},
             PHONE = #{phone},
-            MEMBER_IMG = #{memberImg}
+            MEMBER_IMG = #{memberImg},
+            EMAIL = #{email}
           WHERE ID = #{id}
     ]]>
     </update>
@@ -95,7 +99,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         PHONE,
         CREATE_DATE,
         STATUS,
-        CREATER_ID
+        CREATER_ID,
+        EMAIL
         ) VALUES (
         #{name} ,
         #{company_name},
@@ -108,7 +113,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         #{phone},
         now() ,
         0 ,
-        #{createrId}
+        #{createrId},
+        #{email}
         )
     </insert>
     <delete id="deleteMemberById">

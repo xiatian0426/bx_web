@@ -93,6 +93,8 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
      */
     private String maxCustomerNum;
 
+    private String email;
+
     private List<BxHonor> bxHonorList = new ArrayList<BxHonor>();
 
     public int getId() {
@@ -301,6 +303,14 @@ public class BxMember extends BaseQuery implements java.io.Serializable, Cloneab
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 
