@@ -332,6 +332,49 @@ public class UserInfoWebController {
     }
 
     /**
+     * 根据名称获取会员信息
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getMemberByUserName", method = RequestMethod.GET)
+    public void getMemberByUserName(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            String userName = request.getParameter("userName");
+            UserInfo userInfo = null;
+            if (StringUtils.isNotEmpty(userName)) {
+                userInfo = userInfoService.getByUserName(userName);
+            }
+            if(userInfo==null){
+                map.put("code",1);
+                map.put("message","该用户不存在!");
+            }else{
+                if(userInfo.getStatus()!=null && "1".equals(userInfo.getStatus())){
+                    map.put("code",0);
+                    map.put("message","操作成功!");
+                }else{
+                    map.put("code",2);
+                    map.put("message","该用户已禁用!");
+                }
+            }
+            map.put("userInfo", userInfo);
+        } catch (Exception e) {
+            map.put("code",-1);
+            map.put("message","操作失败!");
+            _logger.error("getMemberById失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+    /**
      * 保存用户被点赞记录
      * @param bxThumbUp
      * @param request
@@ -461,6 +504,42 @@ public class UserInfoWebController {
                 }
             }
             map.put("page", page);
+        } catch (Exception e) {
+            status = -1;
+            message = "操作失败，请联系管理员!";
+            _logger.error("操作失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("message", message);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
+
+    /**
+     * 根据code获取用户信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/checckUserInfo", method = {RequestMethod.GET,RequestMethod.POST})
+    public void checckUserInfo(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String, Object> map = new HashMap<String, Object>();
+        String message = "操作成功!";
+        int status = 0;
+        try{
+            String code = request.getParameter("code");
+            System.out.println("code:" + code);
+            String openid = WechatUtil.getOpenIdAndSessionKeyWeb(code).get("openid");
+            UserInfo userInfo = null;
+            if(openid!=null && !openid.equals("")){
+                userInfo = userInfoService.getByOpenIdWeb(openid);
+            }
+            map.put("userInfo", userInfo);
         } catch (Exception e) {
             status = -1;
             message = "操作失败，请联系管理员!";
