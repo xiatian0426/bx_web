@@ -355,6 +355,7 @@ public class UserInfoWebController {
                 map.put("message","该用户不存在!");
             }else{
                 if(userInfo.getStatus()!=null && "1".equals(userInfo.getStatus())){
+                    map.put("userInfo", userInfo);
                     map.put("code",0);
                     map.put("message","操作成功!");
                 }else{
@@ -362,7 +363,6 @@ public class UserInfoWebController {
                     map.put("message","该用户已禁用!");
                 }
             }
-            map.put("userInfo", userInfo);
         } catch (Exception e) {
             map.put("code",-1);
             map.put("message","操作失败!");
