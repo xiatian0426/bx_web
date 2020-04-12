@@ -138,7 +138,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		left join BX_PRODUCT_VIDEO v ON p.id=v.PRODUCT_ID
 		left join BX_PRODUCT_IMG i ON p.id = i.PRODUCT_ID
         where p.id=#{productId}
-		ORDER BY i.IMAGE_ORDER
+		ORDER BY i.IMAGE_ORDER,i.CREATE_DATE
     </select>
 
     <update id="updateProByProId" >
