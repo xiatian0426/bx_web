@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.acc.dao.BxCrawlMapper">
+
+	<resultMap id="bxCrawl" type="com.acc.model.BxCrawl">
+        <result property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="img" column="IMG" jdbcType="VARCHAR"/>
+        <result property="trade" column="TRADE" jdbcType="VARCHAR"/>
+        <result property="link" column="LINK" jdbcType="VARCHAR"/>
+        <result property="qrcode" column="QRCODE" jdbcType="VARCHAR"/>
+        <result property="source" column="SOURCE" jdbcType="INTEGER"/>
+        <result property="createDate" column="CREATE_DATE" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="getCrawlList" resultMap="bxCrawl">
+         SELECT c.ID,c.NAME,c.IMG,c.TRADE,c.LINK,c.QRCODE,c.SOURCE,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE
+              FROM BX_CRAWL c
+         WHERE STATUS = 0
+        <if test="source != null and source != 0">and c.SOURCE = #{source}</if>
+    </select>
+
+</mapper>
