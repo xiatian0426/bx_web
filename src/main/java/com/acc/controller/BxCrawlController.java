@@ -3,15 +3,19 @@ package com.acc.controller;
 import com.acc.exception.ExceptionUtil;
 import com.acc.model.BxCrawl;
 import com.acc.model.BxHonor;
+import com.acc.model.BxMember;
+import com.acc.model.BxThumbUp;
 import com.acc.service.IBxCrawlService;
 import com.acc.service.IBxHonorService;
 import com.acc.util.Constants;
+import com.acc.vo.Page;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -40,23 +44,22 @@ public class BxCrawlController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getCrawlList", method = RequestMethod.GET)
-	public void getCrawlList(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+	public void getCrawlList(final HttpServletRequest request, final HttpServletResponse response, @ModelAttribute BxCrawl query) throws IOException {
         request.setCharacterEncoding("utf-8");
 	    response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         Map<String,Object> map = new HashMap<String, Object>();
 	    try{
-            String source = request.getParameter("source");
 //            String memberId = request.getParameter("memberId");
 //            if(StringUtils.isNotEmpty(memberId) ){
-                List<BxCrawl> bxCrawlList = bxCrawlService.getCrawlList(source);
+                Page<BxCrawl> page = bxCrawlService.selectPage(query);
 //                String basePath = Constants.imgVideoPath;
 //                String url;
 //                for (BxCrawl bxCrawl:bxCrawlList){
 //                    url = basePath+Constants.honorImgPath+bxCrawl.getMemberId()+"/"+bxCrawl.getImg();
 //                    bxCrawl.setImg(url);
 //                }
-                map.put("list",bxCrawlList);
+                map.put("page",page);
 //            }
         } catch (Exception e) {
             _logger.error("getCrawlList失败：" + ExceptionUtil.getMsg(e));

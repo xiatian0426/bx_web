@@ -8,6 +8,4 @@ import java.util.List;
 
 public interface IBxCrawlService extends IBaseService<BxCrawl>{
 
-    List<BxCrawl> getCrawlList(String source) throws SelectException;
-
 }

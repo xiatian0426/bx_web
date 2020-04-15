@@ -20,8 +20,4 @@ public class BxCrawlServiceImpl extends BaseServiceImpl<BxCrawl> implements IBxC
     @Autowired
     private BxCrawlMapper bxCrawlMapper;
 
-    @Override
-    public List<BxCrawl> getCrawlList(String source) throws SelectException {
-        return bxCrawlMapper.getCrawlList(source);
-    }
 }

@@ -1,6 +1,8 @@
 
 package com.acc.model;
 
+import com.acc.vo.BaseQuery;
+
 /**
  * @author 
  * @version 1.0
@@ -8,7 +10,7 @@ package com.acc.model;
  */
 
 
-public class BxCrawl implements java.io.Serializable, Cloneable{
+public class BxCrawl extends BaseQuery implements java.io.Serializable, Cloneable{
 	
 	private static final long serialVersionUID = 1746208302889590552L;
 
@@ -21,6 +23,8 @@ public class BxCrawl implements java.io.Serializable, Cloneable{
     private String qrcode;
     private Integer source;
     private String createDate;
+
+    private String sortColumns;
 
     public String getCreateDate() {
         return createDate;
@@ -84,6 +88,14 @@ public class BxCrawl implements java.io.Serializable, Cloneable{
 
     public void setSource(Integer source) {
         this.source = source;
+    }
+
+    public String getSortColumns() {
+        return sortColumns;
+    }
+
+    public void setSortColumns(String sortColumns) {
+        this.sortColumns = sortColumns;
     }
 }
 
