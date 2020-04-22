@@ -75,12 +75,12 @@ public class BxHomePageController {
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
-                basePath = Constants.BASEPATH;
+                basePath = Constants.imgVideoPath;
                 bxMember = bxHomePageService.getMemberById(Integer.parseInt(memberId));
                 if(bxMember!=null){
                     bxMember.setMemberImg(basePath + Constants.memberImgPath + bxMember.getId() + "/" + bxMember.getMemberImg());
                     if(bxMember.getWxaCode()!=null && !bxMember.getWxaCode().equals("")){
-                        bxMember.setWxaCode(basePath + Constants.memberImgWxaCodePath + bxMember.getWxaCode());
+                        bxMember.setWxaCode(Constants.BASEPATH + Constants.memberImgWxaCodePath + bxMember.getWxaCode());
                     }
                 }
             }
