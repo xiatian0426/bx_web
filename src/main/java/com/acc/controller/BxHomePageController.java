@@ -75,7 +75,7 @@ public class BxHomePageController {
                 String basePath = request.getScheme() + "://"
                         + request.getServerName() + ":" + request.getServerPort()
                         + path + "/";
-                basePath = Constants.imgVideoPath;
+                basePath = Constants.BASEPATH;
                 bxMember = bxHomePageService.getMemberById(Integer.parseInt(memberId));
                 if(bxMember!=null){
                     bxMember.setMemberImg(basePath + Constants.memberImgPath + bxMember.getId() + "/" + bxMember.getMemberImg());
