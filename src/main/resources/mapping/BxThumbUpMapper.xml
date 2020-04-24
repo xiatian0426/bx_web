@@ -30,7 +30,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         PHONE,
         MEMBER_ID,
         CREATE_TIME,
-        STATUS
+        STATUS,
+        MODIFY_TIME
         ) VALUES (
         #{headSculpture} ,
         #{nickName},
@@ -39,7 +40,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         #{phone} ,
         #{memberId},
         now(),
-        0
+        0,
+        now(),
         )
     </insert>
 
