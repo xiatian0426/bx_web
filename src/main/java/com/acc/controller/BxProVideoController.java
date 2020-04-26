@@ -174,7 +174,7 @@ public class BxProVideoController {
             String openIdWeb = request.getParameter("openIdWeb");
             UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
             if(staff!=null){
-                String id = staff.getId()+"";
+                String id = request.getParameter("id");
                 if(StringUtils.isNotEmpty(id)){
                     //删除视频
                     BxProVideo proVideo = bxProVideoService.getProVideoById(id);
