@@ -42,8 +42,47 @@ public class BxProVideoController {
     @Autowired
     private IUserInfoService userInfoService;
 
+    /**
+     * 前端使用--用户视频信息
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/getUserVideo", method = RequestMethod.GET)
+    public void getUserVideo(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        Map<String,Object> map = new HashMap<String, Object>();
+        String result="";
+        int status = 0;
+        try{
+            String memberId = request.getParameter("memberId");
+            if(StringUtils.isNotEmpty(memberId) ){
+                List<BxProVideo> bxProVideoList = bxProVideoService.getProVideoList(memberId);
+                String basePath = Constants.imgVideoPath;
+                for (BxProVideo bxProVideo:bxProVideoList){
+                    bxProVideo.setVideoUrl(basePath+Constants.userVideoPath+bxProVideo.getMemberId()+"/"+bxProVideo.getVideoUrl());
+                }
+                if(bxProVideoList!=null && bxProVideoList.size()>0){
+                    map.put("bxUserVideo",bxProVideoList.get(0));
+                }
+            }
+        } catch (Exception e) {
+            status = -1;
+            result = "操作失败，请联系管理员!";
+            _logger.error("getUserVideoList 失败：" + ExceptionUtil.getMsg(e));
+            e.printStackTrace();
+        }
+        map.put("status", status);
+        map.put("result", result);
+        out.print(JSON.toJSONString(map));
+        out.flush();
+        out.close();
+    }
+
 	/**
-	 * 用户视频信息
+	 * 后台小程序使用--用户视频信息
 	 * @param request
 	 * @param response
 	 * @return
@@ -88,7 +127,7 @@ public class BxProVideoController {
 	    out.close();
 	}
     /**
-     * 添加用户视频信息
+     * 后台小程序使用--添加用户视频信息
      *
      * @param request
      * @param response
@@ -156,7 +195,7 @@ public class BxProVideoController {
         out.close();
     }
     /**
-     * 删除用户视频信息
+     * 后台小程序使用--删除用户视频信息
      *
      * @param request
      * @param response
