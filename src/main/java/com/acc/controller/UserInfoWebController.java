@@ -445,25 +445,32 @@ public class UserInfoWebController {
         String message = "操作成功!";
         int status = 0;
         try{
-            if(bxThumbUp!=null && bxThumbUp.getMemberId()!=null){
-                //获取有多少点赞数量
-                List<BxThumbUp> bxThumbUpList = bxVisitHistoryService.getThumbUpList(null,bxThumbUp.getMemberId(),0);
-                if(bxThumbUpList!=null && bxThumbUpList.size()>0){
-                    map.put("count", bxThumbUpList.size());
-                    map.put("list", bxThumbUpList);
-                }else{
-                    map.put("count", 0);
-                    map.put("list", null);
-                }
-                if(bxThumbUp.getOpenId()!=null && !"".equals(bxThumbUp.getOpenId())){
-                    //判断是否本身已点赞
-                    bxThumbUpList = bxVisitHistoryService.getThumbUpList(bxThumbUp.getOpenId(),bxThumbUp.getMemberId(),0);
+            String openIdWeb = request.getParameter("openIdWeb");
+            UserInfo staff = userInfoService.getByOpenIdWeb(openIdWeb);
+            if(staff!=null){
+                if(bxThumbUp!=null && bxThumbUp.getMemberId()!=null){
+                    //获取有多少点赞数量
+                    List<BxThumbUp> bxThumbUpList = bxVisitHistoryService.getThumbUpList(null,bxThumbUp.getMemberId(),0);
                     if(bxThumbUpList!=null && bxThumbUpList.size()>0){
-                        map.put("isThumbUp", 0);
+                        map.put("count", bxThumbUpList.size());
+                        map.put("list", bxThumbUpList);
                     }else{
-                        map.put("isThumbUp", 1);
+                        map.put("count", 0);
+                        map.put("list", null);
+                    }
+                    if(bxThumbUp.getOpenId()!=null && !"".equals(bxThumbUp.getOpenId())){
+                        //判断是否本身已点赞
+                        bxThumbUpList = bxVisitHistoryService.getThumbUpList(bxThumbUp.getOpenId(),bxThumbUp.getMemberId(),0);
+                        if(bxThumbUpList!=null && bxThumbUpList.size()>0){
+                            map.put("isThumbUp", 0);
+                        }else{
+                            map.put("isThumbUp", 1);
+                        }
                     }
                 }
+            }else{
+                status = 98;
+                message = "未登录，请先登录!";
             }
         } catch (Exception e) {
             status = -1;

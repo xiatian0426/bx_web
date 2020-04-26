@@ -16,5 +16,9 @@ public interface BxProVideoMapper {
 
     void insert(BxProVideo bxProVideo) throws Exception;
 
+    void updateById(BxProVideo BxProVideo) throws Exception;
+
     BxProVideo getProVideoById(String id) throws SelectException;
+
+    BxProVideo getProVideoBymemberId(@Param("memberId") int memberId) throws SelectException;
 }

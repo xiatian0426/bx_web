@@ -9,7 +9,7 @@ public class Constants {
     public final static String proDetailImgPath  = "res/images/proDetailImg/";
     public final static String recruitImgPath  = "res/images/recruitImg/";
     public final static String companyImgPath  = "res/images/companyImg/";
-    public final static String proVideoVideoPath  = "res/video/productVideo/";
+    public final static String userVideoPath  = "res/video/userVideoPath/";
     public final static String proVideoPath  = "res/video/proVideo/";
 	public final static String LOGINUSER = "SESSIONLOGINUSER_WEB";
 	public final static String VALIDATESESSION = "VALIDATECODESESSION";

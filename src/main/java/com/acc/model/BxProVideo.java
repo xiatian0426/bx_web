@@ -26,6 +26,15 @@ public class BxProVideo implements java.io.Serializable, Cloneable{
 
     private int proVideoOrder;
 
+    /**
+     * modifyDate       db_column: MODIFY_DATE
+     */
+    private String modifyDate;
+    /**
+     * modifierId       db_column: MODIFIER_ID
+     */
+    private String modifierId;
+
     public int getId() {
         return id;
     }
@@ -80,6 +89,22 @@ public class BxProVideo implements java.io.Serializable, Cloneable{
 
     public void setProVideoOrder(int proVideoOrder) {
         this.proVideoOrder = proVideoOrder;
+    }
+
+    public String getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(String modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
+    public String getModifierId() {
+        return modifierId;
+    }
+
+    public void setModifierId(String modifierId) {
+        this.modifierId = modifierId;
     }
 }
 

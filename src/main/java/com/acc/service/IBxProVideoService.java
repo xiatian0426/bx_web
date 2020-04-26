@@ -20,4 +20,8 @@ public interface IBxProVideoService {
     void deleteById(String id) throws Exception;
 
     void insert(BxProVideo BxProVideo) throws Exception;
+
+    BxProVideo getProVideoBymemberId(int memberId) throws SelectException;
+
+    void updateById(BxProVideo BxProVideo) throws Exception;
 }

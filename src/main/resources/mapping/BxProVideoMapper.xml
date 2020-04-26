@@ -15,12 +15,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="createDate" column="CREATE_DATE" jdbcType="VARCHAR"/>
         <result property="createrId" column="CREATER_ID" jdbcType="INTEGER"/>
         <result property="proVideoOrder" column="PROVIDEO_ORDER" jdbcType="INTEGER"/>
+        <result property="modifyDate" column="MODIFY_DATE" jdbcType="VARCHAR"/>
+        <result property="modifierId" column="MODIFIER_ID" jdbcType="INTEGER"/>
 	</resultMap>
 
     <select id="getProVideoById" resultMap="bxProVideo">
-        SELECT c.ID,c.VIDEO_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.PROVIDEO_ORDER
+        SELECT c.ID,c.VIDEO_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.PROVIDEO_ORDER,
+        DATE_FORMAT(c.MODIFY_DATE,'%Y-%m-%d %H:%i:%s') MODIFY_DATE,MODIFIER_ID
         FROM BX_PROVIDEO c
         WHERE c.id=#{id}
+    </select>
+
+    <select id="getProVideoBymemberId" resultMap="bxProVideo">
+        SELECT c.ID,c.VIDEO_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.PROVIDEO_ORDER
+        FROM BX_PROVIDEO c
+        WHERE c.MEMBER_ID=#{memberId}
+        AND c.STATUS=0
     </select>
 
     <select id="getProVideoCount" resultType="java.lang.Integer">
@@ -31,11 +41,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
     </select>
 
 	<select id="getProVideoList" resultMap="bxProVideo">
-         SELECT c.ID,c.VIDEO_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.PROVIDEO_ORDER
+         SELECT c.ID,c.VIDEO_URL,c.MEMBER_ID,c.STATUS,DATE_FORMAT(c.CREATE_DATE,'%Y-%m-%d %H:%i:%s') CREATE_DATE,c.CREATER_ID,c.PROVIDEO_ORDER,
+         DATE_FORMAT(c.MODIFY_DATE,'%Y-%m-%d %H:%i:%s') MODIFY_DATE,MODIFIER_ID
          FROM BX_PROVIDEO c
          WHERE c.MEMBER_ID=#{memberId}
          AND c.STATUS=0
-         ORDER BY c.PROVIDEO_ORDER
     </select>
     <delete id="deleteById">
         <![CDATA[
@@ -60,4 +70,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         #{ProVideoOrder}
         )
     </insert>
+
+    <update id="updateById">
+        UPDATE BX_PROVIDEO
+        SET
+        <if test="videoUrl != null and videoUrl != ''">VIDEO_URL=#{videoUrl},</if>
+        PROVIDEO_ORDER=#{proVideoOrder},
+        MODIFY_DATE = now() ,
+        MODIFIER_ID = #{modifierId}
+        WHERE id=#{id}
+    </update>
 </mapper>

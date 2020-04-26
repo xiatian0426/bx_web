@@ -45,4 +45,13 @@ public class BxProVideoServiceImpl implements IBxProVideoService {
         BxProVideoMapper.insert(BxProVideo);
     }
 
+    @Override
+    public void updateById(BxProVideo BxProVideo) throws Exception {
+        BxProVideoMapper.updateById(BxProVideo);
+    }
+
+    @Override
+    public BxProVideo getProVideoBymemberId(int memberId) throws SelectException{
+        return BxProVideoMapper.getProVideoBymemberId(memberId);
+    }
 }
