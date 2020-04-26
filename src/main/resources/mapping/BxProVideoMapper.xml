@@ -67,7 +67,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         0 ,
         now() ,
         #{createrId} ,
-        #{ProVideoOrder}
+        #{proVideoOrder}
         )
     </insert>
 
