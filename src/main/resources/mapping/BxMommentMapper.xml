@@ -15,7 +15,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result property="commentator_img" column="COMMENTATOR_IMG" jdbcType="VARCHAR"/>
         <result property="comment_context" column="COMMENT_CONTEXT" jdbcType="VARCHAR"/>
         <result property="member_img" column="MEMBER_IMG" jdbcType="VARCHAR"/>
-        <result property="member_id" column="MEMBER_ID" jdbcType="INTEGER"/>
+        <result property="member_id" column="RESPONDENT_ID" jdbcType="INTEGER"/>
         <result property="create_date" column="CREATE_DATE" jdbcType="VARCHAR"/>
         <result property="create_date_all" column="CREATE_DATE_ALL" jdbcType="VARCHAR"/>
         <result property="status" column="STATUS" jdbcType="INTEGER"/>
