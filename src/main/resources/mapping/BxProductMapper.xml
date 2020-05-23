@@ -91,7 +91,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<select id="getDetailByProductId" resultMap="bxProduct">
         select m.*,vv.VIDEO_URL PRODUCT_VIDEO from
-    	    (select p.id,p.PRODUCT_NAME,p.PRODUCT_DESC,i.IMAGE_URL,i.IMAGE_ORDER
+    	    (select p.id,p.PRODUCT_NAME,p.PRODUCT_DESC,i.IMAGE_URL,i.IMAGE_ORDER,i.CREATE_DATE
             from BX_PRODUCT p,BX_PRODUCT_IMG i,BX_MEMBER me
             where p.id=i.PRODUCT_ID
 			and p.MEMBER_ID=me.id
@@ -100,7 +100,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             and p.id=#{productId}) m
 		left JOIN BX_PRODUCT_VIDEO vv
 		on m.id=vv.product_id
-        order by m.image_order
+        order by m.image_order,m.CREATE_DATE
     </select>
 
     <delete id="deleteProImgById">
