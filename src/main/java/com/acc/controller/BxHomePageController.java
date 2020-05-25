@@ -285,6 +285,10 @@ public class BxHomePageController {
                             bxMomment.setComment_tag(bxMomment.getComment_tag().substring(0,bxMomment.getComment_tag().length()-1));
                         }
                         bxHomePageService.insert(bxMomment);
+                        //自动审核
+                        bxMomment.setStatus(2);
+                        editMommentStatus(bxMomment,request,response);
+
                         result = "操作成功!";
                     }else{
                         status = 2;
